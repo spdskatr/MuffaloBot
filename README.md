@@ -9,7 +9,7 @@ Build the project in mode `Release`. It should generate a folder "bin" next to y
 {
      "disc" : "Your Discord bot token",
      "redd" : "Your Reddit user refresh token (do not use access token)",
-     "redd-appid" : "Your Reddit app ID",
+     "redd-appid" : "Your Reddit basic authentication details in raw form (eg. appid:appsecret)",
      "stea" : "Your steam web-api id used in api search requests."
 }
 ```

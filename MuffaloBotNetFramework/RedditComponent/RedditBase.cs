@@ -51,7 +51,7 @@ namespace MuffaloBotNetFramework.RedditComponent
         {
             WebRequest request = WebRequest.Create("https://www.reddit.com/api/v1/access_token");
             request.Method = "POST";
-            request.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(auth + ":"));
+            request.Headers["Authorization"] = "Basic " + Convert.ToBase64String(Encoding.Default.GetBytes(auth));
             request.ContentType = "application/x-www-form-urlencoded";
             Stream stream = await request.GetRequestStreamAsync();
             byte[] bytes = Encoding.UTF8.GetBytes("grant_type=refresh_token&refresh_token=" + refreshToken);

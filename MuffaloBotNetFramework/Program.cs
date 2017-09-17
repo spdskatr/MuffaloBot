@@ -50,7 +50,7 @@ namespace MuffaloBotNetFramework
         static async Task MainAsync()
         {
             string text = File.ReadAllText("config.json");
-            InfoPackage package = await Task.Run(() => JsonConvert.DeserializeObject<InfoPackage>(text));
+            InfoPackage package = infoPackage = await Task.Run(() => JsonConvert.DeserializeObject<InfoPackage>(text));
 #if RedditEnabled
             if (package.RedditTokenValid())
                 (rbase = new RedditBase()).StartAsync(package.redd, package.redd_appid);
