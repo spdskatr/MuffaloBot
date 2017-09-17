@@ -11,7 +11,8 @@ Build the project in mode `Release`. It should generate a folder "bin" next to y
      "redd" : "Your Reddit user refresh token (do not use access token)",
      "redd-appid" : "Your Reddit app ID",
      "stea" : "Your steam web-api id used in api search requests."
-}```
+}
+```
 
 If any of these fields are left empty, their respective functions will be disabled.
 
