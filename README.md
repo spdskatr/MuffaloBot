@@ -18,4 +18,4 @@ If any of these fields are left empty, their respective functions will be disabl
 
 # MuffaloBotInterface
 
-This console project is for interacting with most Discord components of MuffaloBot. I call it "an open-ended unit tester"
+This console project is for interacting with most Discord components of MuffaloBot. I call it "an open-ended unit tester". You do not need a config.json to start this (the steam api commands are disabled).

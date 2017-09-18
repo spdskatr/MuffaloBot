@@ -12,6 +12,12 @@ namespace MuffaloBotNetFramework
 {
     class Program
     {
+#if BETA
+        const string targetSubreddit = "bottesting";
+#else
+        const string targetSubreddit = "RimWorld";
+#endif
+
         internal class InfoPackage
         {
             public string disc;
@@ -53,10 +59,28 @@ namespace MuffaloBotNetFramework
             InfoPackage package = infoPackage = await Task.Run(() => JsonConvert.DeserializeObject<InfoPackage>(text));
 #if RedditEnabled
             if (package.RedditTokenValid())
-                (rbase = new RedditBase()).StartAsync(package.redd, package.redd_appid);
+            {
+                try
+                {
+                    (rbase = new RedditBase()).StartAsync(package.redd, package.redd_appid, targetSubreddit);
+                }
+                catch (Exception ex)
+                {
+                    await Console.Out.WriteLineAsync("Could not start Reddit component due to exceoption being thrown. Exception was:\n" + ex);
+                }
+            }
 #endif
             if (package.DiscordTokenValid())
-                await StartDiscordComponent(package.disc);
+            {
+                try
+                {
+                    await StartDiscordComponent(package.disc);
+                }
+                catch (Exception ex)
+                {
+                    await Console.Out.WriteLineAsync("Could not start Discord component due to exceoption being thrown. Exception was:\n" + ex);
+                }
+            }
         }
 
         static async Task StartDiscordComponent(string token)

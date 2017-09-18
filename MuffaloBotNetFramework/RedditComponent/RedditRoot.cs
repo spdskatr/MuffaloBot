@@ -18,21 +18,23 @@ namespace MuffaloBotNetFramework.RedditComponent
             switch (command)
             {
                 case "wikisearch":
-                    return Commands.WikiSearch(operands).Replace("\n", "\n\n");
+                    return Commands.WikiSearch(operands);
                 case "wshopsearch":
                     if (Program.infoPackage.SteamTokenValid())
                     {
-                        return Commands.SteamWorkshopSearch(operands, Program.infoPackage.stea).Replace("\n", "\n\n");
+                        return Commands.SteamWorkshopSearch(operands, Program.infoPackage.stea);
                     }
                     break;
                 case "basestats":
-                    return Commands.GetBaseStats(operands).Replace("\n", "\n\n");
+                    return Commands.GetBaseStats(operands);
+                case "stuffstats":
+                    return Commands.GetStuffStats(operands);
                 default:
                     break;
             }
             return null;
         }
-        internal static async void ReplyAsync(this Comment item, string message)
+        internal static async Task ReplyAsync(this Comment item, string message)
         {
             try
             {
@@ -43,7 +45,7 @@ namespace MuffaloBotNetFramework.RedditComponent
             {
                 await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when replying. Resending in {e.TimeToReset.Milliseconds}ms...");
                 await Task.Delay(e.TimeToReset);
-                ReplyAsync(item, message);
+                await ReplyAsync(item, message);
             }
         }
     }

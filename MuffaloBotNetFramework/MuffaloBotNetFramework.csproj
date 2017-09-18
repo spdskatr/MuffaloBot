@@ -72,12 +72,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Discord\DiscordRoot_Fields.cs" />
+    <Compile Include="DiscordComponent\DiscordRoot_Fields.cs" />
     <Compile Include="CommandsUtil\Commands.cs" />
     <Compile Include="CommandsUtil\CoreDefDatabase.cs" />
     <Compile Include="CommandsUtil\DiscordUtil.cs" />
     <Compile Include="CommandsUtil\HttpRequest.cs" />
-    <Compile Include="Discord\DiscordRoot.cs" />
+    <Compile Include="DiscordComponent\DiscordRoot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandsUtil\PublishedFileIdUtil.cs" />

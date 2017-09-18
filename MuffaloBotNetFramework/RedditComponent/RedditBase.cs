@@ -27,7 +27,7 @@ namespace MuffaloBotNetFramework.RedditComponent
         public RedditBase()
         {
         }
-        public async void StartAsync(string refreshToken, string auth)
+        public async void StartAsync(string refreshToken, string auth, string targetSubreddit)
         {
             // Get token
             WebRequest req = await GetRequest(refreshToken, auth);
@@ -38,10 +38,10 @@ namespace MuffaloBotNetFramework.RedditComponent
             resStream.Close();
             
             var tk = JsonConvert.DeserializeObject<TokenRetrievalResponse>(res).access_token;
-            Console.WriteLine("Reddit Component :: Got access token: " + tk);
+            await Console.Out.WriteLineAsync("Reddit Component :: Got access token: " + tk);
             reddit = new Reddit(tk);
-            Console.WriteLine("Reddit Component :: Starting...");
-            sub = await reddit.GetSubredditAsync("bottesting");
+            await Console.Out.WriteLineAsync("Reddit Component :: Connecting to subreddit " + targetSubreddit);
+            sub = await reddit.GetSubredditAsync(targetSubreddit);
             await Console.Out.WriteLineAsync("Reddit Component :: Connected successfully");
             await StartCommentStream();
             await Console.Error.WriteLineAsync("Reddit Component :: Completed Reddit bot super-task... Which isn't meant to happen");
@@ -67,7 +67,6 @@ namespace MuffaloBotNetFramework.RedditComponent
                 // If I have downvoted an item, I have read it before
                 if ((!item.Liked) ?? false) //Note: Comments property always return a List of 0. Do not use
                 {
-                    await Console.Out.WriteLineAsync("Detected comment already replied to.");
                     continue;
                 }
                 MatchCollection matches = commandRegex.Matches(str);
@@ -78,11 +77,10 @@ namespace MuffaloBotNetFramework.RedditComponent
                     Match match = matches[i];
                     responses[i] = RedditRoot.ProcessCommand(match.Groups[1].Value, match.Groups[2].Value);
                 }
-                string reply = string.Join("\n---\n", from r in responses where r != null select r);
+                string reply = string.Join("\n---\n", from r in responses where r != null select r).Replace("\n", "  \n");
                 if (reply != null && reply.Length > 0)
                 {
-                    await Console.Out.WriteLineAsync("Replied."); //DEBUG
-                    //item.ReplyAsync(reply);
+                    await item.ReplyAsync(reply);
                     item.Downvote();
                 }
             }
