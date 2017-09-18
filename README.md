@@ -4,6 +4,7 @@ MuffaloBot is an all-purpose bot for the RimWorld discord and subreddit. It uses
 
 # How to set up
 
+**Authentication**  
 Build the project in mode `Release`. It should generate a folder "bin" next to your solution folder. Put in the "bin" folder a `config.json` file that looks like:
 ```json
 {
@@ -15,6 +16,9 @@ Build the project in mode `Release`. It should generate a folder "bin" next to y
 ```
 
 If any of these fields are left empty, their respective functions will be disabled.
+
+**Core features**  
+MuffaloBot has a lot of features that depend on external sources, e.g. ThingDefDatabase and CoreDefDatabase. The files can be found in the `_Include_In_Output.zip` zip file and should be copied to the output directory.
 
 # MuffaloBotInterface
 

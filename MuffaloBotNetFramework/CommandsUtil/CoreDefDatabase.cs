@@ -18,7 +18,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
         static CoreDefDatabase()
         {
             searchDir = new DirectoryInfo("Defs");
-            trimmerRegex = new Regex("Defs[\\\\\\/].+"); // Defs\\\/.+
+            trimmerRegex = new Regex("Defs[\\\\\\/].+"); // Defs[\/].+
             FileInfo[] files = searchDir.GetFiles("*.xml", SearchOption.AllDirectories);
             database = new List<KeyValuePair<string, XmlDocument>>(files.Length);
             for (int i = 0; i < files.Length; i++)
