@@ -142,5 +142,11 @@ namespace MuffaloBotNetFramework.CommandsUtil
             }
             return stringBuilder.ToString();
         }
+
+        // Syntax highlighting is not supported by Reddit.
+        public static string XPath(string path, bool syntaxHighlighting = true)
+        {
+            return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting);
+        }
     }
 }

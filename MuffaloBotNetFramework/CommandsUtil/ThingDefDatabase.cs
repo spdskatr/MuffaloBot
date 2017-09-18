@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MuffaloBotNetFramework
+namespace MuffaloBotNetFramework.CommandsUtil
 {
     // Ye olde ThingDefDatabase code
     static class ThingDefDatabase

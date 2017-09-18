@@ -1,4 +1,5 @@
 ﻿using DSharpPlus;
+using MuffaloBotNetFramework.DiscordComponent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MuffaloBotNetFramework
+namespace MuffaloBotNetFramework.CommandsUtil
 {
     class _DiscordMessage
     {
@@ -52,11 +53,11 @@ namespace MuffaloBotNetFramework
         }
         internal static string Emoji(ulong guildId, string name)
         {
-            if (Program.sandbox)
+            if (DiscordBase.sandbox)
             {
                 return $":{name}:";
             }
-            var emojis = Program.discord.Guilds[guildId].Emojis;
+            var emojis = Program.dBase.discord.Guilds[guildId].Emojis;
             for (int i = 0; i < emojis.Count; i++)
             {
                 if (emojis[i].Name == name)
@@ -65,20 +66,6 @@ namespace MuffaloBotNetFramework
                 }
             }
             return $":{name}:";
-        }
-        internal static string CapFirst(this string str)
-        {
-            if (str.Length == 0) return str;
-            if (str.Length > 1)
-            {
-                return str[0].ToString().ToUpper() + str.Substring(1);
-            }
-            return str.ToUpper();
-        }
-        static readonly Regex whitespaceRegex = new Regex("^\\s*$");
-        internal static bool EmptyOrContainsOnlyWhitespace(this string str)
-        {
-            return (str.Length > 0) ? whitespaceRegex.Match(str).Success : true;
         }
     }
 }

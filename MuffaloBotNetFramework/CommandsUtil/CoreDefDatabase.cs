@@ -34,7 +34,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
                    from XmlNode node in doc.Value.SelectNodes(xpath)
                    select new KeyValuePair<string, XmlNode>(doc.Key, node);
         }
-        public static string GetSummaryForNodeSelection(string xpath)
+        public static string GetSummaryForNodeSelection(string xpath, bool syntaxHighlighting)
         {
             StringBuilder stringBuilder = new StringBuilder();
             var results = SelectNodesByXpath(xpath);
@@ -44,12 +44,12 @@ namespace MuffaloBotNetFramework.CommandsUtil
                 if (i < 5)
                 {
                     stringBuilder.AppendLine($"<!-- In {result.Key}: -->");
-                    stringBuilder.AppendLine($"{result.Value.OuterXml}\n");
+                    stringBuilder.AppendLine($"{result.Value.OuterXml.WithinChars(100)}\n");
                 }
                 i++;
             }
-            stringBuilder.AppendFormat("<!-- Summary: Found {0} results total (showing first 5) -->", i);
-            return string.Concat("```xml\n", stringBuilder.ToString(), "```");
+            stringBuilder.AppendFormat("<!-- Summary: Found {0} results total (showing first 5 if applicable) -->", i);
+            return syntaxHighlighting ? string.Concat("```xml\n", stringBuilder.ToString(), "```") : stringBuilder.ToString();
         }
     }
 }

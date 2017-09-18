@@ -33,8 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>200px_animal_muffalo_side_2vo_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DSharpPlus, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -72,6 +71,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandsUtil\StringUtil.cs" />
+    <Compile Include="DiscordComponent\DiscordBase.cs" />
     <Compile Include="DiscordComponent\DiscordRoot_Fields.cs" />
     <Compile Include="CommandsUtil\Commands.cs" />
     <Compile Include="CommandsUtil\CoreDefDatabase.cs" />

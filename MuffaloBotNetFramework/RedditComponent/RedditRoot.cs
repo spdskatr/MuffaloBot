@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MuffaloBotNetFramework.CommandsUtil;
 using RedditSharp.Things;
 using RedditSharp;
+using System.Threading;
 
 namespace MuffaloBotNetFramework.RedditComponent
 {
@@ -29,23 +30,30 @@ namespace MuffaloBotNetFramework.RedditComponent
                     return Commands.GetBaseStats(operands);
                 case "stuffstats":
                     return Commands.GetStuffStats(operands);
+                case "xpath":
+                    return Commands.XPath(operands, false);
                 default:
                     break;
             }
             return null;
         }
-        internal static async Task ReplyAsync(this Comment item, string message)
+        internal static async Task ReplyAsync(this Comment item, string message, bool addFooter = true)
         {
+            if (addFooter)
+            {
+                message += "\n\n> I am MuffaloBot | Made by [spdskatr](https://www.reddit.com/user/spdskatr/) | [Source code](https://github.com/spdskatr/MuffaloBot) | [Commands reference](https://github.com/spdskatr/MuffaloBot/blob/master/CommandsReference.md)";
+            }
+            Retry:
             try
             {
-                await Task.Run(() => item.Reply(message));
+                item.Reply(message);
             }
             // If sending too fast...
             catch (RateLimitException e)
             {
-                await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when replying. Resending in {e.TimeToReset.Milliseconds}ms...");
-                await Task.Delay(e.TimeToReset);
-                await ReplyAsync(item, message);
+                await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when replying. Resending in {e.TimeToReset.Milliseconds}ms... (This can occur frequently when 2 threads are fighting for internet access)");
+                Thread.Sleep(e.TimeToReset.Milliseconds);
+                goto Retry;
             }
         }
     }

@@ -8,6 +8,27 @@ using System.Linq;
 using System.Net.Http;
 using MuffaloBotNetFramework.CommandsUtil;
 
+/* -----------------------------------WARNING-----------------------------------
+ * Do not look further down if you don't wish to see Muffy's secret commands.
+ * Leave this place to avoid spoiling it for yourself
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * Stil reading?
+ */
 namespace MuffaloBotNetFramework.DiscordComponent
 {
     static partial class DiscordRoot
@@ -21,7 +42,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "!jdalt":
                     if (guildID == 214523379766525963u)
                     {
-                        var jdalt = Program.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 221459835315683330);
+                        var jdalt = Program.dBase.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 221459835315683330);
                         return new DSharpPlus.DiscordEmbed()
                         {
                             Author = new DSharpPlus.DiscordEmbedAuthor()
@@ -36,7 +57,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "!stan":
                     if (guildID == 214523379766525963u)
                     {
-                        var stan = Program.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 144848386158362624);
+                        var stan = Program.dBase.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 144848386158362624);
                         return new DSharpPlus.DiscordEmbed()
                         {
                             Author = new DSharpPlus.DiscordEmbedAuthor()
@@ -90,6 +111,14 @@ namespace MuffaloBotNetFramework.DiscordComponent
                     return "Successfully deleted 0 file(s)";
                 case "!kek":
                     return "kek";
+                case "!waffles":
+                    return "I'm not a food dispenser...";
+                case "!cookies":
+                    return "You're not having them! They're *my* cookies! >:(";
+                case "!make me a sandwich":
+                    return "Poof! You're a sandwich.";
+                case "!emp grenades":
+                    return "Aaaaah! Pls no";
                 default:
                     break;
             }
@@ -105,12 +134,6 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "say":
                     return breakdown.Groups[2].Value;
 #endif
-                case "xpathselect":
-                    if (str.Length > 13)
-                    {
-                        return CoreDefDatabase.GetSummaryForNodeSelection(breakdown.Groups[2].Value);
-                    }
-                    return "Type `!usage xpathselect` for help with this command.";
                 case "desc":
                     if (str.Length > 6)
                     {
@@ -172,6 +195,12 @@ namespace MuffaloBotNetFramework.DiscordComponent
                     return "Type `!usage wshopsearch` for help with this command.";
                 case "sudo":
                     return "sudo do it yourself";
+                case "xpath":
+                    if (str.Length > 13)
+                    {
+                        return Commands.XPath(breakdown.Groups[2].Value);
+                    }
+                    return "Type `!usage xpath` for help with this command.";
                 default:
                     break;
             }

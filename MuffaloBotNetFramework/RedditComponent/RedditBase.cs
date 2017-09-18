@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using RedditSharp;
 using RedditSharp.Things;
 using System.Text.RegularExpressions;
-using System.Net.Http;
 using System.Net;
 using Newtonsoft.Json;
 using System.IO;
+using MuffaloBotNetFramework.CommandsUtil;
 
 namespace MuffaloBotNetFramework.RedditComponent
 {
@@ -18,10 +18,11 @@ namespace MuffaloBotNetFramework.RedditComponent
         class TokenRetrievalResponse
         {
 #pragma warning disable CS0649
+            public string error;
             public string access_token;
 #pragma warning restore CS0649
         }
-        static Regex commandRegex = new Regex("\\[\\s*([a-zA-Z0-9]+)\\s*([a-zA-Z0-9\\s]*)\\s*\\]");
+        static Regex commandRegex = new Regex("{{\\s*([^{}\\s]+)\\s*([^{}]*)\\s*}}");
         Reddit reddit;
         Subreddit sub;
         public RedditBase()
@@ -29,22 +30,41 @@ namespace MuffaloBotNetFramework.RedditComponent
         }
         public async void StartAsync(string refreshToken, string auth, string targetSubreddit)
         {
-            // Get token
-            WebRequest req = await GetRequest(refreshToken, auth);
-            WebResponse response = await req.GetResponseAsync();
+            try
+            {
+                // Get token
+                WebRequest req = await GetRequest(refreshToken, auth);
+                WebResponse response = await req.GetResponseAsync();
 
-            Stream resStream = response.GetResponseStream();
-            string res = await new StreamReader(resStream).ReadToEndAsync();
-            resStream.Close();
-            
-            var tk = JsonConvert.DeserializeObject<TokenRetrievalResponse>(res).access_token;
-            await Console.Out.WriteLineAsync("Reddit Component :: Got access token: " + tk);
-            reddit = new Reddit(tk);
-            await Console.Out.WriteLineAsync("Reddit Component :: Connecting to subreddit " + targetSubreddit);
-            sub = await reddit.GetSubredditAsync(targetSubreddit);
-            await Console.Out.WriteLineAsync("Reddit Component :: Connected successfully");
-            await StartCommentStream();
-            await Console.Error.WriteLineAsync("Reddit Component :: Completed Reddit bot super-task... Which isn't meant to happen");
+                Stream resStream = response.GetResponseStream();
+                string res = await new StreamReader(resStream).ReadToEndAsync();
+                resStream.Close();
+
+                var tokenRetrievalResponse = JsonConvert.DeserializeObject<TokenRetrievalResponse>(res);
+                if (tokenRetrievalResponse.error != null && tokenRetrievalResponse.error.Length > 0)
+                {
+                    await Console.Error.WriteLineAsync("Reddit Component :: Error occurred when retrieving token. Response:\n" + res);
+                    return;
+                }
+
+                var tk = tokenRetrievalResponse.access_token;
+                await Console.Out.WriteLineAsync("Reddit Component :: Got access token: " + tk);
+                reddit = new Reddit(tk);
+                await Console.Out.WriteLineAsync("Reddit Component :: Connecting to subreddit " + targetSubreddit);
+                sub = await reddit.GetSubredditAsync(targetSubreddit);
+                await Console.Out.WriteLineAsync("Reddit Component :: Connected successfully");
+                await StartCommentStream();
+                // Code isn't meant to get here
+                await Console.Error.WriteLineAsync("Reddit Component :: Completed Reddit bot super-task... Which isn't meant to happen");
+            }
+            catch (WebException)
+            {
+                await Console.Error.WriteLineAsync($"A web error occurred when running MuffaloBot, probably due to token expiring. Restarting component.");
+            }
+            finally
+            {
+                StartAsync(refreshToken, auth, targetSubreddit);
+            }
         }
 
         private static async Task<WebRequest> GetRequest(string refreshToken, string auth)
@@ -77,9 +97,10 @@ namespace MuffaloBotNetFramework.RedditComponent
                     Match match = matches[i];
                     responses[i] = RedditRoot.ProcessCommand(match.Groups[1].Value, match.Groups[2].Value);
                 }
-                string reply = string.Join("\n---\n", from r in responses where r != null select r).Replace("\n", "  \n");
+                string reply = string.Join("\n\n---\n\n", from r in responses where r != null select r).FormatNewLinesForReddit();
                 if (reply != null && reply.Length > 0)
                 {
+                    await Console.Out.WriteLineAsync("New reply: " + item.Id);
                     await item.ReplyAsync(reply);
                     item.Downvote();
                 }
