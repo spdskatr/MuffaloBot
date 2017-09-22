@@ -37,13 +37,15 @@ namespace MuffaloBotNetFramework.DiscordComponent
 !wiki
 > Returns the website for the RimWorld wiki
 !wikisearch <search term>
-> Returns the first 30 hits off the wiki for the search term.
+> Returns the first 10 hits off the wiki for the search term.
 !wolfy 
 > ???
 !wshopsearch
 > Searches the RimWorld Steam Workshop for a specified name and returns the first 5 results.
-<secret command>
+!xpath <path>
+> Imitates the game and searches the defs for a certain XPath. Useful for modders
+???
 > MuffaloBot has got many secrets hidden around...
-```";
+```Commands can also be found at https://github.com/spdskatr/MuffaloBot/blob/master/CommandsReference.md";
     }
 }

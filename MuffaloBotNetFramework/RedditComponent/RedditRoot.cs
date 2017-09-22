@@ -32,6 +32,8 @@ namespace MuffaloBotNetFramework.RedditComponent
                     return Commands.GetStuffStats(operands);
                 case "xpath":
                     return Commands.XPath(operands, false);
+                case "field":
+                    return Commands.GetField(operands);
                 default:
                     break;
             }
@@ -51,8 +53,8 @@ namespace MuffaloBotNetFramework.RedditComponent
             // If sending too fast...
             catch (RateLimitException e)
             {
-                await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when replying. Resending in {e.TimeToReset.Milliseconds}ms... (This can occur frequently when 2 threads are fighting for internet access)");
-                Thread.Sleep(e.TimeToReset.Milliseconds);
+                await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when replying. Trying again in {e.TimeToReset.TotalMilliseconds}ms.(This can occur frequently when 2 threads are fighting for internet access)");
+                await Task.Delay((int)Math.Ceiling(e.TimeToReset.TotalMilliseconds));
                 goto Retry;
             }
         }

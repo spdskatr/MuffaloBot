@@ -7,6 +7,7 @@ using System.Xml;
 using System.Linq;
 using System.Net.Http;
 using MuffaloBotNetFramework.CommandsUtil;
+using MuffaloBotNetFramework.DiscordComponent.Exposables;
 
 /* -----------------------------------WARNING-----------------------------------
  * Do not look further down if you don't wish to see Muffy's secret commands.
@@ -33,6 +34,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
 {
     static partial class DiscordRoot
     {
+        internal static List<ExposableCommand> otherCommands = new List<ExposableCommand>();
         // Processes a string that comes from a message.
         internal static _DiscordMessage ProcessString(string str, ulong guildID, int channelPos)
         {
@@ -122,6 +124,11 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 default:
                     break;
             }
+            for (int i = 0; i < otherCommands.Count; i++)
+            {
+                var response = otherCommands[i].ProcessCommand(str);
+                if (response != null) return response;
+            }
             if (str[0] != '!') return null;
             if (Regex.Match(str, "!<?:awoo:").Success)
             {
@@ -175,8 +182,8 @@ namespace MuffaloBotNetFramework.DiscordComponent
                             return "!wikisearch <search term>\nExamples:\n!wikisearch wood\n!wikisearch potato plant\n!wikisearch raider";
                         case "wshopsearch":
                             return "!wshopsearch <search term>\nExamples:\n!wshopsearch zombieland\n!wshopsearch spdskatr\n!wshopsearch colony manager";
-                        case "xpathselect":
-                            return "!xpathselect <XPath path>\nExamples:\n!xpathselect */ThingDef[defName='WoodLog']/statBases/";
+                        case "xpath":
+                            return "!xpath <path>\nExamples:\n!xpath */ThingDef[defName='WoodLog']/statBases";
                         default:
                             break;
                     }
@@ -188,7 +195,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
                     }
                     return "Type `!usage wikisearch` for help with this command.";
                 case "wshopsearch":
-                    if (Program.infoPackage.SteamTokenValid() && str.Length > 16)
+                    if (Program.infoPackage.SteamTokenValid() && str.Length > 13)
                     {
                         return Commands.SteamWorkshopSearch(breakdown.Groups[2].Value, Program.infoPackage.stea);
                     }

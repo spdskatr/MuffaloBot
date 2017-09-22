@@ -28,7 +28,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
             }
             catch (Exception e)
             {
-                Console.WriteLine("Unable to start Discord component, probably due to invalid token. Exception was: \n{0}", e);
+                Console.WriteLine("[ERR] Unable to start Discord component, probably due to invalid token. Exception was: \n{0}", e);
                 return;
             }
             sandbox = false;
@@ -70,7 +70,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
             {
                 if (heartbeatcount == lastheartbeat && ready)
                 {
-                    await Console.Out.WriteLineAsync("Heartbeat timed out. Reconnecting...");
+                    await Console.Out.WriteLineAsync("[ERR] Heartbeat timed out. Reconnecting...");
                     await discord.ReconnectAsync();
                 }
                 lastheartbeat = heartbeatcount;

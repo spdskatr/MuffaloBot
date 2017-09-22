@@ -1,5 +1,9 @@
 ﻿# To Do List:
-+ Complete Commands documentation
++ ~~Launch bot to Reddit~~
+
++ **Make the output prettier**
+
++ ~~Complete Commands documentation~~
 
 + Integrate Reddit component
   + ~~Connect successfully~~
@@ -12,6 +16,6 @@
   + `children <xpath>`: Return the children for selected nodes
   + `assemblysearch <name>`: Searches `Assembly-CSharp` for the specified type/member
 + Misc bugs:
-
+  + ~~Reddit component doesnt read comments after 1 hour~~ Fixed
 + Away with the fairies:
   + ThingDef-style command loading

@@ -18,9 +18,6 @@ namespace MuffaloBotNetFramework.CommandsUtil
             if (resultsCap > 20) resultsCap = 20;
             return ResultFromString(HttpRequest.Request(string.Format(query, key, resultsCap, content)));
         }
-        // Format: 
-        // 0 = results to return
-        // 1 = search text
         const string query = "https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={0}&format=json&numperpage={1}&appid=294100&match_all_tags=1&search_text={2}&return_short_description=1&return_metadata=1";
     }
 #pragma warning disable CS0649

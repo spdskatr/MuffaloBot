@@ -30,6 +30,26 @@ namespace MuffaloBotNetFramework.RedditComponent
         }
         public async void StartAsync(string refreshToken, string auth, string targetSubreddit)
         {
+            await Task.Run(() =>
+            {
+                while (true)
+                {
+                    var result = MainLoopAsync(refreshToken, auth, targetSubreddit).Wait(2700_000);
+                    if (result)
+                    {
+                        Console.Error.WriteLine("[ERR] Reddit component unexpectedly terminated. Restarting...\n");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Reddit Component :: 45 minute task thread has ended, restarting thread and getting new token...");
+                    }
+                }
+            });
+        }
+
+        async Task MainLoopAsync(string refreshToken, string auth, string targetSubreddit)
+        {
+            A:
             try
             {
                 // Get token
@@ -59,11 +79,12 @@ namespace MuffaloBotNetFramework.RedditComponent
             }
             catch (WebException)
             {
-                await Console.Error.WriteLineAsync($"A web error occurred when running MuffaloBot, probably due to token expiring. Restarting component.");
+                await Console.Error.WriteLineAsync($"Reddit Component :: A web error occurred when running MuffaloBot, probably due to token expiring. Restarting component.");
+                goto A;
             }
-            finally
+            catch (Exception e)
             {
-                StartAsync(refreshToken, auth, targetSubreddit);
+                await Console.Error.WriteLineAsync("[ERR] Exception in Reddit component main loop: " + e);
             }
         }
 
@@ -100,7 +121,7 @@ namespace MuffaloBotNetFramework.RedditComponent
                 string reply = string.Join("\n\n---\n\n", from r in responses where r != null select r).FormatNewLinesForReddit();
                 if (reply != null && reply.Length > 0)
                 {
-                    await Console.Out.WriteLineAsync("New reply: " + item.Id);
+                    await Console.Out.WriteLineAsync("Reddit Component :: New reply: " + item.Id);
                     await item.ReplyAsync(reply);
                     item.Downvote();
                 }

@@ -79,6 +79,7 @@
     <Compile Include="CommandsUtil\DiscordUtil.cs" />
     <Compile Include="CommandsUtil\HttpRequest.cs" />
     <Compile Include="DiscordComponent\DiscordRoot.cs" />
+    <Compile Include="DiscordComponent\Exposables\ExposableCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CommandsUtil\PublishedFileIdUtil.cs" />

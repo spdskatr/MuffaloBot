@@ -6,7 +6,7 @@
 | `wikisearch <term>` | Searches the [RimWorld wiki](http://rimworldwiki.com/) for the specified search term | `!wikisearch alpaca wool` | `{{wikisearch alpaca wool}}` |
 | `wshopsearch <term>` | Searches the [Steam workshop](http://steamcommunity.com/workshop/browse/?appid=294100) for the specified search item. | `!wshopsearch damage indicators mod` | `{{wshopsearch damage indicators mod}}` |
 | `basestats <thingdef>` | Searches ThingDefs for the specified item, and returns its base stats. | `!basestats alpaca wool` | `{{basestats alpaca wool}}` |
-| `stuffstats <stuff>` | Searches ThingDefs for the specified item, and returns the stat offsets/factorsvfor things made out of it. | `!stuffstats alpaca wool` | `{{stuffstats alpaca wool}}` |
+| `stuffstats <stuff>` | Searches ThingDefs for the specified item, and returns the stat offsets/factors for things made out of it. | `!stuffstats alpaca wool` | `{{stuffstats alpaca wool}}` |
 | `xpath <xpath>` | Selects xpath from the core defs and returns OuterXML of resulting nodes. Case sensitive, so will mess up sometimes when the devs start some fields with caps | `!xpath */ThingDef[defName="WoodLog"]/statBases/MaxHitPoints` | `{{xpath */ThingDef[defName="WoodLog"]/statBases/MaxHitPoints}}` |
 | `field <field> <item>` | Selects field from ThingDef item and returns its value | `!field stacklimit chemfuel` | `{{field stacklimit chemfuel}}` |
 

@@ -25,9 +25,9 @@ namespace MuffaloBotNetFramework.CommandsUtil
             {
                 return "";
             }
-            //Remove when debugging
-            catch
+            catch (Exception e)
             {
+                Console.Error.WriteLine("[ERR] Other exception when requesting file from ThingDefDatabase: " + e);
                 return "";
             }
         }
