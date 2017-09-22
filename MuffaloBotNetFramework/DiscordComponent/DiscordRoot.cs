@@ -197,7 +197,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "wshopsearch":
                     if (Program.infoPackage.SteamTokenValid() && str.Length > 13)
                     {
-                        return Commands.SteamWorkshopSearch(breakdown.Groups[2].Value, Program.infoPackage.stea);
+                        return Commands.SteamWorkshopSearch(breakdown.Groups[2].Value, Program.infoPackage.stea, false);
                     }
                     return "Type `!usage wshopsearch` for help with this command.";
                 case "sudo":

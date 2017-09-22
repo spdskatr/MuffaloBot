@@ -57,7 +57,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
             return arr;
         }
 
-        public static string SteamWorkshopSearch(string query, string steamkey)
+        public static string SteamWorkshopSearch(string query, string steamkey, bool reddit)
         {
             try
             {
@@ -69,10 +69,21 @@ namespace MuffaloBotNetFramework.CommandsUtil
                 var builder = new StringBuilder();
                 string v = (result.response.total > 5) ? " (showing first 5):" : ":";
                 builder.AppendLine($"Found {result.response.total} results total{v}");
+                if (reddit)
+                {
+                    builder.AppendLine("| Title | Link |\n| --- | --- |");
+                }
                 for (int i = 0; i < result.response.publishedfiledetails.Length; i++)
                 {
                     var details = result.response.publishedfiledetails[i];
-                    builder.AppendLine($"**{details.title}**: http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId}"); //Fill in address here
+                    if (reddit)
+                    {
+                        builder.AppendLine($"| **{details.title}** | http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId} |");
+                    }
+                    else
+                    {
+                        builder.AppendLine($"**{details.title}**: http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId}");
+                    }
                 }
                 return builder.ToString();
             }

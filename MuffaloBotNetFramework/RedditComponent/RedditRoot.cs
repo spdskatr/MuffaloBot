@@ -23,7 +23,7 @@ namespace MuffaloBotNetFramework.RedditComponent
                 case "wshopsearch":
                     if (Program.infoPackage.SteamTokenValid())
                     {
-                        return Commands.SteamWorkshopSearch(operands, Program.infoPackage.stea);
+                        return Commands.SteamWorkshopSearch(operands, Program.infoPackage.stea, true);
                     }
                     break;
                 case "basestats":
