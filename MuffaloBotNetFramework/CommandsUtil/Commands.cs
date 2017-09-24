@@ -207,7 +207,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
         // Syntax highlighting is not supported by Reddit.
         public static string XPath(string path, bool syntaxHighlighting = true)
         {
-            return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting).FormatNewLinesForReddit();
+            return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting);
         }
     }
 }

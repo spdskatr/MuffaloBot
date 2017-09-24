@@ -31,7 +31,7 @@ namespace MuffaloBotNetFramework.RedditComponent
                 case "stuffstats":
                     return Commands.GetStuffStats(operands, true);
                 case "xpath":
-                    return Commands.XPath(operands, false);
+                    return Commands.XPath(operands, false).FormatNewLinesForReddit();
                 case "field":
                     return Commands.GetField(operands);
                 default:

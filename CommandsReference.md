@@ -1,6 +1,7 @@
 # MuffaloBot Commands Reference
 
 ## Discord and Reddit:
+Note: For reddit commands, you can call up to 3 of them on the same post. Any commands after that will be ignored. 
 | Command | Desc | Discord Example | Reddit Example |
 | --- | --- | --- | --- |
 | `wikisearch <term>` | Searches the [RimWorld wiki](http://rimworldwiki.com/) for the specified search term | `!wikisearch alpaca wool` | `{{wikisearch alpaca wool}}` |
