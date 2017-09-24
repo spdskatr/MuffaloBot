@@ -2,6 +2,7 @@
 + Implement Steam search mode into commands
 + A !version command for Discord component
 + ~~A `{{MuffaloBotIgnore}}` option for Reddit~~
++ Make xpath command look prettier with Reddit code formatting
 
 + Integrate Reddit component
   + **Make the output prettier**

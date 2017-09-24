@@ -34,5 +34,9 @@ namespace MuffaloBotNetFramework.CommandsUtil
             string strAfter = str.Substring(str.Length - (int)(Math.Round(amount / 2.0) - 3));
             return string.Concat(strBefore, " ... ", strAfter);
         }
+        internal static string RemoveNewlines(this string str)
+        {
+            return str.Replace('\n', ' ');
+        }
     }
 }

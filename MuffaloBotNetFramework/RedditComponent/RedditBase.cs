@@ -22,7 +22,7 @@ namespace MuffaloBotNetFramework.RedditComponent
             public string access_token;
 #pragma warning restore CS0649
         }
-        static Regex commandRegex = new Regex("{{\\s*([^{}\\s]+)\\s*([^{}]*)\\s*}}");
+        internal static Regex commandRegex = new Regex("{{\\s*([^{}\\s]+)\\s*([^{}]*)\\s*}}");
         static Regex muffaloBotIgnoreRegex = new Regex("{{([Mm]uffalo[Bb]ot[Ii]gnore|mbignore|mbi)}}");
         Reddit reddit;
         Subreddit sub;

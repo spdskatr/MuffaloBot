@@ -14,7 +14,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
         const string fieldRegex = "@General_Fields[^@]*{0};([^;\\n@<>]*)";
         const string statRegex = "@{0}[^@]*{0};([^;\\n@<>]*)";
         const string statBasesRegex = "@{0}([^@<>]+)";
-        static readonly Regex statsDisassemblerRegex = new Regex("[^;\\n@<>]+;([^;\\n@<>]+);([^;\\n@<>]+)");
+        static readonly Regex statsDisassemblerRegex = new Regex("[^;\\r\\n@<>]+;([^;\\r\\n@<>]+);([^;\\r\\n@<>]+)");
         internal static string Request(string label)
         {
             try
