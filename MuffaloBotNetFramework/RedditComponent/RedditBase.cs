@@ -118,7 +118,7 @@ namespace MuffaloBotNetFramework.RedditComponent
                     Match match = matches[i];
                     responses[i] = RedditRoot.ProcessCommand(match.Groups[1].Value, match.Groups[2].Value);
                 }
-                string reply = string.Join("\n\n---\n\n", from r in responses where r != null select r).FormatNewLinesForReddit();
+                string reply = string.Join("\n\n---\n\n", from r in responses where r != null select r);
                 if (reply != null && reply.Length > 0)
                 {
                     await Console.Out.WriteLineAsync("Reddit Component :: New reply: " + item.Id);

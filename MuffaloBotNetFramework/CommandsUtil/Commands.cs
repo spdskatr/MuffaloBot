@@ -21,7 +21,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
             return $"Description for '**{name}**': {result}";
         }
 
-        public static string WikiSearch(string value, int limit = 10)
+        public static string WikiSearch(string value, bool reddit, int limit = 10)
         {
             try
             {
@@ -30,14 +30,31 @@ namespace MuffaloBotNetFramework.CommandsUtil
                 {
                     return $"Could not find results for '{value}'.";
                 }
-                return $"Found {results.Count} results total (showing first {limit} if applicable): \n{string.Join("\n", results.Take(10))}";
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine($"Found {results.Count} results total (showing first {limit} if applicable):  \n");
+                if (reddit)
+                {
+                    stringBuilder.AppendLine($"| Title | Link |\n|-|-|");
+                }
+                foreach (var res in results.Take(10))
+                {
+                    if (reddit)
+                    {
+                        stringBuilder.AppendLine($"| **{res.Key}** | {res.Value} |");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine($"**{res.Key}**: {res.Value}  ");
+                    }
+                }
+                return stringBuilder.ToString();
             }
             catch (HttpRequestException)
             {
                 return "Could not connect to the wiki server.";
             }
         }
-        internal static ICollection<string> WikiSearchImpl(string query)
+        internal static ICollection<KeyValuePair<string, string>> WikiSearchImpl(string query)
         {
             string t = HttpRequest.Request(string.Format(DiscordRoot.searchQuery, query));
             var matches = DiscordRoot.mediawikiapi.Matches(t);
@@ -47,42 +64,42 @@ namespace MuffaloBotNetFramework.CommandsUtil
             }
             return EnumerateWikiEntries(matches);
         }
-        internal static string[] EnumerateWikiEntries(MatchCollection matches)
+        internal static KeyValuePair<string, string>[] EnumerateWikiEntries(MatchCollection matches)
         {
-            var arr = new string[matches.Count];
+            var arr = new KeyValuePair<string, string>[matches.Count];
             for (int i = 0; i < matches.Count; i++)
             {
-                arr[i] = string.Format(DiscordRoot.wikiPageFiller, matches[i].Groups[1].Value.Replace(' ', '_'));
+                string val = matches[i].Groups[1].Value;
+                arr[i] = new KeyValuePair<string, string>(val, string.Format(DiscordRoot.wikiPageFiller, val.Replace(' ', '_')));
             }
             return arr;
         }
 
-        public static string SteamWorkshopSearch(string query, string steamkey, bool reddit)
+        public static string SteamWorkshopSearch(string query, string steamkey, bool reddit, EPublishedFileQueryType queryType = EPublishedFileQueryType.Relevance)
         {
             try
             {
-                var result = PublishedFileIdUtil.Query(query, steamkey);
+                var result = PublishedFileIdUtil.Query(query, steamkey, queryType:queryType);
                 if (result.response.total == 0)
                 {
                     return $"Could not find results for '{query}'";
                 }
                 var builder = new StringBuilder();
-                string v = (result.response.total > 5) ? " (showing first 5):" : ":";
-                builder.AppendLine($"Found {result.response.total} results total{v}");
+                builder.AppendLine($"Searched {result.response.total} results total (showing first 5 if applicable):  \n\n");
                 if (reddit)
                 {
-                    builder.AppendLine("| Title | Link |\n| --- | --- |");
+                    builder.AppendLine("| Title | Views, Subscriptions, Favorites | Link |\n| --- | --- | --- |");
                 }
                 for (int i = 0; i < result.response.publishedfiledetails.Length; i++)
                 {
                     var details = result.response.publishedfiledetails[i];
                     if (reddit)
                     {
-                        builder.AppendLine($"| **{details.title}** | http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId} |");
+                        builder.AppendLine($"| **{details.title}** | {details.views}, {details.subscriptions}, {details.favorited} | http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId} |");
                     }
                     else
                     {
-                        builder.AppendLine($"**{details.title}**: http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId}");
+                        builder.AppendLine($"**{details.title}** ( {details.views} views | {details.subscriptions} subs | {details.favorited} favs ): http://steamcommunity.com/sharedfiles/filedetails/?id={details.publishedFileId}");
                     }
                 }
                 return builder.ToString();
@@ -110,7 +127,7 @@ namespace MuffaloBotNetFramework.CommandsUtil
             return $"'**{field}**' of '**{def}**': {result}";
         }
 
-        public static string GetStuffStats(string name)
+        public static string GetStuffStats(string name, bool reddit)
         {
             var statFactors = ThingDefDatabase.RequestStatFactors(name);
             var statOffsets = ThingDefDatabase.RequestStatOffsets(name);
@@ -118,20 +135,68 @@ namespace MuffaloBotNetFramework.CommandsUtil
             {
                 return $"No stuff stats found for '{name}'";
             }
-            var stringBuilder = new StringBuilder($"Stuff stats for '**{name}**':\n");
+            var stringBuilder = new StringBuilder($"Stuff stats for '**{name}**':  \n");
             if (statFactors != null)
             {
-                stringBuilder.AppendLine("**Stat Factors**");
+                stringBuilder.AppendLine("**Stat Factors**  \n");
+                if (reddit)
+                {
+                    stringBuilder.AppendLine("| Name | Value |\n|-|-|");
+                }
                 foreach (var item in statFactors)
                 {
-                    stringBuilder.AppendFormat("**{0}**: x{1}\n", item.Key, item.Value);
+                    if (reddit)
+                    {
+                        stringBuilder.AppendLine($"| {item.Key} | x{item.Value} |");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendFormat("**{0}**: x{1}\n", item.Key, item.Value);
+                    }
                 }
                 stringBuilder.AppendLine();
             }
             if (statOffsets != null)
             {
-                stringBuilder.AppendLine("**Stat Offsets**");
+                stringBuilder.AppendLine("**Stat Offsets**  \n");
+                if (reddit)
+                {
+                    stringBuilder.AppendLine("| Name | Value |\n|-|-|");
+                }
                 foreach (var item in statOffsets)
+                {
+                    if (reddit)
+                    {
+                        stringBuilder.AppendLine($"| {item.Key} | {item.Value} |");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendFormat("**{0}**: {1}\n", item.Key, item.Value);
+                    }
+                }
+            }
+            return stringBuilder.ToString();
+        }
+
+        public static string GetBaseStats(string name, bool reddit)
+        {
+            var result = ThingDefDatabase.RequestStatBases(name);
+            if (result == null)
+            {
+                return $"No base stats found for '{name}'";
+            }
+            var stringBuilder = new StringBuilder($"Base stats for '**{name}**':\n\n");
+            if (reddit)
+            {
+                stringBuilder.AppendLine("| Name | Value |\n|-|-|");
+            }
+            foreach (var item in result)
+            {
+                if (reddit)
+                {
+                    stringBuilder.AppendLine($"| {item.Key} | {item.Value} |");
+                }
+                else
                 {
                     stringBuilder.AppendFormat("**{0}**: {1}\n", item.Key, item.Value);
                 }
@@ -139,25 +204,10 @@ namespace MuffaloBotNetFramework.CommandsUtil
             return stringBuilder.ToString();
         }
 
-        public static string GetBaseStats(string name)
-        {
-            var result = ThingDefDatabase.RequestStatBases(name);
-            if (result == null)
-            {
-                return $"No base stats found for '{name}'";
-            }
-            var stringBuilder = new StringBuilder($"Base stats for '**{name}**':\n");
-            foreach (var item in result)
-            {
-                stringBuilder.AppendFormat("**{0}**: {1}\n", item.Key, item.Value);
-            }
-            return stringBuilder.ToString();
-        }
-
         // Syntax highlighting is not supported by Reddit.
         public static string XPath(string path, bool syntaxHighlighting = true)
         {
-            return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting);
+            return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting).FormatNewLinesForReddit();
         }
     }
 }

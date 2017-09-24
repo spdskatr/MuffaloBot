@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net.Http;
 using MuffaloBotNetFramework.CommandsUtil;
 using MuffaloBotNetFramework.DiscordComponent.Exposables;
+using DSharpPlus;
 
 /* -----------------------------------WARNING-----------------------------------
  * Do not look further down if you don't wish to see Muffy's secret commands.
@@ -150,13 +151,13 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "basestats":
                     if (str.Length > 11)
                     {
-                        return Commands.GetBaseStats(breakdown.Groups[2].Value);
+                        return Commands.GetBaseStats(breakdown.Groups[2].Value, false);
                     }
                     return "Type `!usage basestats` for help with this command.";
                 case "stuffstats":
                     if (str.Length > 12)
                     {
-                        return Commands.GetStuffStats(breakdown.Groups[2].Value);
+                        return Commands.GetStuffStats(breakdown.Groups[2].Value, false);
                     }
                     return "Type `!usage stuffstats` for help with this command.";
                 case "field":
@@ -191,7 +192,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "wikisearch":
                     if (str.Length > 12)
                     {
-                        return Commands.WikiSearch(breakdown.Groups[2].Value);
+                        return Commands.WikiSearch(breakdown.Groups[2].Value, false);
                     }
                     return "Type `!usage wikisearch` for help with this command.";
                 case "wshopsearch":

@@ -19,7 +19,7 @@ namespace MuffaloBotNetFramework.RedditComponent
             switch (command)
             {
                 case "wikisearch":
-                    return Commands.WikiSearch(operands);
+                    return Commands.WikiSearch(operands, true);
                 case "wshopsearch":
                     if (Program.infoPackage.SteamTokenValid())
                     {
@@ -27,9 +27,9 @@ namespace MuffaloBotNetFramework.RedditComponent
                     }
                     break;
                 case "basestats":
-                    return Commands.GetBaseStats(operands);
+                    return Commands.GetBaseStats(operands, true);
                 case "stuffstats":
-                    return Commands.GetStuffStats(operands);
+                    return Commands.GetStuffStats(operands, true);
                 case "xpath":
                     return Commands.XPath(operands, false);
                 case "field":
@@ -43,7 +43,7 @@ namespace MuffaloBotNetFramework.RedditComponent
         {
             if (addFooter)
             {
-                message += "\n\n> I am MuffaloBot | Made by [spdskatr](https://www.reddit.com/user/spdskatr/) | [Source code](https://github.com/spdskatr/MuffaloBot) | [Commands reference](https://github.com/spdskatr/MuffaloBot/blob/master/CommandsReference.md)";
+                message += "\n\n| I am MuffaloBot | Made by [spdskatr](https://www.reddit.com/user/spdskatr/) | [Source code](https://github.com/spdskatr/MuffaloBot) | [Commands reference](https://github.com/spdskatr/MuffaloBot/blob/master/CommandsReference.md) |\n|-|-|-|-|";
             }
             Retry:
             try
