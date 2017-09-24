@@ -20,4 +20,5 @@
 | `del C:\Windows\System32` | See above | `!del C:\Windows\System32` |
 | ??? | Secret command (maybe multiple secret commands?) | ??? | 
 
-*Oops... I think this page is still under construction...*
+## Misc
+`{{MuffaloBotIgnore}}` on Reddit tells MuffaloBot to ignore any commands in the post. Aliases: `{{mbi}}`, `{{muffalobotignore}}`, `{{mbignore}}`

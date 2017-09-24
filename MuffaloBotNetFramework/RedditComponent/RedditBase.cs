@@ -23,6 +23,7 @@ namespace MuffaloBotNetFramework.RedditComponent
 #pragma warning restore CS0649
         }
         static Regex commandRegex = new Regex("{{\\s*([^{}\\s]+)\\s*([^{}]*)\\s*}}");
+        static Regex muffaloBotIgnoreRegex = new Regex("{{([Mm]uffalo[Bb]ot[Ii]gnore|mbignore|mbi)}}");
         Reddit reddit;
         Subreddit sub;
         public RedditBase()
@@ -106,7 +107,7 @@ namespace MuffaloBotNetFramework.RedditComponent
             {
                 string str = item.Body;
                 // If I have downvoted an item, I have read it before
-                if ((!item.Liked) ?? false) //Note: Comments property always return a List of 0. Do not use
+                if ((!item.Liked) ?? false | muffaloBotIgnoreRegex.IsMatch(str)) //Note: Comments property always return a List of 0. Do not use
                 {
                     continue;
                 }

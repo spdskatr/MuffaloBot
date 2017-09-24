@@ -1,5 +1,7 @@
 ﻿# To Do List:
 + Implement Steam search mode into commands
++ A !version command for Discord component
++ ~~A `{{MuffaloBotIgnore}}` option for Reddit~~
 
 + Integrate Reddit component
   + **Make the output prettier**
