@@ -1,8 +1,8 @@
 (Begin poorly written backstory)
 
-> Once upon a time on August 21 2017, a muffalo was born. He was adopted by a passing caravan traveller, who nicknamed him Muffy. He brought Muffy back to his home colony.  
+Once upon a time on August 21 2017, a muffalo was born. He was adopted by a passing caravan traveller, who nicknamed him Muffy. He brought Muffy back to his home colony.  
 
-The animal trainer of the colony, spdskatr, loved Muffy and taught him tricks, like searching the wiki, and bringing up stats for items. Muffy soon became the information powerhouse for RimWorld.
+The animal trainer of the colony, spdskatr, loved Muffy and taught him tricks, like searching the wiki, and bringing up stats for items. Muffy soon became the information powerhouse for the colony.
 
 At the faction's annual muffalo fair, spdskatr spotted the great admins of the Discord strolling in the distance. He quickly brought Muffy over and showed off Muffy's tricks. The admins were impressed, and added Muffy to the Discord under a different name.
 
