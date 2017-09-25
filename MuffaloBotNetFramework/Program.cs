@@ -50,29 +50,19 @@ namespace MuffaloBotNetFramework
         {
             string text = File.ReadAllText("config.json");
             InfoPackage package = infoPackage = await Task.Run(() => JsonConvert.DeserializeObject<InfoPackage>(text));
-#if RedditEnabled
-            if (package.RedditTokenValid())
+            try
             {
-                try
-                {
-                    (rbase = new RedditBase()).StartAsync(package.redd, package.redd_appid, targetSubreddit);
-                }
-                catch (Exception ex)
-                {
-                    await Console.Out.WriteLineAsync("Could not start Reddit component due to exception being thrown. Exception was:\n" + ex);
-                }
+                Task r = (rbase = new RedditBase()).StartAsync(package.redd, package.redd_appid, targetSubreddit);
+                Task d = (dBase = new DiscordBase()).StartDiscordComponent(package.disc);
+                await Task.WhenAny(r, d);
             }
-#endif
-            if (package.DiscordTokenValid())
+            catch (Exception e)
             {
-                try
-                {
-                    await (dBase = new DiscordBase()).StartDiscordComponent(package.disc);
-                }
-                catch (Exception ex)
-                {
-                    await Console.Out.WriteLineAsync("Could not start Discord component due to exceoption being thrown. Exception was:\n" + ex);
-                }
+                await Console.Out.WriteLineAsync("Exception in main component: " + e);
+            }
+            finally
+            {
+                await Console.Out.WriteLineAsync("One of the components abruptly ended. Restarting...");
             }
         }
 

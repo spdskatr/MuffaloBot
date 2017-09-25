@@ -29,7 +29,7 @@ namespace MuffaloBotNetFramework.RedditComponent
         public RedditBase()
         {
         }
-        public async void StartAsync(string refreshToken, string auth, string targetSubreddit)
+        public async Task StartAsync(string refreshToken, string auth, string targetSubreddit)
         {
             await Task.Run(() =>
             {
