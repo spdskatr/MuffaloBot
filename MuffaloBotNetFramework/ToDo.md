@@ -3,11 +3,9 @@
 + A !version command for Discord component
 + ~~A `{{MuffaloBotIgnore}}` option for Reddit~~
 + Make xpath command look prettier with Reddit code formatting
-
-+ Integrate Reddit component
-  + **Make the output prettier**
++ Integrate CommandsNext component
 + Possible command ideas:
-  + `children <xpath>`: Return the children for selected nodes
+  + ~~`children <xpath>`: Return the children for selected nodes~~ (Can simply be replaced with /* in XPath syntax)
   + `assemblysearch <name>`: Searches `Assembly-CSharp` for the specified type/member
 + Misc bugs:
 + Away with the fairies:

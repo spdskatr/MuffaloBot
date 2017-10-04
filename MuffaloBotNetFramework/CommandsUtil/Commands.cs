@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Xml.XPath;
 
 namespace MuffaloBotNetFramework.CommandsUtil
 {
@@ -207,7 +208,14 @@ namespace MuffaloBotNetFramework.CommandsUtil
         // Syntax highlighting is not supported by Reddit.
         public static string XPath(string path, bool syntaxHighlighting = true)
         {
-            return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting);
+            try
+            {
+                return CoreDefDatabase.GetSummaryForNodeSelection(path, syntaxHighlighting);
+            }
+            catch (XPathException)
+            {
+                return "**Invalid XPath!**";
+            }
         }
     }
 }

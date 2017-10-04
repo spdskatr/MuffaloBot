@@ -1,4 +1,5 @@
 ﻿using DSharpPlus;
+using DSharpPlus.Entities;
 using MuffaloBotNetFramework.DiscordComponent;
 using System;
 using System.Collections.Generic;
@@ -38,22 +39,9 @@ namespace MuffaloBotNetFramework.CommandsUtil
                 return entry;
             }
         }
-        internal static DiscordEmbed CreateEmbed(string title = "", int color = 0x00ffff, params string[] entries)
-        {
-            var embed = new DiscordEmbed()
-            {
-                Title = title
-            };
-            for (int i = 0; i < entries.Length; i++)
-            {
-                EmbedEntry entry = entries[i];
-                embed.Fields.Add(new DiscordEmbedField() { Name = entry.label, Value = entry.desc });
-            }
-            return embed;
-        }
         internal static string Emoji(ulong guildId, string name)
         {
-            if (DiscordBase.sandbox)
+            if (Program.dBase.sandbox)
             {
                 return $":{name}:";
             }

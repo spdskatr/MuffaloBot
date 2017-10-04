@@ -16,28 +16,35 @@ namespace MuffaloBotNetFramework.RedditComponent
         // Operands is a space separated list of alphanumeric chars
         internal static string ProcessCommand(string command, string operands)
         {
-            switch (command)
+            try
             {
-                case "wikisearch":
-                    return Commands.WikiSearch(operands, true);
-                case "wshopsearch":
-                    if (Program.infoPackage.SteamTokenValid())
-                    {
-                        return Commands.SteamWorkshopSearch(operands, Program.infoPackage.stea, true);
-                    }
-                    break;
-                case "basestats":
-                    return Commands.GetBaseStats(operands, true);
-                case "stuffstats":
-                    return Commands.GetStuffStats(operands, true);
-                case "xpath":
-                    return Commands.XPath(operands, false).FormatNewLinesForReddit();
-                case "field":
-                    return Commands.GetField(operands);
-                default:
-                    break;
+                switch (command)
+                {
+                    case "wikisearch":
+                        return Commands.WikiSearch(operands, true);
+                    case "wshopsearch":
+                        if (Program.infoPackage.SteamTokenValid())
+                        {
+                            return Commands.SteamWorkshopSearch(operands, Program.infoPackage.stea, true);
+                        }
+                        break;
+                    case "basestats":
+                        return Commands.GetBaseStats(operands, true);
+                    case "stuffstats":
+                        return Commands.GetStuffStats(operands, true);
+                    case "xpath":
+                        return Commands.XPath(operands, false).FormatNewLinesForReddit();
+                    case "field":
+                        return Commands.GetField(operands);
+                    default:
+                        break;
+                }
+                return null;
             }
-            return null;
+            catch (Exception e)
+            {
+                return "Unhandled exception (/u/spdskatr pls fix)\r\n" + e;
+            }
         }
         internal static async Task ReplyAsync(this Comment item, string message, bool addFooter = true)
         {
@@ -54,6 +61,20 @@ namespace MuffaloBotNetFramework.RedditComponent
             catch (RateLimitException e)
             {
                 await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when replying. Trying again in {e.TimeToReset.TotalMilliseconds}ms.(This can occur frequently when 2 threads are fighting for internet access)");
+                await Task.Delay((int)Math.Ceiling(e.TimeToReset.TotalMilliseconds));
+                goto Retry;
+            }
+        }
+        internal static async Task DownvoteAsync(this VotableThing votable)
+        {
+            Retry:
+            try
+            {
+                votable.Downvote();
+            }
+            catch (RateLimitException e)
+            {
+                await Console.Out.WriteLineAsync($"Reddit Component :: Experienced rate limit exception when voting. Trying again in {e.TimeToReset.TotalMilliseconds}ms.(This can occur frequently when 2 threads are fighting for internet access)");
                 await Task.Delay((int)Math.Ceiling(e.TimeToReset.TotalMilliseconds));
                 goto Retry;
             }

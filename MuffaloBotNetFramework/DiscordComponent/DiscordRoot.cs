@@ -9,6 +9,7 @@ using System.Net.Http;
 using MuffaloBotNetFramework.CommandsUtil;
 using MuffaloBotNetFramework.DiscordComponent.Exposables;
 using DSharpPlus;
+using DSharpPlus.Entities;
 
 /* -----------------------------------WARNING-----------------------------------
  * Do not look further down if you don't wish to see Muffy's secret commands.
@@ -29,7 +30,7 @@ using DSharpPlus;
  * 
  * 
  * 
- * Stil reading?
+ * Still reading?
  */
 namespace MuffaloBotNetFramework.DiscordComponent
 {
@@ -37,7 +38,7 @@ namespace MuffaloBotNetFramework.DiscordComponent
     {
         internal static List<ExposableCommand> otherCommands = new List<ExposableCommand>();
         // Processes a string that comes from a message.
-        internal static _DiscordMessage ProcessString(string str, ulong guildID, int channelPos)
+        internal static _DiscordMessage ProcessString(string str, ulong guildID)
         {
             if (str.Length == 0) return null;
             switch (str)
@@ -45,31 +46,33 @@ namespace MuffaloBotNetFramework.DiscordComponent
                 case "!jdalt":
                     if (guildID == 214523379766525963u)
                     {
-                        var jdalt = Program.dBase.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 221459835315683330);
-                        return new DSharpPlus.DiscordEmbed()
+                        var jdalt = Program.dBase.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 221459835315683330u);
+                        DiscordEmbedBuilder builder = new DiscordEmbedBuilder()
                         {
-                            Author = new DSharpPlus.DiscordEmbedAuthor()
+                            Author = new DiscordEmbedBuilder.EmbedAuthor()
                             {
                                 Name = $"{jdalt.DisplayName}#{jdalt.Discriminator}",
                                 IconUrl = jdalt.AvatarUrl
                             },
                             Description = "I'm expecting an Easter egg of me 9 AM tomorrow sharp"
                         };
+                        return builder.Build();
                     }
                     break;
                 case "!stan":
                     if (guildID == 214523379766525963u)
                     {
-                        var stan = Program.dBase.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 144848386158362624);
-                        return new DSharpPlus.DiscordEmbed()
+                        var stan = Program.dBase.discord.Guilds[214523379766525963u].Members.FirstOrDefault(m => m.Id == 144848386158362624u);
+                        DiscordEmbedBuilder builder = new DiscordEmbedBuilder()
                         {
-                            Author = new DSharpPlus.DiscordEmbedAuthor()
+                            Author = new DiscordEmbedBuilder.EmbedAuthor()
                             {
                                 Name = $"{stan.DisplayName}#{stan.Discriminator}",
                                 IconUrl = stan.AvatarUrl
                             },
                             Description = "*I am not a command. Please try again later.*"
                         };
+                        return builder.Build();
                     }
                     break;
                 case "!spdskatrsroom":

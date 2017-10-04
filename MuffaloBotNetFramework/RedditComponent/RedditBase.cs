@@ -124,7 +124,7 @@ namespace MuffaloBotNetFramework.RedditComponent
                 {
                     await Console.Out.WriteLineAsync("Reddit Component :: New reply: " + item.Id);
                     await item.ReplyAsync(reply);
-                    item.Downvote();
+                    await item.DownvoteAsync();
                 }
             }
         }
