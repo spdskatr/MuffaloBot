@@ -89,6 +89,8 @@
     <Compile Include="DiscordComponent\ClientModules\MuffaloBotExceptionHandler.cs" />
     <Compile Include="DiscordComponent\ClientModules\QuoteManager.cs" />
     <Compile Include="DiscordComponent\CommandsModules\BasicConnectivityTests.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\Meta.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\MuffaloBotCommandsModuleAttribute.cs" />
     <Compile Include="DiscordComponent\CommandsModules\Quotes.cs" />
     <Compile Include="DiscordComponent\CommandsModules\WorkshopSearch.cs" />
     <Compile Include="DiscordComponent\IClientModule.cs" />

@@ -7,7 +7,13 @@
 		"How to mod RimWorld: Copy and paste stuff, get angry at stuff, make other people angry at your stuff.",
 		"If IE is brave enough to ask you to set it as your default browser, don't tell me you dare not ask a girl out.",
 		"Namsan: I like to drink tears and bloods",
-		"Sneaks: How dare you\nWhat did that poor Wolfy ever do to you",
-		"Xen: How dare you even vaguely praise IE"
-	]
+		"Sneaks: How dare you, what did that poor Wolfy ever do to you",
+		"Xen: How dare you even vaguely praise IE",
+		"Quiz #1: How many consonants are in the answer to this question?"
+	],
+	"customCommands": {
+		"!moddingtutorials": "http://rimworldwiki.com/wiki/Modding_Tutorials",
+		"!settingupcs": "http://rimworldwiki.com/wiki/Modding_Tutorials/Setting_up_a_solution",
+		"!patchoperations": "http://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations"
+	}
 }

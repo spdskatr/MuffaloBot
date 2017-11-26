@@ -9,6 +9,7 @@ using MuffaloBotNetFramework2.DiscordComponent.ClientModules;
 
 namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
 {
+    [MuffaloBotCommandsModule]
     class Quotes
     {
         [Command("quote"), Description("Outputs a quote.")]

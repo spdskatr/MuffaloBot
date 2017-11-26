@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using MuffaloBotNetFramework2.DiscordComponent;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
+using MuffaloBotNetFramework2.DiscordComponent.CommandsModules;
 
 namespace MuffaloBotNetFramework2
 {
@@ -22,6 +23,7 @@ namespace MuffaloBotNetFramework2
         public static List<IClientModule> clientModules;
         public static string token;
         public static string steamApiKey;
+        public const string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
         public static T GetModule<T>() where T : IClientModule
         {
             for (int i = 0; i < clientModules.Count; i++)
@@ -37,9 +39,9 @@ namespace MuffaloBotNetFramework2
         }
         static async Task MainAsync()
         {
-            JObject json = JObject.Parse(File.ReadAllText("config.json"));
             token = File.ReadAllText("token.txt");
             steamApiKey = File.ReadAllText("steam_apikey.txt");
+            Console.WriteLine("Staring up...\n\n------");
 
             discordClient = new DiscordClient(new DiscordConfiguration
             {
@@ -61,15 +63,18 @@ namespace MuffaloBotNetFramework2
             }
             commandsNext = discordClient.UseCommandsNext(new CommandsNextConfiguration()
             {
-                StringPrefix = "!"
+                StringPrefix = "!",
+                
             });
 
-            InitializeAllModules(json);
+            InstantiateAllModules();
+            InitializeClientComponents();
 
+            Console.WriteLine("\n\n------");
             await discordClient.ConnectAsync();
             await Task.Delay(-1);
         }
-        static void InitializeAllModules(JObject jObject)
+        static void InstantiateAllModules()
         {
             clientModules = new List<IClientModule>();
             Type[] types = Assembly.GetExecutingAssembly().GetTypes();
@@ -79,18 +84,26 @@ namespace MuffaloBotNetFramework2
                 if (typeof(IClientModule).IsAssignableFrom(types[i]) && !types[i].IsAbstract && types[i].GetConstructor(new Type[0]) != null)
                 {
                     IClientModule clientModule = (IClientModule)Activator.CreateInstance(types[i]);
-                    clientModule.InitializeFronJson(jObject);
                     clientModule.BindToClient(discordClient);
                     clientModules.Add(clientModule);
                     Console.WriteLine($"Registered client module {types[i].FullName}");
                 }
 
                 // CommandsNext modules
-                if (types[i].FullName.StartsWith("MuffaloBotNetFramework2.DiscordComponent.CommandsModules") && !types[i].IsAbstract && types[i].IsClass && !types[i].IsNested)
+                if (types[i].GetCustomAttribute<MuffaloBotCommandsModuleAttribute>() != null)
                 {
-                    Console.WriteLine($"Registered command module {types[i].FullName}");
                     commandsNext.RegisterCommands(types[i]);
+                    Console.WriteLine($"Registered command module {types[i].FullName}");
                 }
+            }
+        }
+        public static void InitializeClientComponents()
+        {
+            WebClient webClient = new WebClient();
+            JObject json = JObject.Parse(webClient.DownloadString(globalJsonKey));
+            for (int i = 0; i < clientModules.Count; i++)
+            {
+                clientModules[i].InitializeFronJson(json);
             }
         }
     }

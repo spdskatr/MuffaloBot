@@ -9,29 +9,43 @@ using System.IO;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
 {
+    [MuffaloBotCommandsModule]
     class WorkshopSearch
     {
         const string query = "https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={0}&format=json&numperpage={1}&appid=294100&match_all_tags=1&search_text={2}&return_short_description=1&return_metadata=1&query_type={3}";
-        SteamSearchResult ResultFromString(string str)
-        {
-            return JsonConvert.DeserializeObject<SteamSearchResult>(str);
-        }
-        SteamSearchResult Query(string content, string key, byte resultsCap = 5, EPublishedFileQueryType queryType = EPublishedFileQueryType.Relevance)
+        JObject Query(string content, string key, byte resultsCap = 5, EPublishedFileQueryType queryType = EPublishedFileQueryType.Relevance)
         {
             if (resultsCap > 20) resultsCap = 20;
             string request = string.Format(query, key, resultsCap, content, ((uint)queryType).ToString());
             HttpWebRequest req = WebRequest.CreateHttp(request);
             StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream());
-            return ResultFromString(reader.ReadToEnd());
+            return JObject.Parse(reader.ReadToEnd());
         }
-        [Command("wshopsearch")]
-        public async Task Search(CommandContext ctx, string query)
+        [Command("wshopsearch"), Description("Searches the Steam Workshop for the specified query.")]
+        public async Task Search(CommandContext ctx, [Description("The search term.")] string query, [Description("The search type. Can be one of: `relevance`, `top`, `recent`, `mostsubscribed`. Default is `relevance`.")] string queryType = "relevance")
         {
-            SteamSearchResult result = Query(query, MuffaloBot.steamApiKey);
-            if (result.response.total == 0)
+            EPublishedFileQueryType type = EPublishedFileQueryType.Relevance;
+            switch (queryType)
+            {
+                case "relevance":
+                    type = EPublishedFileQueryType.Relevance;
+                    break;
+                case "top":
+                    type = EPublishedFileQueryType.TopRatedAllTime;
+                    break;
+                case "recent":
+                    type = EPublishedFileQueryType.MostRecent;
+                    break;
+                case "mostsubscribed":
+                    type = EPublishedFileQueryType.MostSubscribed;
+                    break;
+            }
+            JObject result = Query(query, MuffaloBot.steamApiKey, 5, type);
+            if (result["response"]["total"].Value<int>() == 0)
             {
                 await ctx.RespondAsync("No results.");
             }
@@ -40,11 +54,15 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
                 DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
                 embedBuilder.WithColor(DiscordColor.DarkBlue);
                 embedBuilder.WithTitle("Steam Workshop search results");
-                embedBuilder.WithDescription("Total results: " + result.response.total);
-                for (int i = 0; i < result.response.publishedfiledetails.Length; i++)
+                embedBuilder.WithDescription("Total results: " + result["response"]["total"]);
+                foreach (JToken item in result["response"]["publishedfiledetails"])
                 {
-                    PublishedFile publishedFile = result.response.publishedfiledetails[i];
-                    embedBuilder.AddField(publishedFile.title, $"**Views**: {publishedFile.views}\n**Subs**: {publishedFile.subscriptions}\n**Favs**: {publishedFile.favorited}\n**ID**: {publishedFile.publishedFileId}\n[Link](http://steamcommunity.com/sharedfiles/filedetails/?id={publishedFile.publishedFileId})", true);
+                    embedBuilder.AddField(item["title"].ToString(), 
+                        $"**Views**: {item["views"]}\n" +
+                        $"**Subs**: {item["subscriptions"]}\n" +
+                        $"**Favs**: {item["favorited"]}\n**ID**: {item["publishedfileid"]}\n" +
+                        $"[Link](http://steamcommunity.com/sharedfiles/filedetails/?id={item["publishedfileid"]})",
+                        true);
                 }
                 await ctx.RespondAsync(embed: embedBuilder.Build());
             }
@@ -62,25 +80,4 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
         Unknown6 = 6,
         MostSubscribed = 9
     }
-#pragma warning disable CS0649
-    class Response
-    {
-        public uint total;
-        public PublishedFile[] publishedfiledetails;
-    }
-    class SteamSearchResult
-    {
-        public Response response;
-    }
-    class PublishedFile
-    {
-        public uint result;
-        public uint views;
-        public uint subscriptions;
-        public uint favorited;
-        public string publishedFileId;
-        public string title;
-        public string preview_url;
-    }
-#pragma warning restore CS0649
 }

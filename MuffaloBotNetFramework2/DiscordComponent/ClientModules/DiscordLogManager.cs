@@ -42,14 +42,14 @@ namespace MuffaloBotNetFramework2.DiscordComponent
         {
             return (DiscordMessage)memberwiseCloneMethod.Invoke(message, new object[0]);
         }
-        async Task OnReceiveDiscordCreateLog(MessageCreateEventArgs e)
+        Task OnReceiveDiscordCreateLog(MessageCreateEventArgs e)
         {
-            await PushMessage(e.Message);
+            return PushMessage(e.Message);
         }
 
-        async Task PushMessage(DiscordMessage message)
+        Task PushMessage(DiscordMessage message)
         {
-            await Task.Run(() => discordMessageCache[currentIndex = (++currentIndex % discordMessageCache.Length)] = ShallowCopyOf(message));
+            return Task.Run(() => discordMessageCache[currentIndex = (++currentIndex % discordMessageCache.Length)] = ShallowCopyOf(message));
         }
 
         async Task OnReceiveDiscordDeleteLog(MessageDeleteEventArgs e)
@@ -109,6 +109,7 @@ namespace MuffaloBotNetFramework2.DiscordComponent
             {
                 content = "(Empty)";
             }
+            if (content == after.Content) return;
             DiscordChannel channel = (await guild.GetChannelsAsync()).First(c => c.Name == "logs");
             if (channel != null)
             {

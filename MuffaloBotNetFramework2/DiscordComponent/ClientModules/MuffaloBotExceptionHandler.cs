@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using DSharpPlus.Entities;
 
 namespace MuffaloBotNetFramework2.DiscordComponent
 {
@@ -20,9 +21,19 @@ namespace MuffaloBotNetFramework2.DiscordComponent
         {
         }
 
-        async Task HandleClientError(ClientErrorEventArgs e)
+        public Task HandleClientError(ClientErrorEventArgs e)
         {
-            await Console.Out.WriteLineAsync(e.Exception.ToString());
+            return HandleClientError(e.Exception);
+        }
+        public async Task HandleClientError(Exception e)
+        {
+            await Console.Out.WriteLineAsync(e.ToString());
+            DiscordEmbedBuilder builder = new DiscordEmbedBuilder();
+            builder.WithTitle("Unhandled exception");
+            builder.WithDescription($"```\n{e.ToString()}```");
+            builder.WithColor(DiscordColor.Red);
+            DiscordChannel channel = await MuffaloBot.discordClient.CreateDmAsync(MuffaloBot.discordClient.CurrentApplication.Owner);
+            await MuffaloBot.discordClient.SendMessageAsync(channel, embed: builder.Build());
         }
     }
 }
