@@ -4,38 +4,35 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{48808BC6-54F0-4D6F-98EC-3075C30EC084}</ProjectGuid>
+    <ProjectGuid>{BFE71EC2-7F6E-4CEA-945F-45BF772EE4BE}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MuffaloBotNetFramework</RootNamespace>
-    <AssemblyName>MuffaloBotNetFramework</AssemblyName>
+    <RootNamespace>MuffaloBotNetFramework2</RootNamespace>
+    <AssemblyName>MuffaloBotNetFramework2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\beta\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;BETA, RedditEnabled</DefineConstants>
+    <OutputPath>..\..\binaries\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\shili\AppData\Local\Temp\vs233A.tmp\Debug\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
-    <DefineConstants>TRACE;RedditEnabled</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <IntermediateOutputPath>C:\Users\shili\AppData\Local\Temp\vs233A.tmp\Release\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>200px_animal_muffalo_side_2vo_icon.ico</ApplicationIcon>
+    <ApplicationIcon>muffalo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DSharpPlus, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -88,30 +85,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsUtil\StringUtil.cs" />
-    <Compile Include="DiscordComponent\DiscordBase.cs" />
-    <Compile Include="DiscordComponent\DiscordRoot_Fields.cs" />
-    <Compile Include="CommandsUtil\Commands.cs" />
-    <Compile Include="CommandsUtil\CoreDefDatabase.cs" />
-    <Compile Include="CommandsUtil\DiscordUtil.cs" />
-    <Compile Include="CommandsUtil\HttpRequest.cs" />
-    <Compile Include="DiscordComponent\DiscordRoot.cs" />
-    <Compile Include="DiscordComponent\Exposables\ExposableCommand.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="DiscordComponent\ClientModules\DiscordLogManager.cs" />
+    <Compile Include="DiscordComponent\ClientModules\MuffaloBotExceptionHandler.cs" />
+    <Compile Include="DiscordComponent\ClientModules\QuoteManager.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\BasicConnectivityTests.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\Quotes.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\WorkshopSearch.cs" />
+    <Compile Include="DiscordComponent\IClientModule.cs" />
+    <Compile Include="MuffaloBot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CommandsUtil\PublishedFileIdUtil.cs" />
-    <Compile Include="CommandsUtil\ThingDefDatabase.cs" />
-    <Compile Include="RedditComponent\RedditBase.cs" />
-    <Compile Include="RedditComponent\RedditRoot.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="200px_animal_muffalo_side_2vo_icon.ico" />
-    <None Include="ToDo.md" />
+    <Content Include="muffalo.ico" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
