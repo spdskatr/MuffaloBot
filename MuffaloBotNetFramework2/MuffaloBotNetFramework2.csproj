@@ -14,8 +14,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\binaries\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -35,23 +35,20 @@
     <ApplicationIcon>muffalo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DSharpPlus, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.3.1.2\lib\net46\DSharpPlus.dll</HintPath>
+    <Reference Include="DSharpPlus, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.3.2.3\lib\net46\DSharpPlus.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.CommandsNext, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.CommandsNext.3.1.2\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
+    <Reference Include="DSharpPlus.CommandsNext, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.CommandsNext.3.2.3\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.WebSocket.WebSocket4Net, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.WebSocket.WebSocket4Net.3.1.2\lib\net46\DSharpPlus.WebSocket.WebSocket4Net.dll</HintPath>
+    <Reference Include="DSharpPlus.WebSocket.WebSocket4Net, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.WebSocket.WebSocket4Net.3.2.3\lib\net46\DSharpPlus.WebSocket.WebSocket4Net.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.WebSocket.WebSocketSharp, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DSharpPlus.WebSocket.WebSocketSharp.3.1.2\lib\net46\DSharpPlus.WebSocket.WebSocketSharp.dll</HintPath>
+    <Reference Include="DSharpPlus.WebSocket.WebSocketSharp, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DSharpPlus.WebSocket.WebSocketSharp.3.2.3\lib\net46\DSharpPlus.WebSocket.WebSocketSharp.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RedditSharp, Version=1.1.14.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RedditSharp.1.1.14\lib\net461\RedditSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -85,13 +82,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiscordComponent\ClientModules\CustomCommandsManager.cs" />
     <Compile Include="DiscordComponent\ClientModules\DiscordLogManager.cs" />
     <Compile Include="DiscordComponent\ClientModules\MuffaloBotExceptionHandler.cs" />
     <Compile Include="DiscordComponent\ClientModules\QuoteManager.cs" />
+    <Compile Include="DiscordComponent\ClientModules\RoleOnMessageManager.cs" />
+    <Compile Include="DiscordComponent\ClientModules\XmlDatabase.cs" />
     <Compile Include="DiscordComponent\CommandsModules\BasicConnectivityTests.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\ClientModuleCommands.cs" />
+    <Compile Include="DiscordComponent\ClientModules\HelpProvider.cs" />
     <Compile Include="DiscordComponent\CommandsModules\Meta.cs" />
-    <Compile Include="DiscordComponent\CommandsModules\MuffaloBotCommandsModuleAttribute.cs" />
-    <Compile Include="DiscordComponent\CommandsModules\Quotes.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\XPathCommands.cs" />
+    <Compile Include="DiscordComponent\Extensions.cs" />
+    <Compile Include="DiscordComponent\MuffaloBotCommandsModuleAttribute.cs" />
+    <Compile Include="DiscordComponent\CommandsModules\WikiSearch.cs" />
     <Compile Include="DiscordComponent\CommandsModules\WorkshopSearch.cs" />
     <Compile Include="DiscordComponent\IClientModule.cs" />
     <Compile Include="MuffaloBot.cs" />
@@ -99,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="muffalo.ico" />

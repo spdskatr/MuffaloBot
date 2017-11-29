@@ -25,8 +25,8 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
             StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream());
             return JObject.Parse(reader.ReadToEnd());
         }
-        [Command("wshopsearch"), Description("Searches the Steam Workshop for the specified query.")]
-        public async Task Search(CommandContext ctx, [Description("The search term.")] string query, [Description("The search type. Can be one of: `relevance`, `top`, `recent`, `mostsubscribed`. Default is `relevance`.")] string queryType = "relevance")
+        [Command("wshopsearch")]
+        public async Task Search(CommandContext ctx, string query, string queryType = "relevance")
         {
             EPublishedFileQueryType type = EPublishedFileQueryType.Relevance;
             switch (queryType)
@@ -53,7 +53,7 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
             {
                 DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
                 embedBuilder.WithColor(DiscordColor.DarkBlue);
-                embedBuilder.WithTitle("Steam Workshop search results");
+                embedBuilder.WithTitle($"Results for '{query}'");
                 embedBuilder.WithDescription("Total results: " + result["response"]["total"]);
                 foreach (JToken item in result["response"]["publishedfiledetails"])
                 {

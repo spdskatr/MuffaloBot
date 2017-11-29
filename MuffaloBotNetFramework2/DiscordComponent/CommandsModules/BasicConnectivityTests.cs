@@ -12,12 +12,12 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
     [MuffaloBotCommandsModule]
     class BasicConnectivityTests
     {
-        [Command("muffalo"), Aliases("muffalobot", "muffy"), Description("Simple test command.")]
+        [Command("muffalo"), Aliases("muffalobot", "muffy")]
         public async Task Muffalo(CommandContext ctx)
         { 
             await ctx.RespondAsync("😎🤖 Muffy is my name, RimWorld is my game 🤖😎");
         }
-        [Command("wolfy"), Description("Simple test command with an emoji")]
+        [Command("wolfy")]
         public async Task Wolfy(CommandContext ctx)
         {
             DiscordEmoji emoji = DiscordEmoji.FromName(ctx.Client, ":awoo:");

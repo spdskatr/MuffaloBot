@@ -7,6 +7,7 @@ using DSharpPlus;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.EventArgs;
 using Newtonsoft.Json;
+using DSharpPlus.Entities;
 
 namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
 {
@@ -29,6 +30,11 @@ namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
         public void InitializeFronJson(JObject jObject)
         {
             customCommands = JsonConvert.DeserializeObject<Dictionary<string, string>>(jObject["customCommands"].ToString());
+        }
+
+        public IEnumerable<string> AllCustomCommands()
+        {
+            return customCommands.Keys;
         }
     }
 }

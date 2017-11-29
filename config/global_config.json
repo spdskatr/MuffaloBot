@@ -9,11 +9,95 @@
 		"Namsan: I like to drink tears and bloods",
 		"Sneaks: How dare you, what did that poor Wolfy ever do to you",
 		"Xen: How dare you even vaguely praise IE",
-		"Quiz #1: How many consonants are in the answer to this question?"
+		"How many consonants are there in the answer to this question?",
+		"If 666 is evil, does that make 25.8069758011 the root of all evil?"
 	],
 	"customCommands": {
 		"!moddingtutorials": "http://rimworldwiki.com/wiki/Modding_Tutorials",
 		"!settingupcs": "http://rimworldwiki.com/wiki/Modding_Tutorials/Setting_up_a_solution",
 		"!patchoperations": "http://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations"
+	},
+	"help": {
+		"muffalo" : {
+			"usage": "!muffalo",
+		    "description": "Simple test command."
+		},
+		"wolfy" : {
+			"usage": "!wolfy",
+		    "description": "Responds with the awoo emoji."
+		},
+		"quote" : {
+			"usage": "!quote <option>",
+		    "description": "Pulls up a quote from a database.",
+			"parameters": {
+				"option": "The quote option. Can be a number or the word 'random'. Default is 'random'."
+			},
+			"examples": [
+				"!quote",
+				"!quote random",
+				"!quote 6"
+			]
+		},
+		"mbhelp" : {
+			"usage": "!mbhelp [command]",
+		    "description": "Displays the help for a command.",
+			"parameters": {
+				"command": "The command. Can be left blank."
+			},
+			"examples": [
+				"!mbhelp",
+				"!mbhelp mbhelp",
+				"!mbhelp xpath"
+			]
+		},
+		"xpath" : {
+			"usage": "!xpath <path>",
+		    "description": "Tests the core xml files using a set xpath. Returns the first 5 matches. Can have spaces.",
+			"parameters": {
+				"path": "The XPath path to be tested."
+			},
+			"examples": [
+				"!xpath Defs/ThingDef[defName=\"Steel\"]/description",
+				"!xpath Defs/ThingDef[@Name=\"BuildingBase\"]/thingClass",
+			]
+		},
+		"wikisearch" : {
+			"usage": "!wikisearch <query>",
+		    "description": "Searches the wiki for the specified search term.",
+			"parameters": {
+				"query": "The search term."
+			},
+			"examples": [
+				"!wikisearch raider",
+				"!wikisearch \"modding tutorials\""
+			]
+		},
+		"wshopsearch" : {
+			"usage": "!wshopsearch <query> [queryType]",
+		    "description": "Searches the steam workshop for the specified search term.",
+			"parameters": {
+				"query": "The search term.",
+				"queryType": "The search type. Can be one of: `relevance`, `top`, `recent`, `mostsubscribed`. If unrecognised or left blank, will default to `relevance`."
+			},
+			"examples": [
+				"!wshopsearch raiderpedes",
+				"!wshopsearch \"colony manager\"",
+				"!wshopsearch \"damage indicators\" top",
+				"!wshopsearch power mostsubscribed"
+			]
+		},
+		"iteminfo" : {
+			"usage": "!iteminfo <item>",
+		    "description": "Brings up the stats for any building/item/projectile.",
+			"parameters": {
+				"item": "The item's name. Can be the def name, label or part of the label. Case insensitive."
+			},
+			"examples": [
+				"!iteminfo ChunkSlagSteel",
+				"!iteminfo power armor",
+				"!iteminfo Apparel_PowerArmor",
+				"!iteminfo bAtTeRy"
+			]
+		}
 	}
 }

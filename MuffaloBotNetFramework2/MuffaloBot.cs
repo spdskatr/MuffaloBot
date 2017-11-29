@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Net.WebSocket;
-using Newtonsoft.Json;
 using MuffaloBotNetFramework2.DiscordComponent;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
-using MuffaloBotNetFramework2.DiscordComponent.CommandsModules;
+using DSharpPlus.Entities;
 
 namespace MuffaloBotNetFramework2
 {
@@ -21,6 +18,7 @@ namespace MuffaloBotNetFramework2
         public static DiscordClient discordClient;
         public static CommandsNextModule commandsNext;
         public static List<IClientModule> clientModules;
+        public static JObject jsonData;
         public static string token;
         public static string steamApiKey;
         public const string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
@@ -41,7 +39,7 @@ namespace MuffaloBotNetFramework2
         {
             token = File.ReadAllText("token.txt");
             steamApiKey = File.ReadAllText("steam_apikey.txt");
-            Console.WriteLine("Staring up...\n\n------");
+            Console.WriteLine("Starting up...\n\n------");
 
             discordClient = new DiscordClient(new DiscordConfiguration
             {
@@ -64,13 +62,13 @@ namespace MuffaloBotNetFramework2
             commandsNext = discordClient.UseCommandsNext(new CommandsNextConfiguration()
             {
                 StringPrefix = "!",
-                
+                EnableDefaultHelp = false
             });
 
             InstantiateAllModules();
             InitializeClientComponents();
 
-            Console.WriteLine("\n\n------");
+            Console.WriteLine("------\n\n");
             await discordClient.ConnectAsync();
             await Task.Delay(-1);
         }
@@ -100,10 +98,12 @@ namespace MuffaloBotNetFramework2
         public static void InitializeClientComponents()
         {
             WebClient webClient = new WebClient();
-            JObject json = JObject.Parse(webClient.DownloadString(globalJsonKey));
+            string str = webClient.DownloadString(globalJsonKey);
+            Console.WriteLine(str);
+            jsonData = JObject.Parse(str);
             for (int i = 0; i < clientModules.Count; i++)
             {
-                clientModules[i].InitializeFronJson(json);
+                clientModules[i].InitializeFronJson(jsonData);
             }
         }
     }

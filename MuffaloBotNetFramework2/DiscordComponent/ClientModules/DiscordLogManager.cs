@@ -54,7 +54,7 @@ namespace MuffaloBotNetFramework2.DiscordComponent
 
         async Task OnReceiveDiscordDeleteLog(MessageDeleteEventArgs e)
         {
-            if (e.Message.Channel.Name == "logs" || e.Message.Author.IsBot) return;
+            if (e.Message.Channel?.Name == "logs" || (e.Message.Author?.IsBot ?? true)) return;
             int ind = -1;
             if ((ind = FindIndexOfIdInCache(e.Message.Id)) != -1)
             {
@@ -84,6 +84,7 @@ namespace MuffaloBotNetFramework2.DiscordComponent
         }
         async Task NotifyDeleteAsync(DiscordMessage message, DiscordGuild guild)
         {
+            if (guild == null) return;
             string content;
             content = message.Content ?? "(Message too old...)";
             if (content.Length == 0)
@@ -144,8 +145,8 @@ namespace MuffaloBotNetFramework2.DiscordComponent
         static DiscordEmbedBuilder MakeModifyMessageEmbed(DiscordMessage after, string content)
         {
             content = content.Replace("`", "'");
-            string afterContent = after.Content.Replace("`", "'");
-            if (afterContent.Length == 0)
+            string afterContent = after.Content?.Replace("`", "'");
+            if (string.IsNullOrEmpty(afterContent))
             {
                 afterContent = "(Empty)";
             }

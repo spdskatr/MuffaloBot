@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
+namespace MuffaloBotNetFramework2.DiscordComponent
 {
     class MuffaloBotCommandsModuleAttribute : Attribute
     {
