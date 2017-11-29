@@ -12,29 +12,52 @@ namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
     public class RoleOnMessageManager : IClientModule
     {
         DiscordChannel channel;
-        DiscordRole givenRole;
+        ulong roleId;
+        JObject jObjectCache;
+        bool ready;
         public void BindToClient(DiscordClient client)
         {
             client.MessageCreated += MessageCreated;
+            client.Ready += OnReady;
+        }
+
+        Task OnReady(DSharpPlus.EventArgs.ReadyEventArgs e)
+        {
+            ready = true;
+            LoadJson();
+            return Task.CompletedTask;
         }
 
         async Task MessageCreated(DSharpPlus.EventArgs.MessageCreateEventArgs e)
         {
-            if (e.Channel == channel && givenRole != null)
+            if (e.Channel == channel)
             {
-                DiscordMember member = await e.Guild.GetMemberAsync(e.Author.Id);
-                await member.GrantRoleAsync(givenRole, "Speaking in channel #" + e.Channel.Name);
+                DiscordRole role = e.Guild.GetRole(roleId);
+                if (role != null)
+                {
+                    DiscordMember member = await e.Guild.GetMemberAsync(e.Author.Id);
+                    await member.GrantRoleAsync(role, "Speaking in channel #" + e.Channel.Name);
+                }
             }
-        }
-
-        public void SetChannelAndRole(DiscordChannel channel, DiscordRole role)
-        {
-            this.channel = channel;
-            givenRole = role;
         }
 
         public void InitializeFronJson(JObject jObject)
         {
+            jObjectCache = jObject;
+            if (ready) LoadJson();
+        }
+
+        void LoadJson()
+        {
+            channel = null;
+            roleId = 0;
+            JToken roleOnMessageToken = jObjectCache["roleOnMessage"];
+            if (roleOnMessageToken != null)
+            {
+                DiscordGuild guild = MuffaloBot.discordClient.Guilds[roleOnMessageToken["guild"].Value<ulong>()];
+                channel = guild.GetChannelsAsync().GetAwaiter().GetResult().First(c => c.Id == roleOnMessageToken["channel"].Value<ulong>());
+                roleId = roleOnMessageToken["role"].Value<ulong>();
+            }
         }
     }
 }

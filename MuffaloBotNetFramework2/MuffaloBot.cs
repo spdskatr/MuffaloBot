@@ -21,7 +21,7 @@ namespace MuffaloBotNetFramework2
         public static JObject jsonData;
         public static string token;
         public static string steamApiKey;
-        public const string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
+        public static string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
         public static T GetModule<T>() where T : IClientModule
         {
             for (int i = 0; i < clientModules.Count; i++)

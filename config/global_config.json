@@ -99,5 +99,10 @@
 				"!iteminfo bAtTeRy"
 			]
 		}
+	},
+	"__roleOnMessage__" : {
+		"guild": 0,
+		"channel": 0,
+		"role": 0
 	}
 }
