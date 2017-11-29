@@ -26,6 +26,10 @@
 			"usage": "!wolfy",
 		    "description": "Responds with the awoo emoji."
 		},
+		"about" : {
+			"usage": "!about",
+		    "description": "About the bot."
+		},
 		"quote" : {
 			"usage": "!quote <option>",
 		    "description": "Pulls up a quote from a database.",
