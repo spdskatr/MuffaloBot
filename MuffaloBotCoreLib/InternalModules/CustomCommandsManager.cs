@@ -8,10 +8,11 @@ using Newtonsoft.Json.Linq;
 using DSharpPlus.EventArgs;
 using Newtonsoft.Json;
 using DSharpPlus.Entities;
+using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
+namespace MuffaloBotCoreLib.InternalModules
 {
-    class CustomCommandsManager : IClientModule
+    class CustomCommandsManager : IInternalModule
     {
         Dictionary<string, string> customCommands = new Dictionary<string, string>();
         public void BindToClient(DiscordClient client)

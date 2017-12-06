@@ -8,14 +8,28 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Xml;
 using System.Text.RegularExpressions;
+using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
+namespace MuffaloBotCoreLib.ClientModules
 {
-    class XmlDatabase : IClientModule
+    class XmlDatabase : BaseModule
     {
         Regex trimmerRegex;
         List<KeyValuePair<string, XmlDocument>> database;
         DirectoryInfo searchDir;
+        public XmlDatabase()
+        {
+            searchDir = new DirectoryInfo("Defs");
+            trimmerRegex = new Regex("Defs[\\\\\\/].+"); // Defs[\/].+
+            string[] filenames = Directory.GetFiles("Defs", "*.xml", SearchOption.AllDirectories);
+            database = new List<KeyValuePair<string, XmlDocument>>(filenames.Length);
+            for (int i = 0; i < filenames.Length; i++)
+            {
+                XmlDocument document = new XmlDocument();
+                document.Load(filenames[i]);
+                database.Add(new KeyValuePair<string, XmlDocument>(trimmerRegex.Match(filenames[i]).ToString(), document));
+            }
+        }
         public IEnumerable<KeyValuePair<string, XmlNode>> SelectNodesByXpath(string xpath)
         {
             return from KeyValuePair<string, XmlDocument> doc in database
@@ -40,22 +54,9 @@ namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
             return string.Concat("```xml\n", stringBuilder.ToString(), "```");
         }
 
-        public void BindToClient(DiscordClient client)
+        protected override void Setup(DiscordClient client)
         {
-        }
-
-        public void InitializeFronJson(JObject jObject)
-        {
-            searchDir = new DirectoryInfo("Defs");
-            trimmerRegex = new Regex("Defs[\\\\\\/].+"); // Defs[\/].+
-            FileInfo[] files = searchDir.GetFiles("*.xml", SearchOption.AllDirectories);
-            database = new List<KeyValuePair<string, XmlDocument>>(files.Length);
-            for (int i = 0; i < files.Length; i++)
-            {
-                XmlDocument document = new XmlDocument();
-                document.Load(files[i].FullName);
-                database.Add(new KeyValuePair<string, XmlDocument>(trimmerRegex.Match(files[i].FullName).ToString(), document));
-            }
+            Client = client;
         }
     }
 }

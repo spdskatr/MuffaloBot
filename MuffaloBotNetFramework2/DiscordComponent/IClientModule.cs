@@ -1,8 +1,11 @@
-﻿namespace MuffaloBotNetFramework2.DiscordComponent
+﻿using DSharpPlus;
+using Newtonsoft.Json.Linq;
+
+namespace MuffaloBotNetFramework2.DiscordComponent
 {
-    interface IClientModule
+    public interface IInternalModule
     {
-        void BindToClient(DSharpPlus.DiscordClient client);
-        void InitializeFronJson(Newtonsoft.Json.Linq.JObject jObject);
+        void BindToClient(DiscordClient client);
+        void InitializeFronJson(JObject jObject);
     }
 }

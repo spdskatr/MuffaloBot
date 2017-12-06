@@ -1,7 +1,8 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using MuffaloBotNetFramework2.DiscordComponent.ClientModules;
+using MuffaloBotCoreLib.ClientModules;
+using MuffaloBotNetFramework2.DiscordComponent;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
+namespace MuffaloBotCoreLib.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class XPathCommands
@@ -22,7 +23,7 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
             if (string.IsNullOrWhiteSpace(ctx.RawArgumentString)) return;
             try
             {
-                await ctx.RespondAsync(MuffaloBot.GetModule<XmlDatabase>().GetSummaryForNodeSelection(ctx.RawArgumentString));
+                await ctx.RespondAsync(ctx.Client.GetModule<XmlDatabase>().GetSummaryForNodeSelection(ctx.RawArgumentString));
             }
             catch (System.Xml.XPath.XPathException ex)
             {
@@ -33,14 +34,12 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
         [Command("iteminfo")]
         public async Task InfoCommand(CommandContext ctx, [RemainingText] string itemName)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             if (!new Regex("^[a-zA-Z0-9\\-_ ]*$").IsMatch(itemName))
             {
                 await ctx.RespondAsync("Invalid name! Only letters, numbers, spaces, underscores or dashes allowed.");
                 return;
             }
-            XmlDatabase xmlDatabase = MuffaloBot.GetModule<XmlDatabase>();
+            XmlDatabase xmlDatabase = ctx.Client.GetModule<XmlDatabase>();
             IEnumerable<KeyValuePair<string, XmlNode>> results = 
                 xmlDatabase
                 .SelectNodesByXpath($"Defs/ThingDef[translate(defName,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=\"{itemName.ToLower()}\"]")
@@ -100,9 +99,14 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
             {
                 builder.AddField("Did you mean", didYouMeanStr);
             }
-            stopwatch.Stop();
-            Console.WriteLine("Completed in " + stopwatch.ElapsedMilliseconds);
-            await ctx.RespondAsync(embed: builder.Build());
+            if (string.IsNullOrEmpty(builder.Title))
+            {
+                await ctx.RespondAsync("No results.");
+            }
+            else
+            {
+                await ctx.RespondAsync(embed: builder.Build());
+            }
         }
 
         void AllStuffPropertiesForThingDef(XmlDatabase xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundProps, ref DiscordColor color)

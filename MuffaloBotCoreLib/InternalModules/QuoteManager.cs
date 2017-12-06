@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json.Linq;
+using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
+namespace MuffaloBotCoreLib.InternalModules
 {
-    class QuoteManager : IClientModule
+    class QuoteManager : IInternalModule
     {
         public string[] quotes;
         public void BindToClient(DiscordClient client)

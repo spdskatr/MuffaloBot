@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using MuffaloBotNetFramework2.DiscordComponent.ClientModules;
+using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBotCoreLib.InternalModules;
+using MuffaloBotNetFramework2;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
+namespace MuffaloBotCoreLib.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class ClientModuleCommands

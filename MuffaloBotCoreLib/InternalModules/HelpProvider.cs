@@ -8,10 +8,12 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
+using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBotNetFramework2;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
+namespace MuffaloBotCoreLib.InternalModules
 {
-    class HelpProvider : IClientModule
+    class HelpProvider : IInternalModule
     {
         public Dictionary<string, HelpEntry> dictionary;
         public class HelpEntry
@@ -19,6 +21,8 @@ namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
             public string usage = "(no usage)";
             public string description = "(no description)";
             public Dictionary<string, string> parameters = new Dictionary<string, string>();
+            public string[] aliases = new string[0];
+            public float cooldown = 0f;
             public string[] examples = new string[0];
         }
         public void BindToClient(DiscordClient client)
@@ -45,7 +49,12 @@ namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
                 }
                 if (entry.examples != null && entry.examples.Length > 0)
                 {
-                    embedBuilder.AddField($"Examples", string.Join("\n", entry.examples.Select(s => $"`{s}`")));
+                    embedBuilder.AddField("Examples", string.Join("\n", entry.examples.Select(s => $"`{s}`")));
+                }
+                embedBuilder.AddField("Aliases", string.Join(", ", entry.aliases.Select(s => $"`{s}`")));
+                if (entry.cooldown > 0f)
+                {
+                    embedBuilder.AddField("Cooldown", $"{entry.cooldown}s");
                 }
             }
             else

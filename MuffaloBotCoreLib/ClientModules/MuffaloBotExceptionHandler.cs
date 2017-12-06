@@ -10,24 +10,15 @@ using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Exceptions;
+using MuffaloBotNetFramework2;
 
-namespace MuffaloBotNetFramework2.DiscordComponent
+namespace MuffaloBotCoreLib.ClientModules
 {
-    class MuffaloBotExceptionHandler : IClientModule
+    class MuffaloBotExceptionHandler : BaseModule
     {
-        public void BindToClient(DiscordClient client)
-        {
-            client.ClientErrored += HandleClientError;
-            client.GetCommandsNext().CommandErrored += HandleClientError;
-        }
-
-        public void InitializeFronJson(JObject jObject)
-        {
-        }
-
         public async Task HandleClientError(CommandErrorEventArgs e)
         {
-            if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException) return;
+            if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException || e.Exception is ChecksFailedException) return;
             await HandleClientError(e.Exception, "Command " + (e.Command?.Name ?? "unknown"));
         }
 
@@ -37,13 +28,19 @@ namespace MuffaloBotNetFramework2.DiscordComponent
         }
         public async Task HandleClientError(Exception e, string action)
         {
-            await Console.Out.WriteLineAsync(e.ToString());
             DiscordEmbedBuilder builder = new DiscordEmbedBuilder();
             builder.WithTitle("Unhandled exception");
             builder.WithDescription($"Action: {action}\n```\n{e.ToString()}```");
             builder.WithColor(DiscordColor.Red);
-            DiscordChannel channel = await MuffaloBot.discordClient.CreateDmAsync(MuffaloBot.discordClient.CurrentApplication.Owner);
+            DiscordChannel channel = await Client.CreateDmAsync(Client.CurrentApplication.Owner);
             await MuffaloBot.discordClient.SendMessageAsync(channel, embed: builder.Build());
+        }
+
+        protected override void Setup(DiscordClient client)
+        {
+            Client = client;
+            client.ClientErrored += HandleClientError;
+            client.GetCommandsNext().CommandErrored += HandleClientError;
         }
     }
 }

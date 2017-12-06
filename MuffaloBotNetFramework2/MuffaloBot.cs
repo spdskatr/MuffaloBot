@@ -13,30 +13,33 @@ using DSharpPlus.Entities;
 
 namespace MuffaloBotNetFramework2
 {
-    static class MuffaloBot
+    public static class MuffaloBot
     {
         public static DiscordClient discordClient;
         public static CommandsNextModule commandsNext;
-        public static List<IClientModule> clientModules;
+        public static List<IInternalModule> internalModules;
         public static JObject jsonData;
         public static string token;
         public static string steamApiKey;
         public static string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
-        public static T GetModule<T>() where T : IClientModule
+        public static T GetModule<T>() where T : IInternalModule
         {
-            for (int i = 0; i < clientModules.Count; i++)
+            for (int i = 0; i < internalModules.Count; i++)
             {
-                if (clientModules[i] is T result)
+                if (internalModules[i] is T result)
                     return result;
             }
             return default(T);
         }
         static void Main(string[] args)
         {
-            MainAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
         }
-        static async Task MainAsync()
+        public static async Task MainAsync(string[] args)
         {
+            CheckCommandLineArgs(args);
+
+            // Main program
             token = File.ReadAllText("token.txt");
             steamApiKey = File.ReadAllText("steam_apikey.txt");
             Console.WriteLine("Starting up...\n\n------");
@@ -65,33 +68,73 @@ namespace MuffaloBotNetFramework2
                 EnableDefaultHelp = false
             });
 
-            InstantiateAllModules();
+            InstantiateAllModulesFromAllAssemblies();
             InitializeClientComponents();
 
             Console.WriteLine("------\n\n");
             await discordClient.ConnectAsync();
             await Task.Delay(-1);
         }
-        static void InstantiateAllModules()
+
+        static void CheckCommandLineArgs(string[] args)
         {
-            clientModules = new List<IClientModule>();
-            Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].StartsWith("--corelib-path="))
+                {
+                    WebClient client = new WebClient();
+                    Console.WriteLine("Command line argument: {0}", args[i].Substring(15));
+                    byte[] data = client.DownloadData(args[i].Substring(15));
+                    File.WriteAllBytes("plugins/MuffaloBotCoreLib.dll", data);
+                }
+            }
+        }
+
+        private static void InstantiateAllModulesFromAllAssemblies()
+        {
+            InstantiateAllModulesFromAssembly(Assembly.GetExecutingAssembly());
+            DirectoryInfo directory = new DirectoryInfo("plugins");
+            FileInfo[] allFiles = directory.GetFiles("*.dll");
+            for (int i = 0; i < allFiles.Length; i++)
+            {
+                try
+                {
+                    Assembly a = Assembly.Load(File.ReadAllBytes(allFiles[i].FullName));
+                    InstantiateAllModulesFromAssembly(a);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Exception loading assembly at {allFiles[i].FullName}: {ex}");
+                }
+            }
+        }
+
+        static void InstantiateAllModulesFromAssembly(Assembly assembly)
+        {
+            internalModules = new List<IInternalModule>();
+            Type[] types = assembly.GetTypes();
             for (int i = 0; i < types.Length; i++)
             {
                 // Client modules
-                if (typeof(IClientModule).IsAssignableFrom(types[i]) && !types[i].IsAbstract && types[i].GetConstructor(new Type[0]) != null)
+                if (typeof(IInternalModule).IsAssignableFrom(types[i]) && !types[i].IsAbstract && types[i].GetConstructor(new Type[0]) != null)
                 {
-                    IClientModule clientModule = (IClientModule)Activator.CreateInstance(types[i]);
+                    IInternalModule clientModule = (IInternalModule)Activator.CreateInstance(types[i]);
                     clientModule.BindToClient(discordClient);
-                    clientModules.Add(clientModule);
-                    Console.WriteLine($"Registered client module {types[i].FullName}");
+                    internalModules.Add(clientModule);
+                    Console.WriteLine($"Registered internal module {types[i].FullName} from assembly {assembly.GetName().FullName}");
+                }
+
+                // DSharpPlus base modules
+                else if (typeof(BaseModule).IsAssignableFrom(types[i]) && !types[i].IsAbstract && types[i].GetConstructor(new Type[0]) != null)
+                {
+                    discordClient.AddModule((BaseModule)Activator.CreateInstance(types[i]));
                 }
 
                 // CommandsNext modules
-                if (types[i].GetCustomAttribute<MuffaloBotCommandsModuleAttribute>() != null)
+                else if (types[i].GetCustomAttribute<MuffaloBotCommandsModuleAttribute>() != null && !types[i].IsAbstract && types[i].GetConstructor(new Type[0]) != null)
                 {
                     commandsNext.RegisterCommands(types[i]);
-                    Console.WriteLine($"Registered command module {types[i].FullName}");
+                    Console.WriteLine($"Registered command module {types[i].FullName} from assembly {assembly.FullName}");
                 }
             }
         }
@@ -101,9 +144,9 @@ namespace MuffaloBotNetFramework2
             string str = webClient.DownloadString(globalJsonKey);
             Console.WriteLine(str);
             jsonData = JObject.Parse(str);
-            for (int i = 0; i < clientModules.Count; i++)
+            for (int i = 0; i < internalModules.Count; i++)
             {
-                clientModules[i].InitializeFronJson(jsonData);
+                internalModules[i].InitializeFronJson(jsonData);
             }
         }
     }

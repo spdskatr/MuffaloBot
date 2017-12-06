@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
+using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
+namespace MuffaloBotCoreLib.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class WikiSearch

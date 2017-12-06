@@ -10,8 +10,10 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using Newtonsoft.Json.Linq;
+using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBotNetFramework2;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
+namespace MuffaloBotCoreLib.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class WorkshopSearch
@@ -26,25 +28,9 @@ namespace MuffaloBotNetFramework2.DiscordComponent.CommandsModules
             return JObject.Parse(reader.ReadToEnd());
         }
         [Command("wshopsearch")]
-        public async Task Search(CommandContext ctx, string query, string queryType = "relevance")
+        public async Task Search(CommandContext ctx, [RemainingText] string query)
         {
-            EPublishedFileQueryType type = EPublishedFileQueryType.Relevance;
-            switch (queryType)
-            {
-                case "relevance":
-                    type = EPublishedFileQueryType.Relevance;
-                    break;
-                case "top":
-                    type = EPublishedFileQueryType.TopRatedAllTime;
-                    break;
-                case "recent":
-                    type = EPublishedFileQueryType.MostRecent;
-                    break;
-                case "mostsubscribed":
-                    type = EPublishedFileQueryType.MostSubscribed;
-                    break;
-            }
-            JObject result = Query(query, MuffaloBot.steamApiKey, 5, type);
+            JObject result = Query(query, MuffaloBot.steamApiKey, 5, EPublishedFileQueryType.Relevance);
             if (result["response"]["total"].Value<int>() == 0)
             {
                 await ctx.RespondAsync("No results.");

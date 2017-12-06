@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
+using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBotNetFramework2;
 
-namespace MuffaloBotNetFramework2.DiscordComponent.ClientModules
+namespace MuffaloBotCoreLib.InternalModules
 {
-    public class RoleOnMessageManager : IClientModule
+    public class RoleOnMessageManager : IInternalModule
     {
         DiscordChannel channel;
         ulong roleId;

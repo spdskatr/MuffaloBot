@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MuffaloBotNetFramework2.DiscordComponent
 {
-    class MuffaloBotCommandsModuleAttribute : Attribute
+    public class MuffaloBotCommandsModuleAttribute : Attribute
     {
     }
 }

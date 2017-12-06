@@ -1,109 +1,145 @@
 {
 	"logCacheSize": 5000,
-	"quotes": [
-		"If you think about it, `bb || !bb` always returns true.",
-		"SirSatanII: *I am not a command. Please try again later.*",
-		"Jdalt40: I'm expecting an Easter egg of me 9 AM tomorrow sharp",
-		"How to mod RimWorld: Copy and paste stuff, get angry at stuff, make other people angry at your stuff.",
-		"If IE is brave enough to ask you to set it as your default browser, don't tell me you dare not ask a girl out.",
-		"Namsan: I like to drink tears and bloods",
-		"Sneaks: How dare you, what did that poor Wolfy ever do to you",
-		"Xen: How dare you even vaguely praise IE",
-		"How many consonants are there in the answer to this question?",
-		"If 666 is evil, does that make 25.8069758011 the root of all evil?"
-	],
-	"customCommands": {
-		"!moddingtutorials": "http://rimworldwiki.com/wiki/Modding_Tutorials",
-		"!settingupcs": "http://rimworldwiki.com/wiki/Modding_Tutorials/Setting_up_a_solution",
-		"!patchoperations": "http://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations"
-	},
-	"help": {
-		"muffalo" : {
-			"usage": "!muffalo",
-		    "description": "Simple test command."
-		},
-		"wolfy" : {
-			"usage": "!wolfy",
-		    "description": "Responds with the awoo emoji."
-		},
-		"about" : {
-			"usage": "!about",
-		    "description": "About the bot."
-		},
-		"quote" : {
-			"usage": "!quote <option>",
-		    "description": "Pulls up a quote from a database.",
-			"parameters": {
-				"option": "The quote option. Can be a number or the word 'random'. Default is 'random'."
-			},
-			"examples": [
-				"!quote",
-				"!quote random",
-				"!quote 6"
-			]
-		},
-		"mbhelp" : {
-			"usage": "!mbhelp [command]",
-		    "description": "Displays the help for a command.",
-			"parameters": {
-				"command": "The command. Can be left blank."
-			},
-			"examples": [
-				"!mbhelp",
-				"!mbhelp mbhelp",
-				"!mbhelp xpath"
-			]
-		},
-		"xpath" : {
-			"usage": "!xpath <path>",
-		    "description": "Tests the core xml files using a set xpath. Returns the first 5 matches. Can have spaces.",
-			"parameters": {
-				"path": "The XPath path to be tested."
-			},
-			"examples": [
-				"!xpath Defs/ThingDef[defName=\"Steel\"]/description",
-				"!xpath Defs/ThingDef[@Name=\"BuildingBase\"]/thingClass",
-			]
-		},
-		"wikisearch" : {
-			"usage": "!wikisearch <query>",
-		    "description": "Searches the wiki for the specified search term.",
-			"parameters": {
-				"query": "The search term."
-			},
-			"examples": [
-				"!wikisearch raider",
-				"!wikisearch \"modding tutorials\""
-			]
-		},
-		"wshopsearch" : {
-			"usage": "!wshopsearch <query> [queryType]",
-		    "description": "Searches the steam workshop for the specified search term.",
-			"parameters": {
-				"query": "The search term.",
-				"queryType": "The search type. Can be one of: `relevance`, `top`, `recent`, `mostsubscribed`. If unrecognised or left blank, will default to `relevance`."
-			},
-			"examples": [
-				"!wshopsearch raiderpedes",
-				"!wshopsearch \"colony manager\"",
-				"!wshopsearch \"damage indicators\" top",
-				"!wshopsearch power mostsubscribed"
-			]
-		},
-		"iteminfo" : {
-			"usage": "!iteminfo <item>",
-		    "description": "Brings up the stats for any building/item/projectile.",
-			"parameters": {
-				"item": "The item's name. Can be the def name, label or part of the label. Case insensitive."
-			},
-			"examples": [
-				"!iteminfo ChunkSlagSteel",
-				"!iteminfo power armor",
-				"!iteminfo Apparel_PowerArmor",
-				"!iteminfo bAtTeRy"
-			]
-		}
-	},
+  "quotes": [
+    "If you think about it, `bb || !bb` always returns true.",
+    "SirSatanII: *I am not a command. Please try again later.*",
+    "Jdalt40: I'm expecting an Easter egg of me 9 AM tomorrow sharp",
+    "How to mod RimWorld: Copy and paste stuff, get angry at stuff, make other people angry at your stuff.",
+    "If IE is brave enough to ask you to set it as your default browser, don't tell me you dare not ask a girl out.",
+    "Namsan: I like to drink tears and bloods",
+    "Sneaks: How dare you, what did that poor Wolfy ever do to you",
+    "Xen: How dare you even vaguely praise IE",
+    "How many consonants are there in the answer to this question?",
+    "If 666 is evil, does that make 25.8069758011 the root of all evil?",
+    "I'm Randy Random and **this** is my RimWorld. I work here with my old woman, Cassandra Classic, and my daughter, Phoebe Chillax. One thing I've learned after 21 quadrums; you never know **what** is gonna come through those cargo pods. - From Guy Skittle"
+  ],
+  "customCommands": {
+    "!moddingtutorials": "http://rimworldwiki.com/wiki/Modding_Tutorials",
+    "!settingupcs": "http://rimworldwiki.com/wiki/Modding_Tutorials/Setting_up_a_solution",
+    "!patchoperations": "http://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations",
+    "!ignis": "https://cdn.discordapp.com/attachments/225701528470683648/387460314918289408/unknown-4.png",
+    "!killignis": "https://cdn.discordapp.com/attachments/225701528470683648/387458918973964288/dont.png",
+    "!radish": "http://prntscr.com/hj6kji"
+  },
+  "help": {
+    "muffalo": {
+      "usage": "!muffalo",
+      "description": "Simple test command."
+    },
+    "wolfy": {
+      "usage": "!wolfy",
+      "description": "Responds with the awoo emoji."
+    },
+    "about": {
+      "usage": "!about",
+      "description": "About the bot."
+    },
+    "quote": {
+      "usage": "!quote <option>",
+      "description": "Pulls up a quote from a database.",
+      "parameters": {
+        "option": "The quote option. Can be a number or the word 'random'. Default is 'random'."
+      },
+      "examples": [
+        "!quote",
+        "!quote random",
+        "!quote 6"
+      ]
+    },
+    "mbhelp": {
+      "usage": "!mbhelp [command]",
+      "description": "Displays the help for a command.",
+      "parameters": {
+        "command": "The command. Can be left blank."
+      },
+      "examples": [
+        "!mbhelp",
+        "!mbhelp mbhelp",
+        "!mbhelp xpath"
+      ]
+    },
+    "xpath": {
+      "usage": "!xpath <path>",
+      "description": "Tests the core xml files using a set xpath. Returns the first 5 matches. Can have spaces.",
+      "parameters": {
+        "path": "The XPath path to be tested."
+      },
+      "examples": [
+        "!xpath Defs/ThingDef[defName=\"Steel\"]/description",
+        "!xpath Defs/ThingDef[@Name=\"BuildingBase\"]/thingClass"
+      ]
+    },
+    "wikisearch": {
+      "usage": "!wikisearch <query>",
+      "description": "Searches the wiki for the specified search term.",
+      "parameters": {
+        "query": "The search term."
+      },
+      "examples": [
+        "!wikisearch raider",
+        "!wikisearch \"modding tutorials\""
+      ]
+    },
+    "wshopsearch": {
+      "usage": "!wshopsearch <query> [queryType]",
+      "description": "Searches the steam workshop for the specified search term.",
+      "parameters": {
+        "query": "The search term.",
+        "queryType": "The search type. Can be one of: `relevance`, `top`, `recent`, `mostsubscribed`. If unrecognised or left blank, will default to `relevance`."
+      },
+      "examples": [
+        "!wshopsearch raiderpedes",
+        "!wshopsearch \"colony manager\"",
+        "!wshopsearch \"damage indicators\" top",
+        "!wshopsearch power mostsubscribed"
+      ]
+    },
+    "iteminfo": {
+      "usage": "!iteminfo <item>",
+      "description": "Brings up the stats for any building/item/projectile.",
+      "parameters": {
+        "item": "The item's name. Can be the def name, label or part of the label. Case insensitive."
+      },
+      "examples": [
+        "!iteminfo ChunkSlagSteel",
+        "!iteminfo power armor",
+        "!iteminfo Apparel_PowerArmor",
+        "!iteminfo bAtTeRy"
+      ]
+    },
+    "wave": {
+      "usage": "!wave [link]",
+      "description": "Applies a wave filter to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "parameters": {
+        "link": "The URL of the image."
+      }
+    },
+    "swirl": {
+      "usage": "!swirl [link]",
+      "description": "Applies a swirl to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "parameters": {
+        "link": "The URL of the image."
+      }
+    },
+    "implode": {
+      "usage": "!implode [link]",
+      "description": "Applies an implode to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "parameters": {
+        "link": "The URL of the image."
+      }
+    },
+    "wonky": {
+      "usage": "!wonky [link]",
+      "description": "Applies a series of rescales to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "parameters": {
+        "link": "The URL of the image."
+      }
+    },
+    "usercount": {
+      "usage": "!usercount",
+      "description": "Replies with how many users are in the current guild."
+    }
+  },
 	"__roleOnMessage__" : {
 		"guild": 0,
 		"channel": 0,
