@@ -14,7 +14,7 @@ using MuffaloBotNetFramework2.DiscordComponent;
 
 namespace MuffaloBotCoreLib.CommandsModules
 {
-    [MuffaloBotCommandsModule, Cooldown(1, 60, CooldownBucketType.User)]
+    [MuffaloBotCommandsModule, Cooldown(1, 300, CooldownBucketType.User)]
     public class ImageMagickCommands
     {
         enum ImageEditMode
@@ -71,10 +71,10 @@ namespace MuffaloBotCoreLib.CommandsModules
             if (!string.IsNullOrEmpty(attachmentUrl))
             {
                 WebClient client = new WebClient();
-                Stream downloadStream;
+                byte[] buffer;
                 try
                 {
-                    downloadStream = await client.OpenReadTaskAsync(attachmentUrl);
+                    buffer = await client.DownloadDataTaskAsync(attachmentUrl);
                 }
                 catch (WebException)
                 {
@@ -83,25 +83,29 @@ namespace MuffaloBotCoreLib.CommandsModules
                 }
                 if (attachmentUrl.EndsWith(".gif"))
                 {
-                    await DoImageMagickCommandForGif(ctx, downloadStream, mode);
+                    await DoImageMagickCommandForGif(ctx, buffer, mode);
                 }
                 else
                 {
-                    await DoImageMagickCommandForStillImage(ctx, downloadStream, mode);
+                    await DoImageMagickCommandForStillImage(ctx, buffer, mode);
                 }
-                downloadStream.Dispose();
             }
             else
             {
                 await ctx.RespondAsync("No image found.");
             }
         }
-        async Task DoImageMagickCommandForGif(CommandContext ctx, Stream downloadStream, ImageEditMode mode)
+        async Task DoImageMagickCommandForGif(CommandContext ctx, byte[] buffer, ImageEditMode mode)
         {
+            if (mode == ImageEditMode.Rescale)
+            {
+                await ctx.RespondAsync("This mode is not supported for gifs since it is slow and often dramatically increases gif size");
+                return;
+            }
             MagickImageCollection image;
             try
             {
-                image = new MagickImageCollection(downloadStream);
+                image = new MagickImageCollection(buffer);
             }
             catch (MagickMissingDelegateErrorException)
             {
@@ -112,12 +116,45 @@ namespace MuffaloBotCoreLib.CommandsModules
             if (originalHeight * originalWidth > 1000000)
             {
                 await ctx.RespondAsync($"Gif exceeds maximum size of 1000000 pixels (Actual size: {originalHeight * originalWidth})");
+                return;
+            }
+            if (image.Count > 100)
+            {
+                await ctx.RespondAsync($"Gif exceeds maximum frame count of 100 pixels (Actual count: {image.Count})");
+                return;
             }
             image.Coalesce();
-            foreach (MagickImage frame in image)
+            long rawLength;
+            using (MemoryStream stream = new MemoryStream())
             {
+                image.Write(stream);
+                rawLength = stream.Length;
+            }
+            double exceed = rawLength / 4194304d;
+            double rescale = 1f;
+            if (exceed > 1.0)
+            {
+                rescale = Math.Sqrt(exceed);
+            }
+            await ctx.TriggerTypingAsync();
+            for (int i = 0; i < image.Count; i++)
+            {
+                IMagickImage frame = image[i];
+                if (rescale > 1f)
+                {
+                    if (rescale > 2f)
+                    {
+                        frame.AdaptiveResize((int)(frame.Width / rescale), (int)(frame.Height / rescale));
+                    }
+                    else
+                    {
+                        frame.Resize((int)(frame.Width / rescale), (int)(frame.Height / rescale));
+                    }
+                }
                 DoMagic(mode, frame, originalWidth, originalHeight);
             }
+            await ctx.TriggerTypingAsync();
+            image.OptimizeTransparency();
             using (Stream stream = new MemoryStream())
             {
                 image.Write(stream);
@@ -125,12 +162,12 @@ namespace MuffaloBotCoreLib.CommandsModules
                 await ctx.RespondWithFileAsync(stream, "magic.gif");
             }
         }
-        async Task DoImageMagickCommandForStillImage(CommandContext ctx, Stream downloadStream, ImageEditMode mode)
+        async Task DoImageMagickCommandForStillImage(CommandContext ctx, byte[] buffer, ImageEditMode mode)
         {
             MagickImage image;
             try
             {
-                image = new MagickImage(downloadStream);
+                image = new MagickImage(buffer);
             }
             catch (MagickMissingDelegateErrorException)
             {
@@ -143,6 +180,23 @@ namespace MuffaloBotCoreLib.CommandsModules
                 await ctx.RespondAsync($"Image exceeds maximum size of 2250000 pixels (Actual size: {originalHeight * originalWidth})");
             }
             // Do magic
+            double exceed = buffer.Length / 8388608d;
+            double rescale = 1f;
+            if (exceed > 1.0)
+            {
+                rescale = 1.0 / Math.Sqrt(exceed);
+            }
+            if (rescale < 1f)
+            {
+                if (rescale < 0.5f)
+                {
+                    image.AdaptiveResize((int)(image.Width * rescale), (int)(image.Height * rescale));
+                }
+                else
+                {
+                    image.Resize((int)(image.Width * rescale), (int)(image.Height * rescale));
+                }
+            }
             DoMagic(mode, image, originalWidth, originalHeight);
             using (Stream stream = new MemoryStream())
             {
@@ -152,7 +206,7 @@ namespace MuffaloBotCoreLib.CommandsModules
             }
         }
 
-        void DoMagic(ImageEditMode mode, MagickImage image, int originalWidth, int originalHeight)
+        void DoMagic(ImageEditMode mode, IMagickImage image, int originalWidth, int originalHeight)
         {
             switch (mode)
             {

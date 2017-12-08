@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientModules\ClientMetaControls.cs" />
     <Compile Include="ClientModules\MuffaloBotExceptionHandler.cs" />
     <Compile Include="ClientModules\XmlDatabase.cs" />
     <Compile Include="CommandsModules\BasicConnectivityTests.cs" />

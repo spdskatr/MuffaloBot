@@ -63,11 +63,15 @@ namespace MuffaloBotCoreLib.CommandsModules
                     await ctx.RespondAsync("Path not valid; Skipping...");
                 }
             }
-            await ctx.RespondAsync("Restarting...");
+            await ctx.RespondAsync("Restarting in 5 seconds...");
             await ctx.Client.DisconnectAsync();
             await Console.Out.WriteLineAsync("\n\n\nRESTARTING\\n\n\n");
             ctx.Client.Dispose();
-            new Thread(() => RestartBot(newArgs)).Start();
+            new Thread(() => 
+            {
+                Thread.Sleep(5000);
+                RestartBot(newArgs);
+            }).Start();
         }
         void RestartBot(List<string> newArgs)
         {

@@ -109,28 +109,28 @@
     },
     "wave": {
       "usage": "!wave [link]",
-      "description": "Applies a wave filter to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "description": "Applies a wave filter to a specified image. Max size 1500x1500 (1000x1000 for gifs). Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
       "parameters": {
         "link": "The URL of the image."
       }
     },
     "swirl": {
       "usage": "!swirl [link]",
-      "description": "Applies a swirl to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "description": "Applies a swirl to a specified image. Max size 1500x1500 (1000x1000 for gifs). Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
       "parameters": {
         "link": "The URL of the image."
       }
     },
     "implode": {
       "usage": "!implode [link]",
-      "description": "Applies an implode to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "description": "Applies an implode to a specified image. Max size 1500x1500 (1000x1000 for gifs). Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
       "parameters": {
         "link": "The URL of the image."
       }
     },
     "wonky": {
       "usage": "!wonky [link]",
-      "description": "Applies a series of rescales to a specified image. Max size 1500x1500. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
+      "description": "Applies a series of rescales to a specified image. Max size 1500x1500. Gifs not supported. Note that if no link is provided, MuffaloBot will search for the earliest attachment and apply the editing to that.",
       "parameters": {
         "link": "The URL of the image."
       }

@@ -51,16 +51,19 @@ namespace MuffaloBotCoreLib.InternalModules
                 {
                     embedBuilder.AddField("Examples", string.Join("\n", entry.examples.Select(s => $"`{s}`")));
                 }
-                embedBuilder.AddField("Aliases", string.Join(", ", entry.aliases.Select(s => $"`{s}`")));
-                if (entry.cooldown > 0f)
+                if (entry.aliases != null && entry.aliases.Length > 0)
                 {
-                    embedBuilder.AddField("Cooldown", $"{entry.cooldown}s");
+                    embedBuilder.AddField("Aliases", string.Join(", ", entry.aliases.Select(s => $"`{s}`")));
+                    if (entry.cooldown > 0f)
+                    {
+                        embedBuilder.AddField("Cooldown", $"{entry.cooldown}s");
+                    }
                 }
             }
             else
             {
-                embedBuilder.WithTitle("No help found");
-                embedBuilder.WithDescription(command == "404" ? "404 404 404 404 404 404 404 404" : "Could not find help for your query.");
+                embedBuilder.WithTitle(command == "404" ? "404" : "No help found");
+                embedBuilder.WithDescription(command == "404" ? "404 404 404 404 404 404 404 404 404 404 404 404 404" : "Could not find help for your query.");
             }
             return embedBuilder.Build();
         }
