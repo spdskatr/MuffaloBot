@@ -22,10 +22,16 @@ namespace MuffaloBotCoreLib.ClientModules
             if (e.Guild.Id == TargetGuild)
             {
                 DiscordGuild guild = await Client.GetGuildAsync(TargetGuild);
-                if (guild.MemberCount % 5 == 0)
+                switch (guild.MemberCount)
                 {
-                    DiscordDmChannel channel = await Client.CreateDmAsync(await Client.GetUserAsync(TargetMember));
-                    await channel.SendMessageAsync("Member count: " + guild.MemberCount);
+                    case 2985:
+                    case 2990:
+                    case 2995:
+                        DiscordDmChannel channel = await Client.CreateDmAsync(await Client.GetUserAsync(TargetMember));
+                        await channel.SendMessageAsync("Member count: " + guild.MemberCount);
+                        break;
+                    default:
+                        break;
                 }
             }
         }
