@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotCoreLib.CommandsModules
+namespace MuffaloBotNetFramework2.CommandsModules
 {
     [MuffaloBotCommandsModule, Cooldown(1, 300, CooldownBucketType.User)]
     public class ImageMagickCommands

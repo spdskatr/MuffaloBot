@@ -10,7 +10,7 @@ using System.Reflection;
 using Newtonsoft.Json.Linq;
 using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotCoreLib.InternalModules
+namespace MuffaloBotNetFramework2.InternalModules
 {
     class DiscordLogManager : IInternalModule
     {

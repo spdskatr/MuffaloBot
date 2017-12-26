@@ -1,7 +1,7 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using MuffaloBotCoreLib.ClientModules;
+using MuffaloBotNetFramework2.ClientModules;
 using MuffaloBotNetFramework2.DiscordComponent;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace MuffaloBotCoreLib.CommandsModules
+namespace MuffaloBotNetFramework2.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class XPathCommands

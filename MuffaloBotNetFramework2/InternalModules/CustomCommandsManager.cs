@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using DSharpPlus.Entities;
 using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotCoreLib.InternalModules
+namespace MuffaloBotNetFramework2.InternalModules
 {
     class CustomCommandsManager : IInternalModule
     {

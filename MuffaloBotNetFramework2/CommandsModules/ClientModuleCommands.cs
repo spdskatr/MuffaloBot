@@ -6,38 +6,36 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using MuffaloBotNetFramework2.DiscordComponent;
-using MuffaloBotCoreLib.InternalModules;
+using MuffaloBotNetFramework2.InternalModules;
 using MuffaloBotNetFramework2;
 
-namespace MuffaloBotCoreLib.CommandsModules
+namespace MuffaloBotNetFramework2.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class ClientModuleCommands
     {
         [Command("quote")]
-        public async Task QuoteWithOption(CommandContext ctx, string option = "random")
+        public async Task QuoteWithOption(CommandContext ctx, int index = 0)
         {
             string[] quotes = MuffaloBot.GetModule<QuoteManager>().quotes;
             Random random = new Random();
-            switch (option)
+            switch (index)
             {
-                case "random":
+                case 0:
                     await ctx.RespondAsync(quotes[random.Next(0, quotes.Length)]);
                     break;
                 default:
-                    if (int.TryParse(option, out int index))
+                    if (index == quotes.Length + 1)
                     {
-                        if (index > quotes.Length)
-                        {
-                            await ctx.RespondAsync($"Tried to get quote number {index} when there are only {quotes.Length} quotes.");
-                            return;
-                        }
-                        await ctx.RespondAsync(quotes[index - 1]);
+                        await ctx.RespondAsync($"Welcome to the secret muffalo internet. Please proceed to the main page: `!quote 9.75`");
+                        return;
                     }
-                    else
+                    if (index > quotes.Length)
                     {
-                        await ctx.RespondAsync($"Could not find option {option}.");
+                        await ctx.RespondAsync($"Tried to get quote number {index} when there are only {quotes.Length} quotes.");
+                        return;
                     }
+                    await ctx.RespondAsync(quotes[index - 1]);
                     break;
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
@@ -10,6 +10,7 @@ using MuffaloBotNetFramework2.DiscordComponent;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
+using System.Threading;
 
 namespace MuffaloBotNetFramework2
 {
@@ -22,6 +23,7 @@ namespace MuffaloBotNetFramework2
         public static string token;
         public static string steamApiKey;
         public static string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
+        public static Thread mainThread;
         public static T GetModule<T>() where T : IInternalModule
         {
             for (int i = 0; i < internalModules.Count; i++)
@@ -33,12 +35,19 @@ namespace MuffaloBotNetFramework2
         }
         static void Main(string[] args)
         {
-            MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
+            mainThread = Thread.CurrentThread;
+            try
+            {
+                MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
+            }
+            catch (ThreadAbortException)
+            {
+                Thread.ResetAbort();
+                return; // Exit gracefully
+            }
         }
         public static async Task MainAsync(string[] args)
         {
-            CheckCommandLineArgs(args);
-
             // Main program
             token = File.ReadAllText("token.txt");
             steamApiKey = File.ReadAllText("steam_apikey.txt");
@@ -60,7 +69,7 @@ namespace MuffaloBotNetFramework2
             {
                 await Console.Out.WriteLineAsync("Detected Mono; Switching to alternate WebSocket.");
                 discordClient.SetWebSocketClient<WebSocketSharpClient>();
-                ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => true;
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => true;
             }
             commandsNext = discordClient.UseCommandsNext(new CommandsNextConfiguration()
             {
@@ -68,45 +77,12 @@ namespace MuffaloBotNetFramework2
                 EnableDefaultHelp = false
             });
 
-            InstantiateAllModulesFromAllAssemblies();
+            InstantiateAllModulesFromAssembly(Assembly.GetExecutingAssembly());
             InitializeClientComponents();
 
             Console.WriteLine("------\n\n");
             await discordClient.ConnectAsync();
             await Task.Delay(-1);
-        }
-
-        static void CheckCommandLineArgs(string[] args)
-        {
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (args[i].StartsWith("--corelib-path="))
-                {
-                    WebClient client = new WebClient();
-                    Console.WriteLine("Command line argument: {0}", args[i].Substring(15));
-                    byte[] data = client.DownloadData(args[i].Substring(15));
-                    File.WriteAllBytes("plugins/MuffaloBotCoreLib.dll", data);
-                }
-            }
-        }
-
-        private static void InstantiateAllModulesFromAllAssemblies()
-        {
-            InstantiateAllModulesFromAssembly(Assembly.GetExecutingAssembly());
-            DirectoryInfo directory = new DirectoryInfo("plugins");
-            FileInfo[] allFiles = directory.GetFiles("*.dll");
-            for (int i = 0; i < allFiles.Length; i++)
-            {
-                try
-                {
-                    Assembly a = Assembly.Load(File.ReadAllBytes(allFiles[i].FullName));
-                    InstantiateAllModulesFromAssembly(a);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Exception loading assembly at {allFiles[i].FullName}: {ex}");
-                }
-            }
         }
 
         static void InstantiateAllModulesFromAssembly(Assembly assembly)
@@ -140,8 +116,8 @@ namespace MuffaloBotNetFramework2
         }
         public static void InitializeClientComponents()
         {
-            WebClient webClient = new WebClient();
-            string str = webClient.DownloadString(globalJsonKey);
+            HttpClient webClient = new HttpClient();
+            string str = webClient.GetStringAsync(globalJsonKey).GetAwaiter().GetResult();
             Console.WriteLine(str);
             jsonData = JObject.Parse(str);
             for (int i = 0; i < internalModules.Count; i++)

@@ -11,13 +11,28 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>false</DebugSymbols>
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\binaries\</OutputPath>
+    <OutputPath>..\..\binaries\Release\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,7 +49,13 @@
   <PropertyGroup>
     <ApplicationIcon>muffalo.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MuffaloBotNetFramework2.MuffaloBot</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    </Reference>
     <Reference Include="DSharpPlus, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DSharpPlus.3.2.3\lib\net46\DSharpPlus.dll</HintPath>
     </Reference>
@@ -85,9 +106,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientModules\MuffaloBotCooldownManager.cs" />
+    <Compile Include="ClientModules\MuffaloBotExceptionHandler.cs" />
+    <Compile Include="ClientModules\XmlDatabase.cs" />
+    <Compile Include="CommandsModules\BasicConnectivityTests.cs" />
+    <Compile Include="CommandsModules\ClientModuleCommands.cs" />
+    <Compile Include="CommandsModules\ImageMagickCommands.cs" />
+    <Compile Include="CommandsModules\Meta.cs" />
+    <Compile Include="CommandsModules\WikiSearch.cs" />
+    <Compile Include="CommandsModules\WorkshopSearch.cs" />
+    <Compile Include="CommandsModules\XPathCommands.cs" />
     <Compile Include="DiscordComponent\Extensions.cs" />
     <Compile Include="DiscordComponent\MuffaloBotCommandsModuleAttribute.cs" />
     <Compile Include="DiscordComponent\IClientModule.cs" />
+    <Compile Include="InternalModules\CustomCommandsManager.cs" />
+    <Compile Include="InternalModules\DiscordLogManager.cs" />
+    <Compile Include="InternalModules\HelpProvider.cs" />
+    <Compile Include="InternalModules\QuoteManager.cs" />
+    <Compile Include="InternalModules\RoleOnMessageManager.cs" />
+    <Compile Include="ClientModules\SocketCloseAutoRestarter.cs" />
     <Compile Include="MuffaloBot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -97,6 +134,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="muffalo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

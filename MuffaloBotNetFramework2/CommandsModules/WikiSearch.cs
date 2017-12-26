@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
 using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotCoreLib.CommandsModules
+namespace MuffaloBotNetFramework2.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class WikiSearch

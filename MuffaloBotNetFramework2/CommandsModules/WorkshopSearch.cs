@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 using MuffaloBotNetFramework2.DiscordComponent;
 using MuffaloBotNetFramework2;
 
-namespace MuffaloBotCoreLib.CommandsModules
+namespace MuffaloBotNetFramework2.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class WorkshopSearch

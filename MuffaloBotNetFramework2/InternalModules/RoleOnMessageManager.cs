@@ -9,7 +9,7 @@ using DSharpPlus.Entities;
 using MuffaloBotNetFramework2.DiscordComponent;
 using MuffaloBotNetFramework2;
 
-namespace MuffaloBotCoreLib.InternalModules
+namespace MuffaloBotNetFramework2.InternalModules
 {
     public class RoleOnMessageManager : IInternalModule
     {

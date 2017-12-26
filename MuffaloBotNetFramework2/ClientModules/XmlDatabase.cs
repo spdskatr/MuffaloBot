@@ -10,7 +10,7 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using MuffaloBotNetFramework2.DiscordComponent;
 
-namespace MuffaloBotCoreLib.ClientModules
+namespace MuffaloBotNetFramework2.ClientModules
 {
     class XmlDatabase : BaseModule
     {

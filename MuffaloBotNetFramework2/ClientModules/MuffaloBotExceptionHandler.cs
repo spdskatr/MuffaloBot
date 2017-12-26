@@ -12,13 +12,13 @@ using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Exceptions;
 using MuffaloBotNetFramework2;
 
-namespace MuffaloBotCoreLib.ClientModules
+namespace MuffaloBotNetFramework2.ClientModules
 {
     class MuffaloBotExceptionHandler : BaseModule
     {
         public async Task HandleClientError(CommandErrorEventArgs e)
         {
-            if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException || e.Exception is ChecksFailedException) return;
+            if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException || e.Exception is ChecksFailedException || e.Exception.Message.StartsWith("Could not convert specified value to given type.")) return;
             await HandleClientError(e.Exception, "Command " + (e.Command?.Name ?? "unknown"));
         }
 
