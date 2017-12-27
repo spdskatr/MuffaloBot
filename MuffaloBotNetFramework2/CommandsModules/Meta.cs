@@ -21,10 +21,11 @@ namespace MuffaloBotNetFramework2.CommandsModules
     [MuffaloBotCommandsModule]
     class Meta
     {
-        [Command("version"), RequireOwner, Hidden]
+        [Command("version"), Hidden]
         public Task GetVersion(CommandContext ctx)
         {
-            return ctx.RespondAsync("MuffaloBotCoreLib Version " + Assembly.GetExecutingAssembly().GetName().Version);
+            AssemblyName name = Assembly.GetExecutingAssembly().GetName();
+            return ctx.RespondAsync($"{name.Name} Version {name.Version}");
         }
         [Command("status"), RequireOwner, Hidden]
         public async Task SetStatus(CommandContext ctx, string status)

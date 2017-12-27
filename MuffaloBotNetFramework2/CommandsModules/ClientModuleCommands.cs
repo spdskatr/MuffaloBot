@@ -25,7 +25,7 @@ namespace MuffaloBotNetFramework2.CommandsModules
                     await ctx.RespondAsync(quotes[random.Next(0, quotes.Length)]);
                     break;
                 default:
-                    if (index == quotes.Length + 1)
+                    if (index == quotes.Length + 2)
                     {
                         await ctx.RespondAsync($"Welcome to the secret muffalo internet. Please proceed to the main page: `!quote 9.75`");
                         return;

@@ -23,7 +23,7 @@ namespace MuffaloBotNetFramework2
         public static string token;
         public static string steamApiKey;
         public static string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
-        public static Thread mainThread;
+        public static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         public static T GetModule<T>() where T : IInternalModule
         {
             for (int i = 0; i < internalModules.Count; i++)
@@ -35,15 +35,13 @@ namespace MuffaloBotNetFramework2
         }
         static void Main(string[] args)
         {
-            mainThread = Thread.CurrentThread;
             try
             {
                 MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
             }
-            catch (ThreadAbortException)
+            catch (TaskCanceledException)
             {
-                Thread.ResetAbort();
-                return; // Exit gracefully
+                return;
             }
         }
         public static async Task MainAsync(string[] args)
@@ -82,7 +80,7 @@ namespace MuffaloBotNetFramework2
 
             Console.WriteLine("------\n\n");
             await discordClient.ConnectAsync();
-            await Task.Delay(-1);
+            await Task.Delay(-1, cancellationTokenSource.Token);
         }
 
         static void InstantiateAllModulesFromAssembly(Assembly assembly)

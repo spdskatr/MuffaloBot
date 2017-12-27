@@ -18,7 +18,7 @@ namespace MuffaloBotNetFramework2.InternalModules
 
         Task ExitApplication(DSharpPlus.EventArgs.SocketCloseEventArgs e)
         {
-            MuffaloBot.mainThread.Abort();
+            MuffaloBot.cancellationTokenSource.Cancel();
             return Task.CompletedTask;
         }
     }

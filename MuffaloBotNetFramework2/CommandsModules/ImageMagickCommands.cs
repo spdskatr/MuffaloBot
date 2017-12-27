@@ -14,7 +14,7 @@ using MuffaloBotNetFramework2.DiscordComponent;
 
 namespace MuffaloBotNetFramework2.CommandsModules
 {
-    [MuffaloBotCommandsModule, Cooldown(1, 300, CooldownBucketType.User)]
+    [MuffaloBotCommandsModule, Cooldown(1, 60, CooldownBucketType.User)]
     public class ImageMagickCommands
     {
         enum ImageEditMode
