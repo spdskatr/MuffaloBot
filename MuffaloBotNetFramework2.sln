@@ -1,14 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2003
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuffaloBotNetFramework2", "MuffaloBotNetFramework2\MuffaloBotNetFramework2.csproj", "{BFE71EC2-7F6E-4CEA-945F-45BF772EE4BE}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{378019DB-4666-4DAC-91A3-3CBB0D5CEECB}"
 	ProjectSection(SolutionItems) = preProject
 		config\global_config.json = config\global_config.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuffaloBotNetCore", "MuffaloBotNetCore\MuffaloBotNetCore.csproj", "{266DC54A-59A6-44C4-8497-619CF35BC5F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BFE71EC2-7F6E-4CEA-945F-45BF772EE4BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFE71EC2-7F6E-4CEA-945F-45BF772EE4BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFE71EC2-7F6E-4CEA-945F-45BF772EE4BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFE71EC2-7F6E-4CEA-945F-45BF772EE4BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

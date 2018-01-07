@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DSharpPlus" Version="3.2.3" />
+    <PackageReference Include="DSharpPlus.CommandsNext" Version="3.2.3" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthResourcesCreateNewIfDownloadingFromRepo.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="AuthResourcesCreateNewIfDownloadingFromRepo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
