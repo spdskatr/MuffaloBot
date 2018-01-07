@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Net.WebSocket;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
 using System.Threading;
-using static MuffaloBotNetCore.AuthResourcesCreateNewIfDownloadingFromRepo;
+using static MuffaloBotNetStandard.AuthResourcesCreateNewIfDownloadingFromRepo;
 
-namespace MuffaloBotNetFramework2
+namespace MuffaloBot
 {
-    public static class MuffaloBot
+    public static class MuffaloBotProgram
     {
         public static DiscordClient discordClient;
         public static CommandsNextModule commandsNext;
@@ -34,7 +34,7 @@ namespace MuffaloBotNetFramework2
             }
             return default(T);
         }
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {

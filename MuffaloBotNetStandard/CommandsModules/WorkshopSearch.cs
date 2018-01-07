@@ -10,10 +10,10 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using Newtonsoft.Json.Linq;
-using MuffaloBotNetFramework2.DiscordComponent;
-using MuffaloBotNetFramework2;
+using MuffaloBot.DiscordComponent;
+using MuffaloBot;
 
-namespace MuffaloBotNetFramework2.CommandsModules
+namespace MuffaloBot.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class WorkshopSearch
@@ -30,7 +30,7 @@ namespace MuffaloBotNetFramework2.CommandsModules
         [Command("wshopsearch")]
         public async Task Search(CommandContext ctx, [RemainingText] string query)
         {
-            JObject result = Query(query, MuffaloBot.steamApiKey, 5, EPublishedFileQueryType.Relevance);
+            JObject result = Query(query, MuffaloBotProgram.steamApiKey, 5, EPublishedFileQueryType.Relevance);
             if (result["response"]["total"].Value<int>() == 0)
             {
                 await ctx.RespondAsync("No results.");

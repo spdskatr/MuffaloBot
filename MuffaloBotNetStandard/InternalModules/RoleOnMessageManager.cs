@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
-using MuffaloBotNetFramework2.DiscordComponent;
-using MuffaloBotNetFramework2;
+using MuffaloBot.DiscordComponent;
+using MuffaloBot;
 
-namespace MuffaloBotNetFramework2.InternalModules
+namespace MuffaloBot.InternalModules
 {
     public class RoleOnMessageManager : IInternalModule
     {
@@ -56,7 +56,7 @@ namespace MuffaloBotNetFramework2.InternalModules
             JToken roleOnMessageToken = jObjectCache["roleOnMessage"];
             if (roleOnMessageToken != null)
             {
-                DiscordGuild guild = MuffaloBot.discordClient.Guilds[roleOnMessageToken["guild"].Value<ulong>()];
+                DiscordGuild guild = MuffaloBotProgram.discordClient.Guilds[roleOnMessageToken["guild"].Value<ulong>()];
                 channel = guild.GetChannelsAsync().GetAwaiter().GetResult().First(c => c.Id == roleOnMessageToken["channel"].Value<ulong>());
                 roleId = roleOnMessageToken["role"].Value<ulong>();
             }

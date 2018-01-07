@@ -7,15 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using MuffaloBotNetFramework2.DiscordComponent;
-using MuffaloBotNetFramework2;
+using MuffaloBot.DiscordComponent;
+using MuffaloBot;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Net.Http;
 using System.IO;
 
-namespace MuffaloBotNetFramework2.CommandsModules
+namespace MuffaloBot.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class Meta

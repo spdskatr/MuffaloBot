@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.CommandsModules
+namespace MuffaloBot.CommandsModules
 {
     [MuffaloBotCommandsModule]
     class BasicConnectivityTests
@@ -37,6 +37,7 @@ Library: [DSharpPlus](https://dsharpplus.emzi0767.com/) (.NET)
 Other libraries: [Magick.NET](https://github.com/dlemstra/Magick.NET) Wrapper for [ImageMagick](http://www.imagemagick.org/) (.NET)
 Hosted by: Zirr
 GitHub Repository: https://github.com/spdskatr/MuffaloBot
+Beta testing discord: https://discord.gg/6MHVepE
 This bot account will not have an invite link. It is exclusive to a few guilds that have the bot.");
             embedBuilder.WithColor(DiscordColor.Azure);
             return ctx.RespondAsync(embed: embedBuilder.Build());

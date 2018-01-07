@@ -8,11 +8,11 @@ using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Xml;
 using System.Text.RegularExpressions;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 using System.Net.Http;
 using System.IO.Compression;
 
-namespace MuffaloBotNetFramework2.ClientModules
+namespace MuffaloBot.ClientModules
 {
     class XmlDatabase : BaseModule
     {
@@ -20,15 +20,18 @@ namespace MuffaloBotNetFramework2.ClientModules
         public XmlDatabase()
         {
             HttpClient client = new HttpClient();
-            using (MemoryStream memory = new MemoryStream(client.GetByteArrayAsync("implement_this_thanks").GetAwaiter().GetResult()))
+            using (MemoryStream memory = new MemoryStream(client.GetByteArrayAsync("https://github.com/spdskatr/MuffaloBot/raw/master/files/Defs.zip").GetAwaiter().GetResult()))
             using (ZipArchive archive = new ZipArchive(memory))
             {
                 database = new List<KeyValuePair<string, XmlDocument>>(archive.Entries.Count);
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    XmlDocument document = new XmlDocument();
-                    document.Load(entry.Open());
-                    database.Add(new KeyValuePair<string, XmlDocument>(entry.FullName, document));
+                    if (entry.FullName.EndsWith(".xml"))
+                    {
+                        XmlDocument document = new XmlDocument();
+                        document.Load(entry.Open());
+                        database.Add(new KeyValuePair<string, XmlDocument>(entry.FullName, document));
+                    }
                 }
             }
         }

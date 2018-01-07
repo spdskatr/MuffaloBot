@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MuffaloBotNetFramework2.DiscordComponent
+namespace MuffaloBotNetFramework
 {
-    public class MuffaloBotCommandsModuleAttribute : Attribute
+    class Program
     {
+        static void Main(string[] args)
+        {
+        }
     }
 }

@@ -12,18 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AuthResourcesCreateNewIfDownloadingFromRepo.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="AuthResourcesCreateNewIfDownloadingFromRepo.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\MuffaloBotNetStandard\MuffaloBotNetStandard.csproj" />
   </ItemGroup>
 
 </Project>

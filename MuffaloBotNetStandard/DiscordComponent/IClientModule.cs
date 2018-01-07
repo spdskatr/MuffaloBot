@@ -1,7 +1,7 @@
 ﻿using DSharpPlus;
 using Newtonsoft.Json.Linq;
 
-namespace MuffaloBotNetFramework2.DiscordComponent
+namespace MuffaloBot.DiscordComponent
 {
     public interface IInternalModule
     {

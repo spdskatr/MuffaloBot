@@ -8,7 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		config\global_config.json = config\global_config.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuffaloBotNetCore", "MuffaloBotNetCore\MuffaloBotNetCore.csproj", "{266DC54A-59A6-44C4-8497-619CF35BC5F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MuffaloBotNetCore", "MuffaloBotNetCore\MuffaloBotNetCore.csproj", "{266DC54A-59A6-44C4-8497-619CF35BC5F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuffaloBotNetStandard", "MuffaloBotNetStandard\MuffaloBotNetStandard.csproj", "{0C88727B-C627-4769-B420-461A9892E5C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MuffaloBotNet461", "MuffaloBotNet461\MuffaloBotNet461.csproj", "{8070E881-C288-4F43-A030-BAA803053243}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +24,14 @@ Global
 		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{266DC54A-59A6-44C4-8497-619CF35BC5F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C88727B-C627-4769-B420-461A9892E5C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C88727B-C627-4769-B420-461A9892E5C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C88727B-C627-4769-B420-461A9892E5C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C88727B-C627-4769-B420-461A9892E5C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8070E881-C288-4F43-A030-BAA803053243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8070E881-C288-4F43-A030-BAA803053243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8070E881-C288-4F43-A030-BAA803053243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8070E881-C288-4F43-A030-BAA803053243}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

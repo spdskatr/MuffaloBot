@@ -8,9 +8,9 @@ using Newtonsoft.Json.Linq;
 using DSharpPlus.EventArgs;
 using Newtonsoft.Json;
 using DSharpPlus.Entities;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.InternalModules
+namespace MuffaloBot.InternalModules
 {
     class CustomCommandsManager : IInternalModule
     {

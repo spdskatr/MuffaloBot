@@ -10,9 +10,9 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Text.RegularExpressions;
 using System.IO;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.CommandsModules
+namespace MuffaloBot.CommandsModules
 {
     [MuffaloBotCommandsModule, Cooldown(1, 60, CooldownBucketType.User)]
     public class ImageMagickCommands

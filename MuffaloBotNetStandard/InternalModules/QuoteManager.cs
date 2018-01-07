@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus;
 using Newtonsoft.Json.Linq;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 
-namespace MuffaloBotNetFramework2.InternalModules
+namespace MuffaloBot.InternalModules
 {
     class QuoteManager : IInternalModule
     {

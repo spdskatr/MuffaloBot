@@ -8,10 +8,10 @@ using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
-using MuffaloBotNetFramework2.DiscordComponent;
-using MuffaloBotNetFramework2;
+using MuffaloBot.DiscordComponent;
+using MuffaloBot;
 
-namespace MuffaloBotNetFramework2.InternalModules
+namespace MuffaloBot.InternalModules
 {
     class HelpProvider : IInternalModule
     {
@@ -74,7 +74,7 @@ namespace MuffaloBotNetFramework2.InternalModules
             embedBuilder.WithColor(DiscordColor.Green);
             embedBuilder.WithDescription("This embed shows all documented commands. For more commands, type `!mbhelp <command>`");
             embedBuilder.AddField("All commands", string.Join(", ", dictionary.Keys.Select(s => string.Format("`{0}`", dictionary[s].usage))));
-            embedBuilder.AddField("Custom commands (no help)", string.Join(", ", MuffaloBot.GetModule<CustomCommandsManager>().AllCustomCommands().Select(s => $"`{s}`")));
+            embedBuilder.AddField("Custom commands (no help)", string.Join(", ", MuffaloBotProgram.GetModule<CustomCommandsManager>().AllCustomCommands().Select(s => $"`{s}`")));
             
             return embedBuilder.Build();
         }

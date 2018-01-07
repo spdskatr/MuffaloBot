@@ -10,9 +10,9 @@ using DSharpPlus.Entities;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Exceptions;
 using DSharpPlus.Exceptions;
-using MuffaloBotNetFramework2;
+using MuffaloBot;
 
-namespace MuffaloBotNetFramework2.ClientModules
+namespace MuffaloBot.ClientModules
 {
     class MuffaloBotExceptionHandler : BaseModule
     {
@@ -33,7 +33,7 @@ namespace MuffaloBotNetFramework2.ClientModules
             builder.WithDescription($"Action: {action}\n```\n{e.ToString()}```");
             builder.WithColor(DiscordColor.Red);
             DiscordChannel channel = await Client.CreateDmAsync(Client.CurrentApplication.Owner);
-            await MuffaloBot.discordClient.SendMessageAsync(channel, embed: builder.Build());
+            await MuffaloBotProgram.discordClient.SendMessageAsync(channel, embed: builder.Build());
         }
 
         protected override void Setup(DiscordClient client)

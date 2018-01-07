@@ -1,5 +1,5 @@
 ﻿using DSharpPlus;
-using MuffaloBotNetFramework2.DiscordComponent;
+using MuffaloBot.DiscordComponent;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MuffaloBotNetFramework2.InternalModules
+namespace MuffaloBot.InternalModules
 {
     public class SocketCloseAutoRestarter : BaseModule
     {
@@ -18,7 +18,7 @@ namespace MuffaloBotNetFramework2.InternalModules
 
         Task ExitApplication(DSharpPlus.EventArgs.SocketCloseEventArgs e)
         {
-            MuffaloBot.cancellationTokenSource.Cancel();
+            MuffaloBotProgram.cancellationTokenSource.Cancel();
             return Task.CompletedTask;
         }
     }
