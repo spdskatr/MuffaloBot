@@ -11,21 +11,23 @@ using System.Reflection;
 using Newtonsoft.Json.Linq;
 using DSharpPlus.Entities;
 using System.Threading;
-using static MuffaloBotNetStandard.AuthResourcesCreateNewIfDownloadingFromRepo;
+using static MuffaloBot.AuthResourcesCreateNewIfDownloadingFromRepo;
 
 namespace MuffaloBot
 {
-    public static class MuffaloBotProgram
+    public class MuffaloBotProgram
     {
-        public static DiscordClient discordClient;
-        public static CommandsNextModule commandsNext;
-        public static List<IInternalModule> internalModules;
-        public static JObject jsonData;
-        public static string token;
-        public static string steamApiKey;
-        public static string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
-        public static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public static T GetModule<T>() where T : IInternalModule
+        public static Dictionary<DiscordClient, MuffaloBotProgram> createdInstances = new Dictionary<DiscordClient, MuffaloBotProgram>();
+
+        public DiscordClient discordClient;
+        public CommandsNextModule commandsNext;
+        public List<IInternalModule> internalModules;
+        public JObject jsonData;
+        public string token;
+        public string steamApiKey;
+        public string globalJsonKey = "https://raw.githubusercontent.com/spdskatr/MuffaloBot/master/config/global_config.json";
+        public CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        public T GetModule<T>() where T : IInternalModule
         {
             for (int i = 0; i < internalModules.Count; i++)
             {
@@ -34,18 +36,19 @@ namespace MuffaloBot
             }
             return default(T);
         }
+
         public static void Main(string[] args)
         {
             try
             {
-                MainAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
+                new MuffaloBotProgram().StartAsync(args).ConfigureAwait(false).GetAwaiter().GetResult();
             }
             catch (TaskCanceledException)
             {
                 return;
             }
         }
-        public static async Task MainAsync(string[] args)
+        public async Task StartAsync(string[] args)
         {
             // Main program
             token = BOT_TOKEN;
@@ -56,7 +59,6 @@ namespace MuffaloBot
             {
                 Token = token,
                 TokenType = TokenType.Bot,
-                UseInternalLogHandler = true,
                 LogLevel = LogLevel.Debug
             });
             commandsNext = discordClient.UseCommandsNext(new CommandsNextConfiguration()
@@ -67,13 +69,12 @@ namespace MuffaloBot
 
             InstantiateAllModulesFromAssembly(Assembly.GetExecutingAssembly());
             InitializeClientComponents();
-
-            Console.WriteLine("------\n\n");
+            createdInstances.Add(discordClient, this);
             await discordClient.ConnectAsync();
             await Task.Delay(-1, cancellationTokenSource.Token);
         }
 
-        static void InstantiateAllModulesFromAssembly(Assembly assembly)
+        void InstantiateAllModulesFromAssembly(Assembly assembly)
         {
             internalModules = new List<IInternalModule>();
             Type[] types = assembly.GetTypes();
@@ -102,7 +103,7 @@ namespace MuffaloBot
                 }
             }
         }
-        public static void InitializeClientComponents()
+        public void InitializeClientComponents()
         {
             HttpClient webClient = new HttpClient();
             string str = webClient.GetStringAsync(globalJsonKey).GetAwaiter().GetResult();

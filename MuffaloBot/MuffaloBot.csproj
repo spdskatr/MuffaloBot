@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8070E881-C288-4F43-A030-BAA803053243}</ProjectGuid>
+    <ProjectGuid>{1277A264-DEAA-4501-9B3B-7F19CA908004}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MuffaloBotNet461</RootNamespace>
-    <AssemblyName>MuffaloBotNet461</AssemblyName>
+    <RootNamespace>MuffaloBot</RootNamespace>
+    <AssemblyName>MuffaloBot</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,22 +32,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DSharpPlus, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DSharpPlus">
       <HintPath>..\packages\DSharpPlus.3.2.3\lib\net46\DSharpPlus.dll</HintPath>
     </Reference>
-    <Reference Include="DSharpPlus.CommandsNext, Version=3.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DSharpPlus.CommandsNext">
       <HintPath>..\packages\DSharpPlus.CommandsNext.3.2.3\lib\net46\DSharpPlus.CommandsNext.dll</HintPath>
     </Reference>
-    <Reference Include="Magick.NET-Q16-AnyCPU, Version=7.2.1.0, Culture=neutral, PublicKeyToken=2004825badfa91ec, processorArchitecture=MSIL">
+    <Reference Include="Magick.NET-Q16-AnyCPU">
       <HintPath>..\packages\Magick.NET-Q16-AnyCPU.7.3.0\lib\net40\Magick.NET-Q16-AnyCPU.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,18 +57,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Attributes\RequireChannelInGuildAttribute.cs" />
+    <Compile Include="AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs">
+      <DependentUpon>AuthResourcesCreateNewIfDownloadingFromRepo.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ClientModules\MuffaloBotCooldownManager.cs" />
+    <Compile Include="ClientModules\MuffaloBotExceptionHandler.cs" />
+    <Compile Include="ClientModules\SocketCloseAutoRestarter.cs" />
+    <Compile Include="ClientModules\XmlDatabase.cs" />
+    <Compile Include="CommandsModules\BasicConnectivityTests.cs" />
+    <Compile Include="CommandsModules\ClientModuleCommands.cs" />
+    <Compile Include="CommandsModules\ImageMagickCommands.cs" />
+    <Compile Include="CommandsModules\Meta.cs" />
+    <Compile Include="CommandsModules\WikiSearch.cs" />
+    <Compile Include="CommandsModules\WorkshopSearch.cs" />
+    <Compile Include="CommandsModules\XPathCommands.cs" />
+    <Compile Include="DiscordComponent\Extensions.cs" />
+    <Compile Include="DiscordComponent\IClientModule.cs" />
+    <Compile Include="DiscordComponent\MuffaloBotCommandsModuleAttribute.cs" />
+    <Compile Include="InternalModules\CustomCommandsManager.cs" />
+    <Compile Include="InternalModules\DiscordLogManager.cs" />
+    <Compile Include="InternalModules\HelpProvider.cs" />
+    <Compile Include="InternalModules\QuoteManager.cs" />
+    <Compile Include="InternalModules\RoleOnMessageManager.cs" />
+    <Compile Include="MuffaloBot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MuffaloBotNetStandard\MuffaloBotNetStandard.csproj">
-      <Project>{0c88727b-c627-4769-b420-461a9892e5c2}</Project>
-      <Name>MuffaloBotNetStandard</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="AuthResourcesCreateNewIfDownloadingFromRepo.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

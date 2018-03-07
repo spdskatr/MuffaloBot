@@ -30,7 +30,7 @@ namespace MuffaloBot.CommandsModules
         [Command("wshopsearch")]
         public async Task Search(CommandContext ctx, [RemainingText] string query)
         {
-            JObject result = Query(query, MuffaloBotProgram.steamApiKey, 5, EPublishedFileQueryType.Relevance);
+            JObject result = Query(query, AuthResourcesCreateNewIfDownloadingFromRepo.STEAM_APIKEY, 5, EPublishedFileQueryType.Relevance);
             if (result["response"]["total"].Value<int>() == 0)
             {
                 await ctx.RespondAsync("No results.");

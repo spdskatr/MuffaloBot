@@ -11,14 +11,16 @@ namespace MuffaloBot.InternalModules
 {
     public class SocketCloseAutoRestarter : BaseModule
     {
+        DiscordClient client;
         protected override void Setup(DiscordClient client)
         {
+            this.client = client;
             client.SocketClosed += ExitApplication;
         }
 
         Task ExitApplication(DSharpPlus.EventArgs.SocketCloseEventArgs e)
         {
-            MuffaloBotProgram.cancellationTokenSource.Cancel();
+            MuffaloBotProgram.createdInstances[client].cancellationTokenSource.Cancel();
             return Task.CompletedTask;
         }
     }

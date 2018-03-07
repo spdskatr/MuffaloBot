@@ -19,21 +19,21 @@ namespace MuffaloBot.ClientModules
         public async Task HandleClientError(CommandErrorEventArgs e)
         {
             if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException || e.Exception is ChecksFailedException || e.Exception.Message.StartsWith("Could not convert specified value to given type.")) return;
-            await HandleClientError(e.Exception, "Command " + (e.Command?.Name ?? "unknown"));
+            await HandleClientError(e.Exception, e.Context.Client, "Command " + (e.Command?.Name ?? "unknown"));
         }
 
         public Task HandleClientError(ClientErrorEventArgs e)
         {
-            return HandleClientError(e.Exception, "Event " + e.EventName);
+            return HandleClientError(e.Exception, (DiscordClient)e.Client, "Event " + e.EventName);
         }
-        public async Task HandleClientError(Exception e, string action)
+        public async Task HandleClientError(Exception e, DiscordClient client, string action)
         {
             DiscordEmbedBuilder builder = new DiscordEmbedBuilder();
             builder.WithTitle("Unhandled exception");
             builder.WithDescription($"Action: {action}\n```\n{e.ToString()}```");
             builder.WithColor(DiscordColor.Red);
             DiscordChannel channel = await Client.CreateDmAsync(Client.CurrentApplication.Owner);
-            await MuffaloBotProgram.discordClient.SendMessageAsync(channel, embed: builder.Build());
+            await client.SendMessageAsync(channel, embed: builder.Build());
         }
 
         protected override void Setup(DiscordClient client)

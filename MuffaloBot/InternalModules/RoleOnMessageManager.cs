@@ -13,12 +13,14 @@ namespace MuffaloBot.InternalModules
 {
     public class RoleOnMessageManager : IInternalModule
     {
+        DiscordClient client;
         DiscordChannel channel;
         ulong roleId;
         JObject jObjectCache;
         bool ready;
         public void BindToClient(DiscordClient client)
         {
+            this.client = client;
             client.MessageCreated += MessageCreated;
             client.Ready += OnReady;
         }
@@ -56,7 +58,7 @@ namespace MuffaloBot.InternalModules
             JToken roleOnMessageToken = jObjectCache["roleOnMessage"];
             if (roleOnMessageToken != null)
             {
-                DiscordGuild guild = MuffaloBotProgram.discordClient.Guilds[roleOnMessageToken["guild"].Value<ulong>()];
+                DiscordGuild guild = client.Guilds[roleOnMessageToken["guild"].Value<ulong>()];
                 channel = guild.GetChannelsAsync().GetAwaiter().GetResult().First(c => c.Id == roleOnMessageToken["channel"].Value<ulong>());
                 roleId = roleOnMessageToken["role"].Value<ulong>();
             }

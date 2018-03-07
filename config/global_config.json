@@ -1,32 +1,13 @@
 {
 	"logCacheSize": 5000,
-  "quotes": [
-    "If you think about it, `bb || !bb` always returns true.",
-    "SirSatanII: *I am not a command. Please try again later.*",
-    "Jdalt40: I'm expecting an Easter egg of me 9 AM tomorrow sharp",
-    "How to mod RimWorld: Copy and paste stuff, get angry at stuff, make other people angry at your stuff.",
-    "If IE is brave enough to ask you to set it as your default browser, don't tell me you dare not ask a girl out.",
-    "Namsan: I like to drink tears and bloods",
-    "Sneaks: How dare you, what did that poor Wolfy ever do to you",
-    "Xen: How dare you even vaguely praise IE",
-    "How many consonants are there in the answer to this question?",
-    "If 666 is evil, does that make 25.8069758011 the root of all evil?",
-    "Guy Skittle: I'm Randy Random and **this** is my RimWorld. I work here with my old woman, Cassandra Classic, and my daughter, Phoebe Chillax. One thing I've learned after 21 quadrums; you never know **what** is gonna come through those cargo pods.",
-    "AWiseCorn: Muffy you beautiful bastard",
-    "Xen: why do all of spd's coder jokes sound like a dad who just learned his son wants to be a coder, and is trying to be supportive\nspdskatr: From /r/programmerhumor\nXen: oh, thats why",
-    "HyperGabe: Where is my quote?",
-    "Jdalt40: Really @Spdskatr, you made a Pawn Shop joke?",
-    "Magmustn't: I did not write this quote nor do I care that spdskatr put this up on MuffaloBot's quote bank",
-    "Tyrrhena: 'rimworld is holding my social life hostage'",
-    "XeoNovaDan: c4n m3 hz muffbot cmd plz"
-  ],
   "customCommands": {
     "!moddingtutorials": "http://rimworldwiki.com/wiki/Modding_Tutorials",
     "!settingupcs": "http://rimworldwiki.com/wiki/Modding_Tutorials/Setting_up_a_solution",
     "!patchoperations": "http://rimworldwiki.com/wiki/Modding_Tutorials/PatchOperations",
     "!ignis": "https://cdn.discordapp.com/attachments/225701528470683648/387460314918289408/unknown-4.png",
     "!killignis": "https://cdn.discordapp.com/attachments/225701528470683648/387458918973964288/dont.png",
-    "!radish": "http://prntscr.com/hj6kji"
+    "!radish": "http://prntscr.com/hj6kji",
+    "!moddingresources": "https://spdskatr.github.io/RWModdingResources/"
   },
   "help": {
     "muffalo": {
@@ -88,17 +69,15 @@
       ]
     },
     "wshopsearch": {
-      "usage": "!wshopsearch <query> [queryType]",
+      "usage": "!wshopsearch <query>",
       "description": "Searches the steam workshop for the specified search term.",
       "parameters": {
-        "query": "The search term.",
-        "queryType": "The search type. Can be one of: `relevance`, `top`, `recent`, `mostsubscribed`. If unrecognised or left blank, will default to `relevance`."
+        "query": "The search term."
       },
       "examples": [
         "!wshopsearch raiderpedes",
         "!wshopsearch \"colony manager\"",
-        "!wshopsearch \"damage indicators\" top",
-        "!wshopsearch power mostsubscribed"
+        "!wshopsearch damage indicators"
       ]
     },
     "iteminfo": {
@@ -141,10 +120,6 @@
       "parameters": {
         "link": "The URL of the image."
       }
-    },
-    "usercount": {
-      "usage": "!usercount",
-      "description": "Replies with how many users are in the current guild."
     }
   },
 	"__roleOnMessage__" : {

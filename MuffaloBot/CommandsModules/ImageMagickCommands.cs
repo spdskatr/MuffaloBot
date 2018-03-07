@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
 using System.Threading.Tasks;
 using ImageMagick;
 using DSharpPlus.CommandsNext;
@@ -11,10 +10,12 @@ using DSharpPlus.Entities;
 using System.Text.RegularExpressions;
 using System.IO;
 using MuffaloBot.DiscordComponent;
+using MuffaloBot.Attributes;
+using System.Net.Http;
 
 namespace MuffaloBot.CommandsModules
 {
-    [MuffaloBotCommandsModule, Cooldown(1, 60, CooldownBucketType.User)]
+    [MuffaloBotCommandsModule, Cooldown(1, 60, CooldownBucketType.User), RequireChannelInGuild("RimWorld","bot-commands")]
     public class ImageMagickCommands
     {
         enum ImageEditMode
@@ -66,13 +67,13 @@ namespace MuffaloBot.CommandsModules
             }
             if (!string.IsNullOrEmpty(attachmentUrl))
             {
-                WebClient client = new WebClient();
+                HttpClient client = new HttpClient();
                 byte[] buffer;
                 try
                 {
-                    buffer = await client.DownloadDataTaskAsync(attachmentUrl);
+                    buffer = await client.GetByteArrayAsync(attachmentUrl);
                 }
-                catch (WebException)
+                catch (HttpRequestException)
                 {
                     await ctx.RespondAsync("Error connecting to image link.");
                     return;
@@ -174,6 +175,7 @@ namespace MuffaloBot.CommandsModules
             if (originalHeight * originalWidth > 2250000)
             {
                 await ctx.RespondAsync($"Image exceeds maximum size of 2250000 pixels (Actual size: {originalHeight * originalWidth})");
+                return;
             }
             // Do magic
             double exceed = buffer.Length / 8388608d;

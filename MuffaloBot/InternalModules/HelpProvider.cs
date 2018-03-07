@@ -16,6 +16,7 @@ namespace MuffaloBot.InternalModules
     class HelpProvider : IInternalModule
     {
         public Dictionary<string, HelpEntry> dictionary;
+        DiscordClient client;
         public class HelpEntry
         {
             public string usage = "(no usage)";
@@ -27,6 +28,7 @@ namespace MuffaloBot.InternalModules
         }
         public void BindToClient(DiscordClient client)
         {
+            this.client = client;
         }
         public void InitializeFronJson(JObject jObject)
         {
@@ -74,7 +76,7 @@ namespace MuffaloBot.InternalModules
             embedBuilder.WithColor(DiscordColor.Green);
             embedBuilder.WithDescription("This embed shows all documented commands. For more commands, type `!mbhelp <command>`");
             embedBuilder.AddField("All commands", string.Join(", ", dictionary.Keys.Select(s => string.Format("`{0}`", dictionary[s].usage))));
-            embedBuilder.AddField("Custom commands (no help)", string.Join(", ", MuffaloBotProgram.GetModule<CustomCommandsManager>().AllCustomCommands().Select(s => $"`{s}`")));
+            embedBuilder.AddField("Custom commands (no help)", string.Join(", ", MuffaloBotProgram.createdInstances[client].GetModule<CustomCommandsManager>().AllCustomCommands().Select(s => $"`{s}`")));
             
             return embedBuilder.Build();
         }

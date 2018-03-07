@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MuffaloBotNet461")]
+[assembly: AssemblyTitle("MuffaloBot")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MuffaloBotNet461")]
+[assembly: AssemblyProduct("MuffaloBot")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8070e881-c288-4f43-a030-baa803053243")]
+[assembly: Guid("1277a264-deaa-4501-9b3b-7f19ca908004")]
 
 // Version information for an assembly consists of the following four values:
 //
