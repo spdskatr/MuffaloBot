@@ -18,7 +18,14 @@ namespace MuffaloBot.ClientModules
     {
         public async Task HandleClientError(CommandErrorEventArgs e)
         {
-            if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException || e.Exception is ChecksFailedException || e.Exception.Message.StartsWith("Could not convert specified value to given type.")) return;
+            if (e.Exception is CommandNotFoundException || e.Exception is UnauthorizedException || e.Exception.Message.StartsWith("Could not convert specified value to given type.")) return;
+
+            if (e.Exception is ChecksFailedException)
+            {
+                await e.Context.RespondAsync("You can't do that. >:V");
+                return;
+            }
+
             await HandleClientError(e.Exception, e.Context.Client, "Command " + (e.Command?.Name ?? "unknown"));
         }
 

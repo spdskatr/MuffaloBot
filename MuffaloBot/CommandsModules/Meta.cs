@@ -14,9 +14,15 @@ using System.Reflection;
 using System.Threading;
 using System.Net.Http;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace MuffaloBot.CommandsModules
 {
+    public class EvalGobals
+    {
+        public CommandContext ctx;
+    }
     [MuffaloBotCommandsModule]
     class Meta
     {
@@ -47,6 +53,36 @@ namespace MuffaloBot.CommandsModules
         public Task GetRole(CommandContext ctx, DiscordRole role)
         {
             return ctx.RespondAsync(role.Id.ToString());
+        }
+        [Command("eval"), RequireOwner]
+        public async Task Eval(CommandContext ctx, [RemainingText] string code)
+        {
+            await ctx.TriggerTypingAsync().ConfigureAwait(false);
+            string actualCode = code.TrimStart('`', 'c', 's', 'h', 'a', 'r', 'p').TrimEnd('`');
+            ScriptOptions options = ScriptOptions.Default.WithImports("System", "System.Collections.Generic", "System.Diagnostics", "System.Linq", "System.Net.Http", "System.Reflection", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "DSharpPlus", "DSharpPlus.CommandsNext", "DSharpPlus.Entities", "DSharpPlus.EventArgs", "DSharpPlus.Exceptions", "MuffaloBot", "MuffaloBot.CommandsModules")
+                .WithReferences(AppDomain.CurrentDomain.GetAssemblies().Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location)));
+            Script script = CSharpScript.Create(actualCode, options, typeof(EvalGobals));
+
+            Exception ex = null;
+            ScriptState state = null;
+            try
+            {
+                state = await script.RunAsync(new EvalGobals() { ctx = ctx }).ConfigureAwait(false);
+                ex = state.Exception;
+            }
+            catch (Exception e)
+            {
+                ex = e;
+            }
+            
+            if (ex != null)
+            {
+                await ctx.RespondAsync($"**Error** ```{ex}```");
+            }
+            else
+            {
+                await ctx.RespondAsync($"Result: ```{state?.ReturnValue ?? "(null)"}```");
+            }
         }
     }
 }
