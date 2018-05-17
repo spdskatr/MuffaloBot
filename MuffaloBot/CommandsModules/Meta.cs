@@ -54,6 +54,11 @@ namespace MuffaloBot.CommandsModules
         {
             return ctx.RespondAsync(role.Id.ToString());
         }
+        [Command("isimmortal")]
+        public Task IsImmortal(CommandContext ctx)
+        {
+            return ctx.RespondAsync(Environment.GetCommandLineArgs().Any(s => s == "-immortal").ToString());
+        }
         [Command("eval"), RequireOwner]
         public async Task Eval(CommandContext ctx, [RemainingText] string code)
         {

@@ -20,6 +20,7 @@ namespace MuffaloBot.InternalModules
 
         Task ExitApplication(DSharpPlus.EventArgs.SocketCloseEventArgs e)
         {
+            // Exit gracefully
             MuffaloBotProgram.createdInstances[client].cancellationTokenSource.Cancel();
             return Task.CompletedTask;
         }

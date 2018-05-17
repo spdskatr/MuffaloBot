@@ -59,7 +59,8 @@ namespace MuffaloBot
             {
                 Token = token,
                 TokenType = TokenType.Bot,
-                LogLevel = LogLevel.Debug
+                LogLevel = LogLevel.Debug,
+                UseInternalLogHandler = true
             });
             commandsNext = discordClient.UseCommandsNext(new CommandsNextConfiguration()
             {
@@ -107,7 +108,6 @@ namespace MuffaloBot
         {
             HttpClient webClient = new HttpClient();
             string str = webClient.GetStringAsync(globalJsonKey).GetAwaiter().GetResult();
-            Console.WriteLine(str);
             jsonData = JObject.Parse(str);
             for (int i = 0; i < internalModules.Count; i++)
             {

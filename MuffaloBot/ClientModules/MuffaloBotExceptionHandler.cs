@@ -39,7 +39,7 @@ namespace MuffaloBot.ClientModules
             builder.WithTitle("Unhandled exception");
             builder.WithDescription($"Action: {action}\n```\n{e.ToString()}```");
             builder.WithColor(DiscordColor.Red);
-            DiscordChannel channel = await Client.CreateDmAsync(Client.CurrentApplication.Owner);
+            DiscordChannel channel = await client.CreateDmAsync(client.CurrentApplication.Owner);
             await client.SendMessageAsync(channel, embed: builder.Build());
         }
 
