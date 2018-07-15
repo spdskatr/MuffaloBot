@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MuffaloBot.DiscordComponent
+namespace MuffaloBot
 {
-    public static class Extensions
+    public static class StringUtility
     {
         public static string WithinChars(this string str, int amount)
         {

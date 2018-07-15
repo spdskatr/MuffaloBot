@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
-using MuffaloBot.DiscordComponent;
 using MuffaloBot;
 using System.Diagnostics;
 using System.Reflection;
@@ -17,54 +16,70 @@ using System.IO;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 
-namespace MuffaloBot.CommandsModules
+namespace MuffaloBot.Commands
 {
     public class EvalGobals
     {
         public CommandContext ctx;
     }
-    [MuffaloBotCommandsModule]
-    class Meta
+    public class Meta
     {
+        [Command("about")]
+        public Task About(CommandContext ctx)
+        {
+            DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
+            embedBuilder.WithTitle("About MuffaloBot");
+            embedBuilder.WithUrl("https://github.com/spdskatr/MuffaloBot");
+            embedBuilder.WithDescription(@"Contributors: spdskatr
+Library: [DSharpPlus](https://dsharpplus.emzi0767.com/) (.NET)
+Other libraries: [Magick.NET](https://github.com/dlemstra/Magick.NET) Wrapper for [ImageMagick](http://www.imagemagick.org/) (.NET)
+Hosted by: Zirr
+GitHub Repository: https://github.com/spdskatr/MuffaloBot
+Beta testing discord: https://discord.gg/6MHVepE
+This bot account will not have an invite link. It is exclusive to the RimWorld discord.");
+            embedBuilder.WithColor(DiscordColor.Azure);
+            return ctx.RespondAsync(embed: embedBuilder.Build());
+        }
         [Command("version"), Hidden]
-        public Task GetVersion(CommandContext ctx)
+        public Task GetVersionAsync(CommandContext ctx)
         {
             AssemblyName name = Assembly.GetExecutingAssembly().GetName();
             return ctx.RespondAsync($"{name.Name} Version {name.Version}");
         }
         [Command("status"), RequireOwner, Hidden]
-        public async Task SetStatus(CommandContext ctx, string status)
+        public async Task SetStatusAsync(CommandContext ctx, string status)
         {
             await ctx.Client.UpdateStatusAsync(new DiscordGame(status));
             await ctx.RespondAsync(DiscordEmoji.FromName(ctx.Client, ":ok_hand:").ToString());
         }
-        [Command("die"), RequireOwner]
-        public async Task Die(CommandContext ctx)
+        [Command("die"), RequireOwner, Hidden]
+        public async Task DieAsync(CommandContext ctx)
         {
             await ctx.RespondAsync("Restarting...");
             await ctx.Client.DisconnectAsync();
+            Environment.Exit(0);
         }
-        [Command("exception"), RequireOwner, Hidden]
-        public Task Crash(CommandContext ctx)
+        [Command("crash"), RequireOwner, Hidden]
+        public Task CrashAsync(CommandContext ctx)
         {
             throw new Exception("oops.");
         }
         [Command("roleid")]
-        public Task GetRole(CommandContext ctx, DiscordRole role)
+        public Task GetRoleAsync(CommandContext ctx, DiscordRole role)
         {
             return ctx.RespondAsync(role.Id.ToString());
         }
-        [Command("isimmortal")]
-        public Task IsImmortal(CommandContext ctx)
+        [Command("isimmortal"), RequireOwner, Hidden]
+        public Task IsImmortalAsync(CommandContext ctx)
         {
             return ctx.RespondAsync(Environment.GetCommandLineArgs().Any(s => s == "-immortal").ToString());
         }
-        [Command("eval"), RequireOwner]
-        public async Task Eval(CommandContext ctx, [RemainingText] string code)
+        [Command("eval"), RequireOwner, Hidden]
+        public async Task EvalAsync(CommandContext ctx, [RemainingText] string code)
         {
             await ctx.TriggerTypingAsync().ConfigureAwait(false);
             string actualCode = code.TrimStart('`', 'c', 's', 'h', 'a', 'r', 'p').TrimEnd('`');
-            ScriptOptions options = ScriptOptions.Default.WithImports("System", "System.Collections.Generic", "System.Diagnostics", "System.Linq", "System.Net.Http", "System.Reflection", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "DSharpPlus", "DSharpPlus.CommandsNext", "DSharpPlus.Entities", "DSharpPlus.EventArgs", "DSharpPlus.Exceptions", "MuffaloBot", "MuffaloBot.CommandsModules")
+            ScriptOptions options = ScriptOptions.Default.WithImports("System", "System.Collections.Generic", "System.Diagnostics", "System.Linq", "System.Net.Http", "System.Reflection", "System.Text", "System.Text.RegularExpressions", "System.Threading.Tasks", "DSharpPlus", "DSharpPlus.CommandsNext", "DSharpPlus.Entities", "DSharpPlus.EventArgs", "DSharpPlus.Exceptions", "MuffaloBot", "MuffaloBot.Commands")
                 .WithReferences(AppDomain.CurrentDomain.GetAssemblies().Where(xa => !xa.IsDynamic && !string.IsNullOrWhiteSpace(xa.Location)));
             Script script = CSharpScript.Create(actualCode, options, typeof(EvalGobals));
 
@@ -79,7 +94,7 @@ namespace MuffaloBot.CommandsModules
             {
                 ex = e;
             }
-            
+
             if (ex != null)
             {
                 await ctx.RespondAsync($"**Error** ```{ex}```");

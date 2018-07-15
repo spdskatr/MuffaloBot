@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Stuff
-AuthResourcesCreateNewIfDownloadingFromRepo.resx
-AuthResourcesCreateNewIfDownloadingFromRepo.Designer.cs
+AuthResources.resx
+AuthResources.Designer.cs
 
 # User-specific files
 *.suo

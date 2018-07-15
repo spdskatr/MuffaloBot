@@ -1,28 +1,24 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.IO;
+﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
-using DSharpPlus.CommandsNext;
 using DSharpPlus.Entities;
 using Newtonsoft.Json.Linq;
-using MuffaloBot.DiscordComponent;
-using MuffaloBot;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MuffaloBot.CommandsModules
+namespace MuffaloBot.Commands
 {
-    [MuffaloBotCommandsModule]
-    class WorkshopSearch
+    public class SteanWorkshopCommands
     {
         const string query = "https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={0}&format=json&numperpage={1}&appid=294100&match_all_tags=1&search_text={2}&return_short_description=1&return_metadata=1&query_type={3}";
-        JObject Query(string content, string key, byte resultsCap = 5, EPublishedFileQueryType queryType = EPublishedFileQueryType.Relevance)
+        JObject Query(string content, string key, byte resultsCap = 5)
         {
             if (resultsCap > 20) resultsCap = 20;
-            string request = string.Format(query, key, resultsCap, content, ((uint)queryType).ToString());
+            string request = string.Format(query, key, resultsCap, content, 3.ToString());
             HttpWebRequest req = WebRequest.CreateHttp(request);
             StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream());
             return JObject.Parse(reader.ReadToEnd());
@@ -30,7 +26,7 @@ namespace MuffaloBot.CommandsModules
         [Command("wshopsearch")]
         public async Task Search(CommandContext ctx, [RemainingText] string query)
         {
-            JObject result = Query(query, AuthResourcesCreateNewIfDownloadingFromRepo.STEAM_APIKEY, 5, EPublishedFileQueryType.Relevance);
+            JObject result = Query(query, AuthResources.SteamApiKey, 5);
             if (result["response"]["total"].Value<int>() == 0)
             {
                 await ctx.RespondAsync("No results.");
@@ -43,7 +39,7 @@ namespace MuffaloBot.CommandsModules
                 embedBuilder.WithDescription("Total results: " + result["response"]["total"]);
                 foreach (JToken item in result["response"]["publishedfiledetails"])
                 {
-                    embedBuilder.AddField(item["title"].ToString(), 
+                    embedBuilder.AddField(item["title"].ToString(),
                         $"**Views**: {item["views"]}\n" +
                         $"**Subs**: {item["subscriptions"]}\n" +
                         $"**Favs**: {item["favorited"]}\n**ID**: {item["publishedfileid"]}\n" +
@@ -53,17 +49,5 @@ namespace MuffaloBot.CommandsModules
                 await ctx.RespondAsync(embed: embedBuilder.Build());
             }
         }
-    }
-
-    /// <summary>
-    /// This thing was made after countless hours of trial and error.
-    /// </summary>
-    public enum EPublishedFileQueryType : uint
-    {
-        TopRatedAllTime = 0,
-        MostRecent = 1,
-        Relevance = 3,
-        Unknown6 = 6,
-        MostSubscribed = 9
     }
 }

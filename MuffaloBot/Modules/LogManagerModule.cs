@@ -1,27 +1,24 @@
-﻿using System;
+﻿using DSharpPlus;
+using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using DSharpPlus;
-using DSharpPlus.EventArgs;
-using DSharpPlus.Entities;
-using System.Reflection;
-using Newtonsoft.Json.Linq;
-using MuffaloBot.DiscordComponent;
 
-namespace MuffaloBot.InternalModules
+namespace MuffaloBot.Modules
 {
-    class DiscordLogManager : IInternalModule
+    public class LogManagerModule : BaseModule
     {
         static readonly MethodInfo memberwiseCloneMethod = typeof(DiscordMessage).GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance);
-        DiscordMessage[] discordMessageCache;
+        DiscordMessage[] discordMessageCache = new DiscordMessage[1000];
         int currentIndex = 0;
-        public DiscordLogManager()
+
+        protected override void Setup(DiscordClient client)
         {
-        }
-        public void BindToClient(DiscordClient client)
-        {
+            Client = client;
             client.MessageCreated += OnReceiveDiscordCreateLog;
             client.MessageDeleted += OnReceiveDiscordDeleteLog;
             client.MessageUpdated += OnReceiveDiscordModifyLog;
@@ -48,9 +45,9 @@ namespace MuffaloBot.InternalModules
             return PushMessage(e.Message);
         }
 
-        Task PushMessage(DiscordMessage message)
+        async Task PushMessage(DiscordMessage message)
         {
-            return Task.Run(() => discordMessageCache[currentIndex = (++currentIndex % discordMessageCache.Length)] = ShallowCopyOf(message));
+            await Task.Run(() => discordMessageCache[currentIndex = (++currentIndex % discordMessageCache.Length)] = ShallowCopyOf(message)).ConfigureAwait(false);
         }
 
         async Task OnReceiveDiscordDeleteLog(MessageDeleteEventArgs e)
@@ -99,7 +96,7 @@ namespace MuffaloBot.InternalModules
                 if ((permissions & Permissions.SendMessages) != 0)
                 {
                     DiscordEmbedBuilder embedBuilder = MakeDeleteMessageEmbed(message, content);
-                    await channel.SendMessageAsync(embed: embedBuilder.Build());
+                    await channel.SendMessageAsync(embed: embedBuilder.Build()).ConfigureAwait(false);
                 }
             }
         }
@@ -119,7 +116,7 @@ namespace MuffaloBot.InternalModules
                 if ((permissions & Permissions.SendMessages) != 0)
                 {
                     DiscordEmbedBuilder embedBuilder = MakeModifyMessageEmbed(after, content);
-                    await channel.SendMessageAsync(embed: embedBuilder.Build());
+                    await channel.SendMessageAsync(embed: embedBuilder.Build()).ConfigureAwait(false);
                 }
             }
         }
@@ -166,11 +163,6 @@ namespace MuffaloBot.InternalModules
                 embedBuilder.AddField($"Attachment {i + 1}", $"{attachments[i].FileName} ({attachments[i].FileSize}) {attachments[i].Url}", true);
             }
             return embedBuilder;
-        }
-
-        public void InitializeFronJson(JObject jObject)
-        {
-            discordMessageCache = new DiscordMessage[jObject["logCacheSize"].Value<int>()];
         }
     }
 }

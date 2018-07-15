@@ -1,26 +1,23 @@
-﻿using System;
+﻿using DSharpPlus;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using DSharpPlus;
-using Newtonsoft.Json.Linq;
-using System.IO;
 using System.Xml;
-using System.Text.RegularExpressions;
-using MuffaloBot.DiscordComponent;
-using System.Net.Http;
-using System.IO.Compression;
 
-namespace MuffaloBot.ClientModules
+namespace MuffaloBot.Modules
 {
-    class XmlDatabase : BaseModule
+    class XmlDatabaseModule : BaseModule
     {
         List<KeyValuePair<string, XmlDocument>> database = new List<KeyValuePair<string, XmlDocument>>();
-        public XmlDatabase()
+        public XmlDatabaseModule()
         {
             HttpClient client = new HttpClient();
-            using (MemoryStream memory = new MemoryStream(client.GetByteArrayAsync("https://github.com/spdskatr/MuffaloBot/raw/master/files/Defs.zip").GetAwaiter().GetResult()))
+            using (MemoryStream memory = new MemoryStream(client.GetByteArrayAsync("https://github.com/spdskatr/MuffaloBot/raw/master/MuffaloBot/Data/Defs.zip").GetAwaiter().GetResult()))
             using (ZipArchive archive = new ZipArchive(memory))
             {
                 database = new List<KeyValuePair<string, XmlDocument>>(archive.Entries.Count);

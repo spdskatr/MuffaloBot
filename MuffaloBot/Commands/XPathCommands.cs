@@ -1,21 +1,18 @@
 ﻿using DSharpPlus.CommandsNext;
 using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
-using MuffaloBot.ClientModules;
-using MuffaloBot.DiscordComponent;
+using MuffaloBot.Modules;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace MuffaloBot.CommandsModules
+namespace MuffaloBot.Commands
 {
-    [MuffaloBotCommandsModule]
-    class XPathCommands
+    public class XPathCommands
     {
         [Command("xpath")]
         public async Task XPathCommand(CommandContext ctx)
@@ -23,7 +20,7 @@ namespace MuffaloBot.CommandsModules
             if (string.IsNullOrWhiteSpace(ctx.RawArgumentString)) return;
             try
             {
-                await ctx.RespondAsync(ctx.Client.GetModule<XmlDatabase>().GetSummaryForNodeSelection(ctx.RawArgumentString));
+                await ctx.RespondAsync(ctx.Client.GetModule<XmlDatabaseModule>().GetSummaryForNodeSelection(ctx.RawArgumentString));
             }
             catch (System.Xml.XPath.XPathException ex)
             {
@@ -39,8 +36,8 @@ namespace MuffaloBot.CommandsModules
                 await ctx.RespondAsync("Invalid name! Only letters, numbers, spaces, underscores or dashes allowed.");
                 return;
             }
-            XmlDatabase xmlDatabase = ctx.Client.GetModule<XmlDatabase>();
-            IEnumerable<KeyValuePair<string, XmlNode>> results = 
+            XmlDatabaseModule xmlDatabase = ctx.Client.GetModule<XmlDatabaseModule>();
+            IEnumerable<KeyValuePair<string, XmlNode>> results =
                 xmlDatabase
                 .SelectNodesByXpath($"Defs/ThingDef[translate(defName,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=\"{itemName.ToLower()}\"]")
                 .Concat(xmlDatabase.SelectNodesByXpath($"Defs/ThingDef[translate(label,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')=\"{itemName.ToLower()}\"]"))
@@ -109,7 +106,7 @@ namespace MuffaloBot.CommandsModules
             }
         }
 
-        void AllStuffPropertiesForThingDef(XmlDatabase xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundProps, ref DiscordColor color)
+        void AllStuffPropertiesForThingDef(XmlDatabaseModule xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundProps, ref DiscordColor color)
         {
             XmlNodeList nodeList = node["stuffProps"]?.ChildNodes;
             for (int i = 0; i < (nodeList?.Count ?? 0); i++)
@@ -120,7 +117,7 @@ namespace MuffaloBot.CommandsModules
                     {
                         case "color":
                             string str = nodeList[i].InnerXml;
-                            str = str.TrimStart(new char[] {'(','R','G','B','A' });
+                            str = str.TrimStart(new char[] { '(', 'R', 'G', 'B', 'A' });
                             str = str.TrimEnd(new char[] { ')' });
                             string[] array2 = str.Split(new char[] { ',' });
                             float f1 = float.Parse(array2[0]);
@@ -155,7 +152,7 @@ namespace MuffaloBot.CommandsModules
             }
         }
 
-        void AllStatBasesForThingDef(XmlDatabase xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundStats)
+        void AllStatBasesForThingDef(XmlDatabaseModule xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundStats)
         {
             XmlNode statBasesNode = node["statBases"];
             if (statBasesNode != null)
@@ -185,7 +182,7 @@ namespace MuffaloBot.CommandsModules
                 AllStatBasesForThingDef(xmlDatabase, xmlNode, stringBuilder, foundStats);
             }
         }
-        void AllStatFactorsForThingDef(XmlDatabase xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundStats)
+        void AllStatFactorsForThingDef(XmlDatabaseModule xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundStats)
         {
             if (node["stuffProps"] != null)
             {
@@ -218,7 +215,7 @@ namespace MuffaloBot.CommandsModules
                 AllStatFactorsForThingDef(xmlDatabase, xmlNode, stringBuilder, foundStats);
             }
         }
-        void AllStatOffsetsForThingDef(XmlDatabase xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundStats)
+        void AllStatOffsetsForThingDef(XmlDatabaseModule xmlDatabase, XmlNode node, StringBuilder stringBuilder, HashSet<string> foundStats)
         {
             if (node["stuffProps"] != null)
             {
@@ -253,7 +250,7 @@ namespace MuffaloBot.CommandsModules
                 AllStatOffsetsForThingDef(xmlDatabase, xmlNode, stringBuilder, foundStats);
             }
         }
-        XmlNode SinglePropertyFromDefOrAbstracts(XmlDatabase database, XmlNode def, string name)
+        XmlNode SinglePropertyFromDefOrAbstracts(XmlDatabaseModule database, XmlNode def, string name)
         {
             XmlNode result = def[name];
             while (result == null)

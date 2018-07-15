@@ -1,20 +1,18 @@
 ﻿using DSharpPlus;
+using DSharpPlus.CommandsNext;
+using DSharpPlus.CommandsNext.Exceptions;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using DSharpPlus.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
-using DSharpPlus.Entities;
-using DSharpPlus.CommandsNext;
-using DSharpPlus.CommandsNext.Exceptions;
-using DSharpPlus.Exceptions;
-using MuffaloBot;
 
-namespace MuffaloBot.ClientModules
+namespace MuffaloBot.Modules
 {
-    class MuffaloBotExceptionHandler : BaseModule
+    public class ExceptionHandlerModule : BaseModule
     {
         public async Task HandleClientError(CommandErrorEventArgs e)
         {

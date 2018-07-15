@@ -17,7 +17,7 @@ namespace MuffaloBot.Attributes
         }
 
         public string Guild { get; set; }
-        
+
         public string Channel { get; set; }
 
         public override Task<bool> CanExecute(CommandContext ctx, bool help)

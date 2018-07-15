@@ -9,13 +9,12 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Entities;
 using System.Text.RegularExpressions;
 using System.IO;
-using MuffaloBot.DiscordComponent;
-using MuffaloBot.Attributes;
 using System.Net.Http;
+using MuffaloBot.Attributes;
 
-namespace MuffaloBot.CommandsModules
+namespace MuffaloBot.Commands
 {
-    [MuffaloBotCommandsModule, Cooldown(1, 60, CooldownBucketType.User), RequireChannelInGuild("RimWorld","bot-commands")]
+    [Cooldown(1, 60, CooldownBucketType.User), RequireChannelInGuild("RimWorld", "bot-commands")]
     public class ImageMagickCommands
     {
         enum ImageEditMode
@@ -23,27 +22,45 @@ namespace MuffaloBot.CommandsModules
             Swirl,
             Rescale,
             Wave,
-            Implode
+            Implode,
+            JPEG,
+            MoreJPEG,
+            MostJPEG
         }
         [Command("swirl")]
-        public Task ImageMagickDistort(CommandContext ctx, string link = null)
+        public async Task ImageMagickDistort(CommandContext ctx, string link = null)
         {
-            return DoImageMagickCommand(ctx, ImageEditMode.Swirl, link);
+            await DoImageMagickCommand(ctx, ImageEditMode.Swirl, link).ConfigureAwait(false);
         }
         [Command("wonky")]
-        public Task ImageMagickWonky(CommandContext ctx, string link = null)
+        public async Task ImageMagickWonky(CommandContext ctx, string link = null)
         {
-            return DoImageMagickCommand(ctx, ImageEditMode.Rescale, link);
+            await DoImageMagickCommand(ctx, ImageEditMode.Rescale, link).ConfigureAwait(false);
         }
         [Command("wave")]
-        public Task ImageMagickWave(CommandContext ctx, string link = null)
+        public async Task ImageMagickWave(CommandContext ctx, string link = null)
         {
-            return DoImageMagickCommand(ctx, ImageEditMode.Wave, link);
+            await DoImageMagickCommand(ctx, ImageEditMode.Wave, link).ConfigureAwait(false);
         }
         [Command("implode")]
-        public Task ImageMagickImplode(CommandContext ctx, string link = null)
+        public async Task ImageMagickImplode(CommandContext ctx, string link = null)
         {
-            return DoImageMagickCommand(ctx, ImageEditMode.Implode, link);
+            await DoImageMagickCommand(ctx, ImageEditMode.Implode, link).ConfigureAwait(false);
+        }
+        [Command("jpeg")]
+        public async Task ImageMagickJPEG(CommandContext ctx, string link = null)
+        {
+            await DoImageMagickCommand(ctx, ImageEditMode.JPEG, link).ConfigureAwait(false);
+        }
+        [Command("moarjpeg")]
+        public async Task ImageMagickMoreJPEG(CommandContext ctx, string link = null)
+        {
+            await DoImageMagickCommand(ctx, ImageEditMode.MoreJPEG, link).ConfigureAwait(false);
+        }
+        [Command("mostjpeg")]
+        public async Task ImageMagickMostJPEG(CommandContext ctx, string link = null)
+        {
+            await DoImageMagickCommand(ctx, ImageEditMode.MostJPEG, link).ConfigureAwait(false);
         }
         async Task DoImageMagickCommand(CommandContext ctx, ImageEditMode mode, string link)
         {
@@ -198,9 +215,23 @@ namespace MuffaloBot.CommandsModules
             DoMagic(mode, image, originalWidth, originalHeight);
             using (Stream stream = new MemoryStream())
             {
-                image.Write(stream);
+                if (mode == ImageEditMode.JPEG || mode == ImageEditMode.MoreJPEG || mode == ImageEditMode.MostJPEG)
+                {
+                    image.Write(stream, MagickFormat.Jpeg);
+                }
+                else
+                {
+                    image.Write(stream);
+                }
                 stream.Seek(0, SeekOrigin.Begin);
-                await ctx.RespondWithFileAsync(stream, "magic.png");
+                if (mode == ImageEditMode.JPEG || mode == ImageEditMode.MoreJPEG || mode == ImageEditMode.MostJPEG)
+                {
+                    await ctx.RespondWithFileAsync(stream, "magic.jpeg");
+                }
+                else
+                {
+                    await ctx.RespondWithFileAsync(stream, "magic.png");
+                }
             }
         }
 
@@ -222,6 +253,15 @@ namespace MuffaloBot.CommandsModules
                     break;
                 case ImageEditMode.Implode:
                     image.Implode(0.5d, PixelInterpolateMethod.Average);
+                    break;
+                case ImageEditMode.JPEG:
+                    image.Quality = 10;
+                    break;
+                case ImageEditMode.MoreJPEG:
+                    image.Quality = 5;
+                    break;
+                case ImageEditMode.MostJPEG:
+                    image.Quality = 1;
                     break;
                 default:
                     break;
