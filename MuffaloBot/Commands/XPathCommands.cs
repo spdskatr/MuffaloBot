@@ -14,7 +14,7 @@ namespace MuffaloBot.Commands
 {
     public class XPathCommands
     {
-        [Command("xpath")]
+        [Command("xpath"), Description("Searches the RimWorld Xml database for xml nodes that match the xpath. **Examples:**\n`!xpath Defs/ThingDef[defName=\"Steel\"]/description`\n`!xpath Defs/ThingDef[@Name=\"BuildingBase\"]`\n`!xpath //*`")]
         public async Task XPathCommand(CommandContext ctx)
         {
             if (string.IsNullOrWhiteSpace(ctx.RawArgumentString)) return;
@@ -28,8 +28,8 @@ namespace MuffaloBot.Commands
             }
         }
 
-        [Command("iteminfo")]
-        public async Task InfoCommand(CommandContext ctx, [RemainingText] string itemName)
+        [Command("iteminfo"), Description("Displays the stats for an item or building in RimWorld.")]
+        public async Task InfoCommand(CommandContext ctx, [RemainingText, Description("The name of the item.")] string itemName)
         {
             if (!new Regex("^[a-zA-Z0-9\\-_ ]*$").IsMatch(itemName))
             {
@@ -52,6 +52,17 @@ namespace MuffaloBot.Commands
                 {
                     builder.WithTitle($"Info for item \"{item.Value["label"].InnerXml.CapitalizeFirst()}\" (defName: {item.Value["defName"].InnerXml})");
                     builder.WithDescription(item.Value["description"]?.InnerXml ?? "No description.");
+                    if (InnerXmlOfPathFromDef(xmlDatabase, item.Value, "category") == "Item")
+                    {
+                        StringBuilder itemStatsBuilder = new StringBuilder();
+                        itemStatsBuilder.AppendLine("Stack limit: " + InnerXmlOfPathFromDef(xmlDatabase, item.Value, "stackLimit", "1"));
+                        itemStatsBuilder.AppendLine("Automatically haulable: " + InnerXmlOfPathFromDef(xmlDatabase, item.Value, "alwaysHaulable", "false"));
+                        if (item.Value["stuffProps"] != null)
+                        {
+                            itemStatsBuilder.AppendLine("Small volume: " + InnerXmlOfPathFromDef(xmlDatabase, item.Value, "smallVolume", "false"));
+                        }
+                        builder.AddField("Item stats", itemStatsBuilder.ToString());
+                    }
                     StringBuilder stringBuilder = new StringBuilder();
                     AllStatBasesForThingDef(xmlDatabase, item.Value, stringBuilder, new HashSet<string>());
                     string str = stringBuilder.ToString();
@@ -250,18 +261,31 @@ namespace MuffaloBot.Commands
                 AllStatOffsetsForThingDef(xmlDatabase, xmlNode, stringBuilder, foundStats);
             }
         }
-        XmlNode SinglePropertyFromDefOrAbstracts(XmlDatabaseModule database, XmlNode def, string name)
+        string InnerXmlOfPathFromDef(XmlDatabaseModule database, XmlNode def, string xpath, string defaultValue = null)
         {
-            XmlNode result = def[name];
+            XmlNode result = null;
             while (result == null)
             {
-                XmlAttributeCollection attributeCollection = def.Attributes;
-                if (attributeCollection["ParentName"] != null)
+                XmlNodeList list = def.SelectNodes(xpath);
+                if (list.Count > 0)
                 {
-                    def = database.SelectNodesByXpath($"Defs/ThingDef[@Name=\"{attributeCollection["parentName"].InnerXml}\"]").FirstOrDefault().Value;
+                    result = list.Item(0);
                 }
+                else
+                {
+                    XmlAttributeCollection attributeCollection = def.Attributes;
+                    if (attributeCollection["ParentName"] != null)
+                    {
+                        def = database.SelectNodesByXpath($"Defs/ThingDef[@Name=\"{attributeCollection["ParentName"].InnerXml}\"]").FirstOrDefault().Value;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
             }
-            return result;
+            return result?.InnerXml ?? defaultValue;
         }
     }
 }

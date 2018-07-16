@@ -31,7 +31,8 @@ namespace MuffaloBot
             });
             commandsNext = client.UseCommandsNext(new CommandsNextConfiguration()
             {
-                StringPrefix = "!"
+                StringPrefix = "!",
+                EnableDefaultHelp = false
             });
             commandsNext.RegisterCommands(Assembly.GetExecutingAssembly());
             client.DebugLogger.LogMessage(LogLevel.Info, "MuffaloBot", $"Registered {commandsNext.RegisteredCommands.Count} commands", DateTime.Now);

@@ -15,8 +15,8 @@ namespace MuffaloBot.Commands
     {
         const string queryAddress = "http://rimworldwiki.com/api.php?action=query&list=search&format=json&srlimit=5&srprop=size|wordcount|timestamp&srsearch={0}";
 
-        [Command("wikisearch")]
-        public async Task Search(CommandContext ctx, string query)
+        [Command("wikisearch"), Description("Searches the RimWorld wiki for content.")]
+        public async Task Search(CommandContext ctx, [Description("The search query.")] string query)
         {
             await ctx.TriggerTypingAsync().ConfigureAwait(false);
             WebClient webClient = new WebClient();

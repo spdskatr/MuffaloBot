@@ -16,8 +16,13 @@ namespace MuffaloBot.Modules
         List<KeyValuePair<string, XmlDocument>> database = new List<KeyValuePair<string, XmlDocument>>();
         public XmlDatabaseModule()
         {
+            UpdateDatabaseAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+        }
+
+        public async Task UpdateDatabaseAsync()
+        {
             HttpClient client = new HttpClient();
-            using (MemoryStream memory = new MemoryStream(client.GetByteArrayAsync("https://github.com/spdskatr/MuffaloBot/raw/master/MuffaloBot/Data/Defs.zip").GetAwaiter().GetResult()))
+            using (MemoryStream memory = new MemoryStream(await client.GetByteArrayAsync("https://github.com/spdskatr/MuffaloBot/raw/master/MuffaloBot/Data/Defs.zip").ConfigureAwait(false)))
             using (ZipArchive archive = new ZipArchive(memory))
             {
                 database = new List<KeyValuePair<string, XmlDocument>>(archive.Entries.Count);
@@ -32,6 +37,7 @@ namespace MuffaloBot.Modules
                 }
             }
         }
+
         public IEnumerable<KeyValuePair<string, XmlNode>> SelectNodesByXpath(string xpath)
         {
             return from KeyValuePair<string, XmlDocument> doc in database

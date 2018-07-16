@@ -15,6 +15,7 @@ using System.Net.Http;
 using System.IO;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using MuffaloBot.Modules;
 
 namespace MuffaloBot.Commands
 {
@@ -24,7 +25,12 @@ namespace MuffaloBot.Commands
     }
     public class Meta
     {
-        [Command("about")]
+        [Command("mbhelp")]
+        public Task ShowHelpAsync(CommandContext ctx, params string[] command)
+        {
+            return ctx.CommandsNext.DefaultHelpAsync(ctx, command);
+        }
+        [Command("about"), Description("Shows info about the bot.")]
         public Task About(CommandContext ctx)
         {
             DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
@@ -39,6 +45,20 @@ Beta testing discord: https://discord.gg/6MHVepE
 This bot account will not have an invite link. It is exclusive to the RimWorld discord.");
             embedBuilder.WithColor(DiscordColor.Azure);
             return ctx.RespondAsync(embed: embedBuilder.Build());
+        }
+        [Command("update"), RequireOwner, Hidden]
+        public async Task UpdateAsync(CommandContext ctx)
+        {
+            await RunUpdateAsync(ctx).ConfigureAwait(false);
+        }
+        private async Task RunUpdateAsync(CommandContext ctx)
+        {
+            DiscordMessage message = await ctx.RespondAsync("```\nUpdating... [          ] 0%\n```");
+            await ctx.Client.GetModule<JsonDataModule>().ReloadDataAsync();
+            await message.ModifyAsync("```\nUpdating... [████░     ] 42%\n```");
+            await message.ModifyAsync("```\nUpdating... [███████▒  ] 76.551030482%\n```"); // Yes
+            await ctx.Client.GetModule<XmlDatabaseModule>().UpdateDatabaseAsync();
+            await message.ModifyAsync("```\nUpdating... [██████████] Done!\n```");
         }
         [Command("version"), Hidden]
         public Task GetVersionAsync(CommandContext ctx)
@@ -64,7 +84,7 @@ This bot account will not have an invite link. It is exclusive to the RimWorld d
         {
             throw new Exception("oops.");
         }
-        [Command("roleid")]
+        [Command("roleid"), Hidden]
         public Task GetRoleAsync(CommandContext ctx, DiscordRole role)
         {
             return ctx.RespondAsync(role.Id.ToString());

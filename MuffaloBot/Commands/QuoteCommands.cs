@@ -14,7 +14,7 @@ namespace MuffaloBot.Commands
 {
     public class QuoteCommands
     {
-        [Command("quotes"), Aliases("listquotes")]
+        [Command("quotes"), Aliases("quote", "listquotes"), Description("List all the available quote commands.")]
         public async Task ListQuotesAsync(CommandContext ctx)
         {
             StringBuilder stringBuilder = new StringBuilder();

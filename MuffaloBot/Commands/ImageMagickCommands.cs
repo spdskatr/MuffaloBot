@@ -27,38 +27,38 @@ namespace MuffaloBot.Commands
             MoreJPEG,
             MostJPEG
         }
-        [Command("swirl")]
-        public async Task ImageMagickDistort(CommandContext ctx, string link = null)
+        [Command("swirl"), Description("Applies a swirl effect to an image. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickDistort(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.Swirl, link).ConfigureAwait(false);
         }
-        [Command("wonky")]
-        public async Task ImageMagickWonky(CommandContext ctx, string link = null)
+        [Command("wonky"), Description("Shifts and rescales the image in weird ways. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickWonky(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.Rescale, link).ConfigureAwait(false);
         }
-        [Command("wave")]
-        public async Task ImageMagickWave(CommandContext ctx, string link = null)
+        [Command("wave"), Description("Applies a wave effect to an image. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickWave(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.Wave, link).ConfigureAwait(false);
         }
-        [Command("implode")]
-        public async Task ImageMagickImplode(CommandContext ctx, string link = null)
+        [Command("implode"), Description("Applies an implosion effect to an image. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickImplode(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.Implode, link).ConfigureAwait(false);
         }
-        [Command("jpeg")]
-        public async Task ImageMagickJPEG(CommandContext ctx, string link = null)
+        [Command("jpeg"), Description("Compresses an image. A lot. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickJPEG(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.JPEG, link).ConfigureAwait(false);
         }
-        [Command("moarjpeg")]
-        public async Task ImageMagickMoreJPEG(CommandContext ctx, string link = null)
+        [Command("moarjpeg"), Description("Compresses an image. Even more than `!jpeg`. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickMoreJPEG(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.MoreJPEG, link).ConfigureAwait(false);
         }
-        [Command("mostjpeg")]
-        public async Task ImageMagickMostJPEG(CommandContext ctx, string link = null)
+        [Command("mostjpeg"), Description("Compresses an image. So much that that will become smaller than a paperclip. The image can be provided as an attachment or a link.")]
+        public async Task ImageMagickMostJPEG(CommandContext ctx, [Description("Optional. The link to the image you want to apply the effect to.")] string link = null)
         {
             await DoImageMagickCommand(ctx, ImageEditMode.MostJPEG, link).ConfigureAwait(false);
         }

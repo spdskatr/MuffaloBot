@@ -17,7 +17,18 @@ namespace MuffaloBot.Modules
         {
             Client = client;
             ReloadDataAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            client.MessageCreated += HandleQuoteAsync;
         }
+
+        private async Task HandleQuoteAsync(DSharpPlus.EventArgs.MessageCreateEventArgs e)
+        {
+            JToken quote = data["quotes"][e.Message.Content];
+            if (quote != null)
+            {
+                await e.Message.RespondAsync(quote.ToString());
+            }
+        }
+
         public async Task ReloadDataAsync()
         {
             HttpClient http = new HttpClient();

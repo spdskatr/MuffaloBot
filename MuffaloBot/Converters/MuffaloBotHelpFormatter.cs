@@ -142,7 +142,7 @@ namespace MuffaloBot.Converters
         {
             _embed.Title = "MuffaloBot Help";
             _embed.Color = DiscordColor.Green;
-            string description = "Listing all public commands. Type `!mbhelp <command>` to learn more about a command.";
+            string description = "Listing all public commands. Type `!mbhelp <command>` to learn more about a command. Type `!quotes` for all quote commands.";
             if (_name != null)
             {
                 StringBuilder stringBuilder = new StringBuilder();

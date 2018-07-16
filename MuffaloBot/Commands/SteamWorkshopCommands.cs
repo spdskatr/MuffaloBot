@@ -23,8 +23,8 @@ namespace MuffaloBot.Commands
             StreamReader reader = new StreamReader(req.GetResponse().GetResponseStream());
             return JObject.Parse(reader.ReadToEnd());
         }
-        [Command("wshopsearch")]
-        public async Task Search(CommandContext ctx, [RemainingText] string query)
+        [Command("wshopsearch"), Description("Searches the steam workshop for content.")]
+        public async Task Search(CommandContext ctx, [RemainingText, Description("The search query.")] string query)
         {
             JObject result = Query(query, AuthResources.SteamApiKey, 5);
             if (result["response"]["total"].Value<int>() == 0)
