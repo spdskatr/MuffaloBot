@@ -56,8 +56,16 @@ This bot account will not have an invite link. It is exclusive to the RimWorld d
             DiscordMessage message = await ctx.RespondAsync("```\nUpdating... [          ] 0%\n```");
             await ctx.Client.GetModule<JsonDataModule>().ReloadDataAsync();
             await message.ModifyAsync("```\nUpdating... [████░     ] 42%\n```");
-            await message.ModifyAsync("```\nUpdating... [███████▒  ] 76.551030482%\n```"); // Yes
             await ctx.Client.GetModule<XmlDatabaseModule>().UpdateDatabaseAsync();
+            if (DateTime.Now.Millisecond < 500)
+            {
+                await message.ModifyAsync("```\nUpdating... [██████████] 99.999999%\n```");
+                await Task.Delay(3000);
+                await message.ModifyAsync("```\nUpdating... [**********] ERROR!\n```");
+                await Task.Delay(3000);
+                await message.ModifyAsync("```\nUpdating... [██████████] jk <3\n```");
+                await Task.Delay(1000);
+            }
             await message.ModifyAsync("```\nUpdating... [██████████] Done!\n```");
         }
         [Command("version"), Hidden]
