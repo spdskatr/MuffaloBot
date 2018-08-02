@@ -1,6 +1,7 @@
 ﻿using DSharpPlus;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -47,18 +48,16 @@ namespace MuffaloBot.Modules
         public string GetSummaryForNodeSelection(string xpath)
         {
             StringBuilder stringBuilder = new StringBuilder();
-            var results = SelectNodesByXpath(xpath);
-            int i = 0;
-            foreach (var result in results)
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var results = SelectNodesByXpath(xpath).ToList();
+            sw.Stop();
+            foreach (var result in results.Take(5))
             {
-                if (i < 5)
-                {
-                    stringBuilder.AppendLine($"<!-- In {result.Key}: -->");
-                    stringBuilder.AppendLine($"{result.Value.OuterXml.WithinChars(100)}\n");
-                }
-                i++;
+                stringBuilder.AppendLine($"<!-- In {result.Key}: -->");
+                stringBuilder.AppendLine($"{result.Value.OuterXml.WithinChars(100)}\n");
             }
-            stringBuilder.AppendFormat("<!-- Summary: Found {0} results total (showing first 5 if applicable) -->", i);
+            stringBuilder.AppendFormat("<!-- Summary: Found {0} results total (showing first 5 if applicable) -->\n<!-- Evaluation time {1} ticks ({2}ms) -->", results.Count, sw.ElapsedTicks, sw.ElapsedMilliseconds);
             return string.Concat("```xml\n", stringBuilder.ToString(), "```");
         }
 

@@ -22,7 +22,7 @@ namespace MuffaloBot.Attributes
 
         public override Task<bool> CanExecute(CommandContext ctx, bool help)
         {
-            return Task.FromResult(ctx.Guild.Name != Guild || ctx.Channel.Name == Channel);
+            return Task.FromResult(ctx.Guild == null || ctx.Guild.Name != Guild || ctx.Channel.Name == Channel);
         }
     }
 }
