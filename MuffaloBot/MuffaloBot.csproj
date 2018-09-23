@@ -137,6 +137,7 @@
     <Compile Include="Commands\WikiCommands.cs" />
     <Compile Include="Commands\XPathCommands.cs" />
     <Compile Include="Converters\MuffaloBotHelpFormatter.cs" />
+    <Compile Include="Modules\AuditLogManagerModule.cs" />
     <Compile Include="Modules\ExceptionHandlerModule.cs" />
     <Compile Include="Modules\JsonDataModule.cs" />
     <Compile Include="Modules\LogManagerModule.cs" />
