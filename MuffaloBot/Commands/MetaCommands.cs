@@ -132,5 +132,22 @@ This bot account will not have an invite link. It is exclusive to the RimWorld d
                 await ctx.RespondAsync($"Result: ```{state?.ReturnValue ?? "(null)"}```");
             }
         }
+        [Command("dontask"), Hidden]
+        public Task DontAsk(CommandContext ctx)
+        {
+            DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
+            embedBuilder.WithTitle("**Don't ask to ask, just ask**");
+            embedBuilder.WithUrl("http://sol.gfxile.net/dontask.html");
+            embedBuilder.WithDescription(@"If someone is around who can help, it's better if they can see the full question.
+So, instead of
+```Is someone around who can help me```
+ask
+```How do I reference my custom class in xml ?```
+This gets you a response faster and prevents wasting time
+");
+            embedBuilder.WithColor(DiscordColor.Azure);
+            return ctx.RespondAsync(embed: embedBuilder.Build());
+        }
+
     }
 }
