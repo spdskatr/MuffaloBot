@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MuffaloBot.Commands
 {
-    public class SteanWorkshopCommands
+    public class SteamWorkshopCommands
     {
         const string query = "https://api.steampowered.com/IPublishedFileService/QueryFiles/v1/?key={0}&format=json&numperpage={1}&appid=294100&match_all_tags=1&search_text={2}&return_short_description=1&return_metadata=1&query_type={3}";
         JObject Query(string content, string key, byte resultsCap = 5)
@@ -27,26 +27,34 @@ namespace MuffaloBot.Commands
         public async Task Search(CommandContext ctx, [RemainingText, Description("The search query.")] string query)
         {
             JObject result = Query(query, AuthResources.SteamApiKey, 5);
-            if (result["response"]["total"].Value<int>() == 0)
+            try
             {
-                await ctx.RespondAsync("No results.");
-            }
-            else
-            {
-                DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
-                embedBuilder.WithColor(DiscordColor.DarkBlue);
-                embedBuilder.WithTitle($"Results for '{query}'");
-                embedBuilder.WithDescription("Total results: " + result["response"]["total"]);
-                foreach (JToken item in result["response"]["publishedfiledetails"])
+                if (result["response"]["total"].Value<int>() == 0)
                 {
-                    embedBuilder.AddField(item["title"].ToString(),
-                        $"**Views**: {item["views"]}\n" +
-                        $"**Subs**: {item["subscriptions"]}\n" +
-                        $"**Favs**: {item["favorited"]}\n**ID**: {item["publishedfileid"]}\n" +
-                        $"[Link](http://steamcommunity.com/sharedfiles/filedetails/?id={item["publishedfileid"]})",
-                        true);
+                    await ctx.RespondAsync("No results.");
                 }
-                await ctx.RespondAsync(embed: embedBuilder.Build());
+                else
+                {
+                    DiscordEmbedBuilder embedBuilder = new DiscordEmbedBuilder();
+                    embedBuilder.WithColor(DiscordColor.DarkBlue);
+                    embedBuilder.WithTitle($"Results for '{query}'");
+                    embedBuilder.WithDescription("Total results: " + result["response"]["total"]);
+                    foreach (JToken item in result["response"]["publishedfiledetails"])
+                    {
+                        embedBuilder.AddField(item["title"].ToString(),
+                            $"**Views**: {item["views"]}\n" +
+                            $"**Subs**: {item["subscriptions"]}\n" +
+                            $"**Favs**: {item["favorited"]}\n**ID**: {item["publishedfileid"]}\n" +
+                            $"[Link](http://steamcommunity.com/sharedfiles/filedetails/?id={item["publishedfileid"]})",
+                            true);
+                    }
+                    await ctx.RespondAsync(embed: embedBuilder.Build());
+                }
+            }
+            catch (Exception e)
+            {
+               await ctx.RespondAsync("Oops! The Steam API doesn\'t seem to want to cooperate right now. Try again later :(");
+               if (!(e is ArgumentNullException || e is NullReferenceException)) throw;
             }
         }
     }
