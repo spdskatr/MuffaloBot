@@ -97,6 +97,7 @@ namespace MuffaloBot.Commands
             // Remove all links.
             cleanDescription = Regex.Replace(cleanDescription, @"(\[url=\S*\[/url\])", string.Empty);
             var versions = string.Join(", ", mod.Tags.Where(x => x.Tag != "Scenario" && x.Tag != "Mod").Select(x => x.Tag));
+            var lastUpdated = mod.Time_Updated;
 
             var modEmbed = new DiscordEmbedBuilder()
                 .WithColor(DiscordColor.Gold)
@@ -104,6 +105,7 @@ namespace MuffaloBot.Commands
                 .WithUrl($"http://steamcommunity.com/sharedfiles/filedetails/?id={mod.PublishedFileId}")
                 .AddField("Author", user.PersonaName, true)
                 .AddField("Versions", versions, true)
+                .AddField("Last Update", DateTimeOffset.FromUnixTimeSeconds(lastUpdated).Date.ToShortDateString(), true)
                 .AddField("Description", cleanDescription)
                 .WithThumbnailUrl(user.avatarmedium)
                 .WithImageUrl(mod.Preview_Url)

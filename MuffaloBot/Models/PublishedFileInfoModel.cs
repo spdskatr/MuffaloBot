@@ -24,8 +24,8 @@ namespace MuffaloBot.Models
             public string HContent_Preview { get; set; }
             public string Title { get; set; }
             public string Description { get; set; }
-            public int Time_Created { get; set; }
-            public int Time_Updated { get; set; }
+            public long Time_Created { get; set; }
+            public long Time_Updated { get; set; }
             public int Visibility { get; set; }
             public int Banned { get; set; }
             public string Ban_Reason { get; set; }
