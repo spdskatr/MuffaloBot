@@ -107,6 +107,7 @@ namespace MuffaloBot.Commands
                 .AddField("Versions", versions, true)
                 .AddField("Last Update", DateTimeOffset.FromUnixTimeSeconds(lastUpdated).Date.ToShortDateString(), true)
                 .AddField("Description", cleanDescription)
+                .AddField("Steam API Link", $"steam://url/CommunityFilePage/{mod.PublishedFileId}")
                 .WithThumbnailUrl(user.avatarmedium)
                 .WithImageUrl(mod.Preview_Url)
                 .Build();
@@ -147,7 +148,7 @@ namespace MuffaloBot.Commands
                             $"**Views**: {item["views"]}\n" +
                             $"**Subs**: {item["subscriptions"]}\n" +
                             $"**Favs**: {item["favorited"]}\n**ID**: {item["publishedfileid"]}\n" +
-                            $"[Link](http://steamcommunity.com/sharedfiles/filedetails/?id={item["publishedfileid"]})",
+                            $"[Link](http://steamcommunity.com/sharedfiles/filedetails/?id={item["publishedfileid"]})\n",
                             true);
                     }
                     await ctx.RespondAsync(embed: embedBuilder.Build());

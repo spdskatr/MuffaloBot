@@ -16,6 +16,15 @@ namespace MuffaloBot
     {
         public DiscordClient client;
         public CommandsNextModule commandsNext;
+        static Program _i;
+        public static Program instance
+        {
+            get
+            {
+                if (_i == null) _i = new Program();
+                return _i;
+            }
+        }
         public Program()
         {
             client = new DiscordClient(new DiscordConfiguration()
@@ -64,7 +73,7 @@ namespace MuffaloBot
         }
         static void Main(string[] args)
         {
-            new Program().StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            Program.instance.StartAsync().ConfigureAwait(false).GetAwaiter().GetResult();
         }
     }
 }
